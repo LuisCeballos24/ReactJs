@@ -1,20 +1,17 @@
 import React from 'react';
-import Navbar from './Navbar';
-import AddProductForm from './AddProductForm'
-import {
-  useFirebaseApp
-} from 'reactfire';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Layout from './utils/layout';
+import Main from './main';
 
 function App() {
-  const firebase = useFirebaseApp();
-  console.log(firebase);
   return (
-    <div className="App">
-      <Navbar />
-      <h1>Bienvenidos a mi sitio web</h1>
-      <AddProductForm />
-      <p>...</p>
-    </div>
+    <Router>
+      <Layout>
+        <Switch>
+          <Route path="/" component={Main} />
+        </Switch>
+      </Layout>
+    </Router>
   );
 }
 
