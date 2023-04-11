@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
+import 'firebase/compat/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyC7T6BucwR2KpNBXo9pDnfLRX8VbAz8ecE",
@@ -23,10 +24,10 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-
+const storage = firebase.storage(); // Agrega esta línea
 // Método para autenticar a los usuarios
 export const signInWithEmailAndPassword = (email, password) => {
   return auth.signInWithEmailAndPassword(email, password);
 };
 
-export { auth, db, firebase };
+export { auth, db, firebase,storage };
