@@ -1,5 +1,11 @@
+import Sidebar from "./component/shared/Sidebar";
+
 function App() {
-  return <div className="bg-red-400">Hola Mundo</div>;
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
 }
 
 export default App;
