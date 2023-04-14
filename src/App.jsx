@@ -2,7 +2,7 @@ import Sidebar from "./component/shared/Sidebar";
 
 function App() {
   return (
-    <div>
+    <div className="bg-[#262837] w-full min-h-screen">
       <Sidebar />
     </div>
   );
