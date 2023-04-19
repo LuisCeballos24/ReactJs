@@ -62,11 +62,22 @@ function App() {
               </form>
             </div>
             {/* TABS*/}
-            <nav className="flex gap-4 items-center text-gray-300">
-              <a href="#">Hot dishes</a>
-              <a href="#">Cold dishes</a>
-              <a href="#">Soup</a>
-              <a href="#">Grill</a>
+            <nav className="flex justify-between items-center text-gray-300 border-b">
+              <a
+                href="#"
+                className="py-2 pr-4 relative before:w-1/2 before:h-[2px] before:absolute before:bg-[#ec7c6a] before:left-0 before:rounded-full before:-bottom-[1px]"
+              >
+                Hot dishes
+              </a>
+              <a href="#" className="py-2 pr-4">
+                Cold dishes
+              </a>
+              <a href="#" className="py-2 pr-4">
+                Soup
+              </a>
+              <a href="#" className="py-2 pr-4">
+                Grill
+              </a>
             </nav>
           </header>
         </div>
