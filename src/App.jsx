@@ -5,6 +5,7 @@ import {
   RiUser3Line,
   RiAddLine,
   RiPieChartLine,
+  RiCloseLine,
 } from "react-icons/ri";
 
 // =======
@@ -34,16 +35,14 @@ function App() {
           <RiPieChartLine />
         </button>
         <button onClick={toggleMenu} className="p-2 text-white">
-          <RiMenu3Fill />
+          {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
         </button>
-        <main className="pl-26">
-          <div>Hola </div>
-          <div>Hola 2</div>
-        </main>
       </nav>
       {/* ======= */}
-      <Sidebar />
-      {/* >>> >>>> parent of 96e77bf (Side Complete) */}
+      <main className="grid-cols-1 lg:grid-cols-8 lg:pl-28">
+        <div>Hola </div>
+        <div>Hola 2</div>
+      </main>
     </div>
   );
 }
