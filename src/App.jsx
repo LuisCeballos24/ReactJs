@@ -1,10 +1,14 @@
 import Sidebar from "./component/shared/Sidebar";
+import React, { useState } from "react";
 import {
   RiMenu3Fill,
   RiUser3Line,
   RiAddLine,
   RiPieChartLine,
 } from "react-icons/ri";
+
+// =======
+// >>>>>>> parent of 96e77bf (Side Complete)
 
 function App() {
   const [showMenu, setShowMenu] = useState(false);
@@ -13,9 +17,9 @@ function App() {
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
-
   return (
     <div className="bg-[#262837] w-full min-h-screen">
+      {/* <<<<<<< HEAD */}
       {/* <Sidebar /> */}
       <Sidebar showMenu={showMenu} />
       {/* Menu Movil */}
@@ -37,6 +41,9 @@ function App() {
           <div>Hola 2</div>
         </main>
       </nav>
+      {/* ======= */}
+      <Sidebar />
+      {/* >>> >>>> parent of 96e77bf (Side Complete) */}
     </div>
   );
 }
