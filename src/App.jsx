@@ -42,20 +42,32 @@ function App() {
       {/* ======= */}
       <main className="grid grid-cols-1 lg:grid-cols-8 lg:pl-28">
         <div className="lg:col-span-6">
+          {/* Header */}
           <header className="p-4">
-            <div>
-              <h1 className="text-2xl text-gray-300"> Jeager Resto</h1>
-              <p className="text-gray-500">07 octubre 2022</p>
-            </div>
-            <form>
-              <div className="relative w-full">
-                <RiSearch2Line className="absolute left-3 top-1/2 text-gray-300 -translate-y-1/2" />
-                <input
-                  type="text"
-                  className="py-2 pr-4 pl-8 w-full bg-[#1F1D2B] rounded-lg text-gray-300 outline-none"
-                />
+            {/*Titulo de Search */}
+            <div className="flex flex-col gap-4 mb-6">
+              <div>
+                <h1 className="text-2xl text-gray-300"> Jeager Resto</h1>
+                <p className="text-gray-500">07 octubre 2022</p>
               </div>
-            </form>
+              <form>
+                <div className="relative w-full">
+                  <RiSearch2Line className="absolute left-3 top-1/2 text-gray-300 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    className="py-2 pr-4 pl-10 w-full bg-[#1F1D2B] rounded-lg text-gray-300 outline-none"
+                    placeholder="Search"
+                  />
+                </div>
+              </form>
+            </div>
+            {/* TABS*/}
+            <nav className="flex gap-4 items-center text-gray-300">
+              <a href="#">Hot dishes</a>
+              <a href="#">Cold dishes</a>
+              <a href="#">Soup</a>
+              <a href="#">Grill</a>
+            </nav>
           </header>
         </div>
 
