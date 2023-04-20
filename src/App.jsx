@@ -7,6 +7,7 @@ import {
   RiPieChartLine,
   RiCloseLine,
   RiSearch2Line,
+  RiArrowDownSLine,
 } from "react-icons/ri";
 
 // =======
@@ -79,6 +80,13 @@ function App() {
                 Grill
               </a>
             </nav>
+            {/*TItle content */}
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl text-gray-300">Shoose Dishes</h2>
+              <button className="flex gap-4 items-center text-gray-300">
+                <RiArrowDownSLine /> Dine in
+              </button>
+            </div>
           </header>
         </div>
 
