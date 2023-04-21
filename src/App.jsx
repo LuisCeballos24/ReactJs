@@ -1,5 +1,6 @@
 import Sidebar from "./component/shared/Sidebar";
-// import { db, auth, storage } from "../utils/firebase";
+import { db, auth, storage } from "./utils/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useState } from "react";
 import {
   RiMenu3Fill,
@@ -11,8 +12,14 @@ import {
   RiArrowDownSLine,
 } from "react-icons/ri";
 
-// =======
-// >>>>>>> parent of 96e77bf (Side Complete)
+//
+// const imageUrls = [];
+// for (const image of images) {
+// const imageRef = storage.ref(`images/${image.name}`);
+// await imageRef.put(image);
+// const imageUrl = await imageRef.getDownloadURL();
+// imageUrls.push(imageUrl);
+// }
 
 function App() {
   const [showMenu, setShowMenu] = useState(false);
