@@ -1,0 +1,49 @@
+.orders-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .order-list {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .order-item p {
+    margin: 0;
+  }
+  
+  .order-item .order-product {
+    text-align: left;
+  }
+  
+  .order-item .order-price {
+    text-align: right;
+  }
+  
+  .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+  
+  .order-total .total-label {
+    font-weight: bold;
+  }
+  
+  .order-total .total-price {
+    font-weight: bold;
+  }

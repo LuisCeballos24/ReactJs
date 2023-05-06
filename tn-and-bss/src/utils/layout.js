@@ -25,8 +25,8 @@ function Layout(props) {
               <FaStore size={20} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="/store/my-products">Mis productos</Dropdown.Item>
-              <Dropdown.Item href="/store/orders">Pedidos</Dropdown.Item>
+              <Dropdown.Item href="/my-product-catalog">Mis productos</Dropdown.Item>
+              <Dropdown.Item href="/orders">Pedidos</Dropdown.Item>
               <Dropdown.Item href="/store/stats">Estadísticas</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

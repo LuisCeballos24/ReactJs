@@ -5,6 +5,7 @@ import MyProductCatalog from './pages/MyProductCatalog';
 import AddProductForm from './pages/AddProductForm';
 import SignIn from './pages/Login';
 import SignUp from './pages/SingUp';
+import Orders from './pages/Orders';
 
 function Main() {
   return (
@@ -14,6 +15,7 @@ function Main() {
       <Route path="/add-product" component={AddProductForm} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/orders" component={Orders} />
     </Switch>
   );
 }

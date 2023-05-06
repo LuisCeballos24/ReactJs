@@ -1,7 +1,7 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { db, auth } from '../utils/firebase';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import '../styles/ProductCatalog.css';
 
@@ -17,12 +17,47 @@ function ProductItem(props) {
 
   // Define una variable booleana para determinar si el usuario actual es el propietario del producto
   const isOwner = isUserOwner(props.ownerId);
+  async function handleAddToCartClick() {
+    try {
+      const existingOrderQuerySnapshot = await db
+        .collection("ordenes")
+        .where("productId", "==", props.id)
+        .where("buyerId", "==", auth.currentUser.uid)
+        .get();
+      const existingOrderDoc = existingOrderQuerySnapshot.docs[0];
+      const existingOrder = existingOrderDoc && existingOrderDoc.data();
+  
+      if (existingOrder) {
+        await existingOrderDoc.ref.update({
+          quantity: existingOrder.quantity + 1
+        });
+        console.log(`Producto con id ${props.id} actualizado en el carrito correctamente`);
+      } else {
+        const orderData = {
+          productId: props.id,
+          name: props.name,
+          price: props.price,
+          quantity: 1,
+          ownerId: props.ownerId,
+          buyerId: auth.currentUser.uid,
+          createdAt: new Date()
+        };
+        await db.collection("ordenes").add(orderData);
+        console.log(`Producto con id ${props.id} agregado al carrito correctamente`);
+      }
+    } catch (error) {
+      console.error(`Error al agregar producto con id ${props.id} al carrito: ${error.message}`);
+    }
+  }
 
   return (
     <div className="product-item" key={props.key}>
       <h2>{props.name}</h2>
       <p>{props.description}</p>
       <p>Precio: ${props.price}</p>
+      <button onClick={handleAddToCartClick}>
+        <FontAwesomeIcon icon={faShoppingCart} />
+      </button>
       {isOwner && (
         <button onClick={handleDeleteClick}>
           <FontAwesomeIcon icon={faTrash} />
@@ -68,13 +103,13 @@ function ProductCatalog() {
       <div className="product-list-container">
         {products.map((product) => (
           <ProductItem
-            key={product.uid}
-            id={product.id}
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            ownerId={product.uid}
-            onDelete={handleProductDelete}
+          key={product.uid}
+          id={product.id} // cambiar "productId" por "id"
+          name={product.name}
+          description={product.description}
+          price={product.price}
+          ownerId={product.uid}
+          onDelete={handleProductDelete}
           />
         ))}
       </div>

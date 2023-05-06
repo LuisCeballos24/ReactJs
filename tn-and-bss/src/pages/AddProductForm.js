@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { db, auth, storage } from '../utils/firebase';
 import '../styles/AddProductForm.css';
@@ -17,6 +17,7 @@ function AddProductForm() {
     try {
       // Agregar el producto a Firestore
       const productRef = await db.collection('productos').add({
+        id: Date.now(), // Asignar un ID único al producto
         name,
         description,
         price,
@@ -78,13 +79,12 @@ function AddProductForm() {
       </label>
       <div className="image-preview">
         {imageUrls.map((url, index) => (
-          <img key={index} src={url} alt={`Imagen ${index
-}`} />
-))}
-</div>
-<button type="submit">Agregar producto</button>
-</form>
-);
+          <img key={index} src={url} alt={`Imagen ${index}`} />
+        ))}
+      </div>
+      <button type="submit">Agregar producto</button>
+    </form>
+  );
 }
 
 export default AddProductForm;
