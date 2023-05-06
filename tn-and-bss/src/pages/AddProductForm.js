@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { db, auth, storage } from '../utils/firebase';
 import '../styles/AddProductForm.css';
@@ -7,47 +7,55 @@ function AddProductForm() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
-  const [images, setImages] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
 
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Subir las imágenes seleccionadas a Firebase Storage
-    const imageUrls = [];
-    for (const image of images) {
-      const imageRef = storage.ref(`images/${image.name}`);
-      await imageRef.put(image);
-      const imageUrl = await imageRef.getDownloadURL();
-      imageUrls.push(imageUrl);
-    }
+    try {
+      // Agregar el producto a Firestore
+      const productRef = await db.collection('productos').add({
+        name,
+        description,
+        price,
+        uid: user.uid, // Agregar el UID del usuario autenticado como propietario del producto
+      });
 
-    // Agregar un nuevo producto a Firestore
-    db.collection('productos').add({
-      name,
-      description,
-      price,
-      imageUrls,
-      uid: user.uid, // Agregar el UID del usuario autenticado como propietario del producto
-    }).then(() => {
-      console.log('Producto agregado');
+      // Subir las imágenes al Storage
+      const urls = await Promise.all(
+        imageUrls.map(async (imageUrl) => {
+          const imageFile = await fetch(imageUrl).then((res) => res.blob());
+          const uploadTask = storage.ref(`images/${productRef.id}/${imageFile.name}`).put(imageFile);
+          const snapshot = await uploadTask;
+          const url = await snapshot.ref.getDownloadURL();
+          return url;
+        })
+      );
+
+      // Actualizar el producto con las URLs de las imágenes
+      await productRef.update({ images: urls });
+
+      // Reiniciar el formulario
       setName('');
       setDescription('');
       setPrice('');
-      setImages([]);
-    }).catch((error) => {
+      setImageUrls([]);
+      alert('Producto agregado');
+    } catch (error) {
       console.error('Error al agregar el producto:', error);
-    });
+    }
   };
 
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files);
-    setImages(selectedImages);
+    const files = Array.from(e.target.files);
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setImageUrls(urls);
   };
 
-  if (!user) {
-    return <p>Debe iniciar sesión para agregar productos.</p>;
+  if (loading) {
+    return <p>Cargando...</p>;
   }
 
   return (
@@ -66,14 +74,17 @@ function AddProductForm() {
       </label>
       <label>
         Imágenes:
-        <input type="file" name="images" multiple onChange={handleImageChange} />
+        <input type="file" name="images" accept="image/*" multiple onChange={handleImageChange} />
       </label>
-      {images.map((image, index) => (
-        <img key={index} src={URL.createObjectURL(image)} alt={`Imagen ${index + 1}`} />
-      ))}
-      <button type="submit">Agregar producto</button>
-    </form>
-  );
+      <div className="image-preview">
+        {imageUrls.map((url, index) => (
+          <img key={index} src={url} alt={`Imagen ${index
+}`} />
+))}
+</div>
+<button type="submit">Agregar producto</button>
+</form>
+);
 }
 
 export default AddProductForm;

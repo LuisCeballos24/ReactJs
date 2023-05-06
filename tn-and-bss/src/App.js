@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Layout>
         <Switch>
-          <Route path="/" component={Main} />
+          <Route path="/" component={Main} />it
         </Switch>
       </Layout>
     </Router>
