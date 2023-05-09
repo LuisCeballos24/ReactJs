@@ -1,35 +1,57 @@
 import React from "react";
 import { useState } from "react";
-import Card_car from "./Car";
 import { RiCloseLine } from "react-icons/ri";
 import { BsPlusSquareFill } from "react-icons/bs";
-let personas = [];
-personas.push({ nombre: "Juan", edad: 25 });
-personas.push({ nombre: "María", edad: 30 });
-personas.push({ nombre: "Pedro", edad: 20 });
-
-const handleClick = (name) => {
-  console.log("------- Agregado -----");
-  const id = event.target.id;
-  console.log(id);
-  return (
-    <div className="border-gray-50">
-      sds
-      <Card_car />
-    </div>
-  );
-};
-
-function mostrarPersonas() {
-  for (let i = 0; i < this.personas.length; i++) {
-    console.log(`${this.personas[i].nombre} - ${this.personas[i].edad} años`);
-  }
-}
+import { db2 } from "../../utils/firebase.js";
 
 const Card = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
-  const { name, img, description, price, inventory } = props;
+  const { name, img, description, price, productId, inventory } = props;
+
+  const handleClick = async () => {
+    console.log("------- Agregado -----");
+
+    /*    const userId = auth.currentUser.uid; */
+
+    try {
+      // Verificar si el producto ya está en el carrito
+      const querySnapshot = await db2
+        .collection("Carrito")
+        /*  .where("id_user", "==", userId) */
+        .where("id", "==", productId)
+        .get();
+
+      if (!querySnapshot.empty) {
+        // Si el producto ya está en el carrito, actualizar la cantidad
+        const docId = querySnapshot.docs[0].id;
+        const docRef = db2.collection("Carrito").doc(docId);
+        const docSnapshot = await docRef.get();
+        await docRef.update({
+          cantidad: docSnapshot.data().cantidad + 1,
+        });
+        console.log(`Producto con id ${productId} actualizado en el carrito`);
+      } else {
+        // Si el producto no está en el carrito, agregarlo con cantidad 1
+        const productData = {
+          cantidad: 1,
+          descripción: description,
+          id: productId,
+          id_user: 1,
+          nombre: name,
+          precio: price,
+          time: "",
+        };
+        const docRef = await db2.collection("Carrito").add(productData);
+        console.log(`Producto con id ${productId} agregado al carrito`);
+      }
+    } catch (error) {
+      console.error(
+        `Error al agregar el producto al carrito: ${error.message}`
+      );
+    }
+    console.log(price);
+  };
   return (
     <div
       id="Product"
@@ -45,7 +67,6 @@ const Card = (props) => {
       <button //className="flex items-center gap-4 text-gray-300 bg-[#1F1D2B] py-2 px-4 rounded-lg"
         className="p-2 rounded-lg border border-green-500"
         onClick={handleClick}
-        id={name}
       >
         <BsPlusSquareFill className="text-green-500" />
       </button>

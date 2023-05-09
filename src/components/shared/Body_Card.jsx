@@ -66,10 +66,11 @@ function ProductCatalog() {
     <div className="grid grid-cols-1 gap-16 p-8 md:grid-cols-2 lg:grid-cols-3">
       {products.map((product) => (
         <Card
-          name={product.uid}
+          name={product.name}
           img="dish.png"
           description={product.description}
           price={product.price}
+          productId={product.id}
           inventory="20"
         />
       ))}
