@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaStore } from 'react-icons/fa';
 import { Dropdown } from 'react-bootstrap';
 import '../styles/layout.css';
 
 function Layout(props) {
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [storeDropdownOpen, setStoreDropdownOpen] = useState(false);
+
+  const handleUserDropdown = () => {
+    setUserDropdownOpen(prevState => !prevState);
+    setStoreDropdownOpen(false);
+  };
+  
+  const handleStoreDropdown = () => {
+    setStoreDropdownOpen(prevState => !prevState);
+    setUserDropdownOpen(false);
+  };
+
+
   return (
     <div className="layout">
       <nav>
         <div className="icon-container">
-          <Dropdown>
+          <Dropdown show={userDropdownOpen} onToggle={handleUserDropdown}>
             <Dropdown.Toggle id="dropdown-basic">
               <FaUser size={20} />
             </Dropdown.Toggle>
@@ -20,7 +34,7 @@ function Layout(props) {
               <Dropdown.Item href="/user/logout">Cerrar sesión</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown>
+          <Dropdown show={storeDropdownOpen} onToggle={handleStoreDropdown}>
             <Dropdown.Toggle id="dropdown-basic">
               <FaStore size={20} />
             </Dropdown.Toggle>
