@@ -55,7 +55,7 @@ const Card = (props) => {
   return (
     <div
       id="Product"
-      className="bg-[#1F1D2B] p-8 rounded-xl flex flex-col items-center gap-2 text-center text-gray-300"
+      className="flex flex-col gap-2 items-center p-8 text-center text-gray-300 bg-white rounded-xl   border  border-[#E89440]"
     >
       <img
         src={img}

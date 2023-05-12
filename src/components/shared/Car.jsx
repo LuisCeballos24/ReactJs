@@ -75,7 +75,7 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-[#1F1D2B] w-full lg:w-96 lg:right-0 h-full transition-all z-50 ${
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 h-full transition-all z-50 border border-[#E89440] ${
         showOrder ? "right-0" : "-right-full"
       }`}
     >
@@ -83,27 +83,27 @@ const Card_car = (props) => {
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
         <RiCloseLine
           onClick={() => setShowOrder(false)}
-          className="lg:hidden absolute left-4 top-4 p-3 box-content text-gray-300 bg-[#262837] rounded-full text-xl"
+          className="box-content absolute top-4 left-4 p-3 text-xl text-gray-900 bg-white rounded-full lg:hidden"
         />
-        <h1 className="my-4 text-2xl">Orders #151416</h1>
+        <h1 className="my-4 text-2xl text-gray-900">Orders </h1>
         {/* Pills */}
         <div className="flex flex-wrap gap-4 items-center mb-8">
-          <button className="bg-[#ec7c6a] text-white py-2 px-4 rounded-xl">
+          <button className="bg-[#E89440] text-white py-2 px-4 rounded-xl">
             Dine In
           </button>
-          <button className="text-[#ec7c6a] py-2 px-4 rounded-xl border border-gray-500">
+          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
             To Go
           </button>
-          <button className="text-[#ec7c6a] py-2 px-4 rounded-xl border border-gray-500">
+          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
             Delivery
           </button>
         </div>
         {/* Car */}
         <div>
           <div className="grid grid-cols-6 p-4 mb-4">
-            <h5 className="col-span-4">Item</h5>
-            <h5>Qty</h5>
-            <h5>Price</h5>
+            <h5 className="col-span-4 text-gray-900">Item</h5>
+            <h5 className="text-gray-900">Qty</h5>
+            <h5 className="text-gray-900">Price</h5>
           </div>
 
           {/* Products */}
@@ -112,7 +112,7 @@ const Card_car = (props) => {
               const totalPrice = order.precio * order.cantidad;
               sum += totalPrice; // Acumula el precio total
               return (
-                <div className="bg-[#262837] p-4 rounded-xl mb-4">
+                <div className="bg-white p-4 rounded-xl mb-4 border border-[#E89440] ">
                   <div className="grid grid-cols-6 mb-4">
                     {/* Product description */}
                     <div className="flex col-span-4 gap-3 items-center">
@@ -121,19 +121,24 @@ const Card_car = (props) => {
                         className="object-cover w-10 h-10"
                       />
                       <div>
-                        <h5 className="text-sm"> {order.nombre}</h5>
-                        <p className="text-xs text-gray-500">
+                        <h5 className="text-sm text-gray-900">
+                          {" "}
+                          {order.nombre}
+                        </h5>
+                        <p className="text-xs text-gray-900">
                           $ {order.precio}
                         </p>
                       </div>
                     </div>
                     {/* Qty */}
                     <div>
-                      <span>{order.cantidad}</span>
+                      <span className="text-gray-900">{order.cantidad}</span>
                     </div>
                     {/* Price */}
                     <div>
-                      <span>$ {order.precio * order.cantidad}</span>
+                      <span className="text-gray-900">
+                        $ {order.precio * order.cantidad}
+                      </span>
                     </div>
                   </div>
                   {/* Note */}
@@ -141,26 +146,27 @@ const Card_car = (props) => {
                     <form className="col-span-4">
                       <input
                         type="text"
-                        className="bg-[#1F1D2B] py-2 px-2 rounded-lg outline-none"
-                        placeholder="Order note..."
+                        className="bg-white py-2 px-1 rounded-lg outline-none  border border-[#4da7a5]"
+                        placeholder="Order note."
                       />
                     </form>
                     <div className="flex space-x-1">
                       <button
-                        className="p-2 rounded-lg border border-red-900 hover:border-red-500"
+                        className="p-2 rounded-lg border hover:border-red-500"
                         onClick={() => handleDelete(order.id)}
                       >
                         <RiDeleteBin6Line className="text-red-500" />
                       </button>
                       <button
-                        className="p-2 rounded-lg border border-red-900 hover:border-red-500"
+                        className="p-2 rounded-lg hover:border-red-500"
                         onClick={() => handleMinus(order.id)}
+
                         // onClick={handleMinus}
                       >
                         <FaMinus className="text-red-500" />
                       </button>
                       <button
-                        className="p-2 rounded-lg border border-green-900 hover:border-green-500"
+                        className="p-2 rounded-lg hover:border-green-500"
                         onClick={() => handlePlus(order.id)}
                         // onClick={handlePlus}
                       >
@@ -174,17 +180,19 @@ const Card_car = (props) => {
           </div>
         </div>
         {/* Submit payment */}
-        <div className="bg-[#262837] absolute w-full bottom-0 left-0 p-4">
+        <div className="absolute bottom-0 left-0 p-4 w-full bg-white">
           <div className="flex justify-between items-center mb-4">
             {/* <span className="text-gray-400">Discount</span> */}
             {/* <span>$0</span> */}
           </div>
           <div className="flex justify-between items-center mb-6">
-            <span className="text-gray-400">Subtotal</span>
-            <span id="precio_total">$ {sum} </span>
+            <span className="text-gray-900">Subtotal</span>
+            <span id="precio_total" className="text-gray-900">
+              $ {sum}{" "}
+            </span>
           </div>
           <div>
-            <button className="bg-[#ec7c6a] w-full py-2 px-4 rounded-lg">
+            <button className="bg-[#E89440] w-full py-2 px-4 rounded-lg">
               Continue to payment
             </button>
           </div>

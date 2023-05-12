@@ -5,27 +5,27 @@ const Header = () => {
   return (
     <header>
       {/* Title and search */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+      <div className="flex flex-col gap-4 mb-6 md:flex-row md:justify-between md:items-center">
         <div>
-          <h1 className="text-2xl text-gray-300">Jeager Resto</h1>
+          <h1 className="text-2xl text-gray-900">Jeager Resto</h1>
           <p className="text-gray-500">07 octubre 2022</p>
         </div>
         <form>
-          <div className="w-full relative">
-            <RiSearch2Line className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" />
+          <div className="relative w-full">
+            <RiSearch2Line className="absolute left-3 top-1/2 text-gray-900 -translate-y-1/2" />
             <input
               type="text"
-              className="bg-[#1F1D2B] w-full py-2 pl-10 pr-4 rounded-lg text-gray-300 outline-none"
+              className="py-2 pr-4 pl-10 w-full text-gray-900 bg-white rounded-lg outline-none border  border-[#E89440]"
               placeholder="Search"
             />
           </div>
         </form>
       </div>
       {/* Tabs */}
-      <nav className="text-gray-300 flex items-center justify-between md:justify-start md:gap-8 border-b mb-6">
+      <nav className="flex justify-between items-center mb-6 text-gray-900 border-b md:gap-8 md:justify-start">
         <a
           href="#"
-          className="relative py-2 pr-4 before:w-1/2 before:h-[2px] before:absolute before:bg-[#ec7c6a] before:left-0 before:rounded-full before:-bottom-[1px] text-[#ec7c6a]"
+          className="relative py-2 pr-4 before:w-1/2 before:h-[2px] before:absolute before:bg-[#E89440] before:left-0 before:rounded-full before:-bottom-[1px] text-[#E89440]"
         >
           Hot dishes
         </a>
