@@ -4,14 +4,12 @@ import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2 } from "../../utils/firebase.js";
-import { useState, useEffect } from "react";
-
-/* import { Card } from "./Card"; */
-
-// const carritoRef = db2.database().ref("Carrito");
 
 const handleDelete = async (id) => {
-  const querySnapshot = await db2.collection("Carrito").get();
+  const querySnapshot = await db2
+    .collection("Carrito")
+    .where("id", "==", id)
+    .get();
 
   if (!querySnapshot.empty) {
     const docId = querySnapshot.docs[0].id;
@@ -23,7 +21,10 @@ const handleDelete = async (id) => {
 };
 
 const handleMinus = async (id) => {
-  const querySnapshot = await db2.collection("Carrito").get();
+  const querySnapshot = await db2
+    .collection("Carrito")
+    .where("id", "==", id)
+    .get();
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
@@ -40,7 +41,10 @@ const handleMinus = async (id) => {
 };
 
 const handlePlus = async (id) => {
-  const querySnapshot = await db2.collection("Carrito").get();
+  const querySnapshot = await db2
+    .collection("Carrito")
+    .where("id", "==", id)
+    .get();
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
@@ -57,13 +61,10 @@ const handlePlus = async (id) => {
 };
 const Card_car = (props) => {
   let sum = 0;
-  /*  let listaPersonas = new Personas(personas); */
+
   const { showOrder, setShowOrder } = props;
 
-  // const currentUser = auth.currentUser;
-
   const [orders, loading, error] = useCollectionData(db2.collection("Carrito"));
-  const [totalPrice, setTotalPrice] = useState(0); // Agregamos el estado del precio total
 
   if (loading) {
     return <p>Cargando órdenes...</p>;
@@ -75,9 +76,8 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 h-full transition-all z-50 border border-[#E89440] ${
-        showOrder ? "right-0" : "-right-full"
-      }`}
+      className={`lg:col-span-2 fixed top-0 bg-white  lg:w-96  lg:right-0   lg:h-[700px] transition-all z-50  my-56 m-4 rounded-lg border border-[#E89440] ${showOrder ? "right-0" : "-right-full"
+        }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -107,7 +107,7 @@ const Card_car = (props) => {
           </div>
 
           {/* Products */}
-          <div className="overflow-y-scroll h-[400px] md:h-[700px] lg:h-[540px]">
+          <div className="overflow-y-scroll h-[400px] md:h-[700px] lg:h-[340px]">
             {orders.map((order) => {
               const totalPrice = order.precio * order.cantidad;
               sum += totalPrice; // Acumula el precio total
@@ -161,14 +161,14 @@ const Card_car = (props) => {
                         className="p-2 rounded-lg hover:border-red-500"
                         onClick={() => handleMinus(order.id)}
 
-                        // onClick={handleMinus}
+                      // onClick={handleMinus}
                       >
                         <FaMinus className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-green-500"
                         onClick={() => handlePlus(order.id)}
-                        // onClick={handlePlus}
+                      // onClick={handlePlus}
                       >
                         <HiPlus className="text-green-500" />
                       </button>
@@ -180,22 +180,20 @@ const Card_car = (props) => {
           </div>
         </div>
         {/* Submit payment */}
-        <div className="absolute bottom-0 left-0 p-4 w-full bg-white">
+        <div className="absolute bottom-0 left-0 p-4 w-full bg-white rounded-t-lg">
           <div className="flex justify-between items-center mb-4">
             {/* <span className="text-gray-400">Discount</span> */}
             {/* <span>$0</span> */}
           </div>
           <div className="flex justify-between items-center mb-6">
             <span className="text-gray-900">Subtotal</span>
-            <span id="precio_total" className="text-gray-900">
-              $ {sum}{" "}
+            <span id="precio_total" className="font-bold text-gray-900">
+              $ {sum.toFixed(2)}
             </span>
           </div>
-          <div>
-            <button className="bg-[#E89440] w-full py-2 px-4 rounded-lg">
-              Continue to payment
-            </button>
-          </div>
+          <button className="bg-[#E89440] text-white w-full py-2 px-4 rounded-lg">
+            Continue to payment
+          </button>
         </div>
       </div>
     </div>

@@ -8,11 +8,13 @@ import {
   RiArrowDownSLine,
 } from "react-icons/ri";
 // Components
-import Sidebar from "./components/shared/Sidebar";
-import Car from "./components/shared/Car";
-import Header from "./components/shared/Header";
-import Card from "./components/shared/Card";
-import ProductCatalog from "./components/shared/Body_Card";
+import Sidebar from "./pages/shared/Sidebar";
+import Car from "./pages/shared/Car";
+import Car_up from "./pages/shared/Car_up";
+import Header from "./pages/shared/Header";
+import Header_Lg from "./pages/shared/Header_LG";
+import Card from "./pages/shared/Card";
+import ProductCatalog from "./pages/shared/Body_Card";
 function App() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
@@ -30,9 +32,11 @@ function App() {
   return (
     <div className="w-full min-h-screen bg-white">
       <Sidebar showMenu={showMenu} />
+      <Car_up showOrder={showOrder} setShowOrder={setShowOrder} />
+
       <Car showOrder={showOrder} setShowOrder={setShowOrder} />
       {/* Menu movil */}
-      <nav className="bg-[#285e7d]  lg:hidden fixed w-full bottom-0 left-0 text-3xl text-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
+      <nav className="bg-[#285e7d]  lg:hidden fixed w-full bottom-0 left-0 text-3xl text-bg-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
         <button className="p-2">
           <RiUser3Line />
         </button>
@@ -46,9 +50,12 @@ function App() {
           {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
         </button>
       </nav>
+
       <main className="pb-20 lg:pr-96 lg:pl-32">
         <div className="p-4 md:p-8">
           {/* Header */}
+          <Header_Lg />
+
           <Header />
           {/* Title content */}
           <div className="flex justify-between items-center mb-16">
@@ -64,65 +71,7 @@ function App() {
             price="2.29"
             inventory="20"
           />
-
-          {/* <div className="grid grid-cols-1 gap-16 p-8 md:grid-cols-2 lg:grid-cols-3"> */}
           <ProductCatalog />
-          {/* Card */}
-          {/* <Card              img="comida.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            /> 
-            {/* Card             <Card
-              img="dish.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="comida.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="dish.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="comida.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="dish.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="comida.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="dish.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card             <Card
-              img="comida.png"
-              description="Speacy seasoned seafood nodles"
-              price="2.29"
-              inventory="20"
-            />
-            {/* Card */}
-          {/* </div> */}
         </div>
       </main>
     </div>

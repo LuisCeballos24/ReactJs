@@ -61,8 +61,8 @@ const Card = (props) => {
         src={img}
         className="object-cover -mt-20 w-40 h-40 rounded-full shadow-2xl"
       />
-      <p className="text-xl">{name}</p>
-      <span className="text-gray-400">${price}</span>
+      <p className="text-xl text-gray-900">{name}</p>
+      <span className="text-gray-600">${price}</span>
       <p className="text-gray-600">{inventory} Bowls available</p>
       <button //className="flex items-center gap-4 text-gray-300 bg-[#1F1D2B] py-2 px-4 rounded-lg"
         className="p-2 rounded-lg border border-green-500"
