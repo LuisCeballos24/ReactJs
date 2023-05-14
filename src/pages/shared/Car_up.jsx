@@ -1,5 +1,9 @@
 import React from "react";
-import { RiCloseLine, RiDeleteBin6Line } from "react-icons/ri";
+import {
+  RiCloseLine,
+  RiDeleteBin6Line,
+  RiArrowDownSLine,
+} from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -80,21 +84,40 @@ const Card_up = (props) => {
         }`}
     >
       {/* Orders */}
-      <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
-        <RiCloseLine
-          onClick={() => setShowOrder(false)}
-          className="box-content absolute top-4 left-4 p-3 text-xl text-gray-900 bg-white rounded-full lg:hidden"
-        />
-        <h1 className="my-4 text-2xl text-gray-900">Orders </h1>
+      <div className="relative p-4 pt-12 h-full text-gray-300 lg:pt-8">
+        <div className="flex justify-end items-center">
+          <div className="flex gap-2 items-center">
+            <img
+              src="../../../public/dish.png"
+              alt="profile"
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <h1 className="text-lg font-medium text-gray-900">John Doe</h1>
+              <p className="mb-1 text-sm text-gray-500">Status: Active</p>
+            </div>
+          </div>
+          <button className="p-2 bg-gray-100 rounded-full">
+            {/* <AiOutlineDown /> */}
+          </button>
+          <RiCloseLine
+            onClick={() => setShowOrder(false)}
+            className="box-content p-3 text-xl text-gray-900 bg-white rounded-full lg:hidden"
+          />
+        </div>
+
         {/* Pills */}
-        <div className="flex flex-wrap gap-4 items-center mb-8">
-          <button className="bg-[#E89440] text-white py-2 px-4 rounded-xl">
+        <div className="flex flex-wrap gap-2 justify-end items-center py-7 mb-4">
+          <button className="bg-[#E89440] text-white py-2 px-4 rounded-md text-base">
             Dine In
           </button>
-          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
+          <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
             To Go
           </button>
-          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
+          <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
+            To
+          </button>
+          <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
             Delivery
           </button>
         </div>
