@@ -1,14 +1,27 @@
-import { Switch, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
 import HOME_PAGE from "./pages/shared/Home";
 import Home_page_user from "./pages/shared/Home_page_user";
 
 function App() {
-  return (
-    <Switch>
-      <Route path="/" component={HOME_PAGE} />
-      <Route path="/user" component={Home_page_user} />
-    </Switch>
-  );
+  const [pathname, setPathname] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPathname(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+    };
+  }, []);
+
+  if (pathname === "/user") {
+    return <Home_page_user />;
+  } else {
+    return <HOME_PAGE />;
+  }
 }
 
 export default App;

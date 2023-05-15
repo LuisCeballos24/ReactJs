@@ -32,7 +32,7 @@ const ProductSlider = () => {
                 const { image, name, price, oldPrice } = product;
                 return (
                   <div
-                    className="w-full text-left max-w-[290px] h-[380px]"
+                    className="w-full text-left bg-gray-200 max-w-[290px] h-[380px]"
                     key={index}
                   >
                     <div className="flex relative justify-center items-center w-full h-full border transition rounded-[18px] max-w-[285px] max-h-[292px] mb-[15px] hover:border-accent">
