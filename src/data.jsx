@@ -38,16 +38,12 @@ export const navigation = [
     href: "home",
   },
   {
-    name: "Acerca",
+    name: "Catalogo",
     href: "about",
   },
   {
     name: "Novedades",
     href: "features",
-  },
-  {
-    name: "Contactos",
-    href: "contact",
   },
 ];
 

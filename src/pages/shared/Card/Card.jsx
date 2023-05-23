@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCloseLine, RiExchangeBoxLine } from "react-icons/ri";
+
 import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
 import { db2 } from "../../../utils/firebase.js";
 
@@ -11,7 +12,9 @@ const Card = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const images = ["chair.png", "dish.png", "../../media/img/hero-bg.png"];
-
+  const [mostrarOpciones, setMostrarOpciones] = useState(false);
+  const [opcionAbierta, setOpcionAbierta] = useState(null);
+  const opciones = ["Opción 1", "Opción 2", "Opción 3"];
   const handleClick = async () => {
     console.log("------- Agregado -----");
 
@@ -60,6 +63,35 @@ const Card = (props) => {
     setCurrentImageIndex(index);
     console.log(index);
   };
+
+  // const handleClickChange = (index) => {
+  //   const opciones = document.getElementById("opciones");
+  //   console.log("Entro-4564");
+  //   opciones.classList.toggle("hidden");
+  // };
+
+  const handleClickChange = () => {
+    setMostrarOpciones(!mostrarOpciones);
+  };
+
+  const handleAbrirOpcion = (index) => {
+    if (opcionAbierta === index) {
+      setOpcionAbierta(null); // Si la opción ya está abierta, se cierra
+    } else {
+      setOpcionAbierta(index); // Si es una nueva opción, se abre
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    const boton = document.getElementById("boton");
+    const opciones = document.getElementById("opciones");
+    console.log("Entro-4564");
+
+    boton.addEventListener("click", () => {
+      console.log("Contaer");
+      opciones.classList.toggle("hidden");
+    });
+  });
+
   return (
     <div>
       <div
@@ -79,13 +111,37 @@ const Card = (props) => {
             {images.map((image, index) => (
               <li
                 key={index}
-                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-                  }`}
+                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${
+                  index === currentImageIndex ? "bg-gray-600" : ""
+                }`}
                 onClick={() => handleImageClick(index)}
               ></li>
             ))}
           </ul>
           <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
+            {/* Boton de mostrar opciones*/}
+            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
+              <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
+            </button>
+            <div
+              id="opciones"
+              className={`${
+                mostrarOpciones ? "" : "hidden"
+              } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
+            >
+              {opciones.map((opcion, index) => (
+                <div
+                  key={index}
+                  className={`p-2 hover:border-gray-900 ${
+                    opcionAbierta === index ? " bg-[#286f6c]  text-white" : ""
+                  }`}
+                  onClick={() => handleAbrirOpcion(index)}
+                >
+                  {opcion}
+                </div>
+              ))}
+            </div>
+            {/*  */}
             <button //className="flex items-center gap-4 text-gray-300 bg-[#1F1D2B] py-2 px-4 rounded-lg"
               className="flex p-2 rounded-lg"
               onClick={handleClick}

@@ -24,7 +24,7 @@ const HOME_PAGE = () => {
   return (
     <div className="mx-auto w-full bg-white max-w-[1440px]">
       <Header />
-
+      <Products />
       <Hero />
       {/**/}
       {/* {!showLogin && <button onClick={handleShowLogin}>Mostrar Login</button>} */}
@@ -39,7 +39,7 @@ const HOME_PAGE = () => {
       <Features />
       <NewItems />
       <FeaturesSecond />
-      <Products />
+
       <Testimonial />
       <Newsletter />
       <Footer />

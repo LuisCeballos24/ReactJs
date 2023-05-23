@@ -1,9 +1,27 @@
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { HiPlus } from "react-icons/hi";
 import React, { useState } from "react";
+import { auth, db } from "../../../utils/firebase";
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      setEmail("");
+      setPassword("");
+      setError(null);
+      console.log("Ingresaste");
+    } catch (error) {
+      console.log("ERROR");
+      setError(error.message);
+    }
+  };
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -14,19 +32,20 @@ const Modal = () => {
       <HiPlus className="text-xl text-primary" onClick={toggleModal} />
 
       {isOpen && (
-        <div className="flex fixed inset-0 z-50 flex-col justify-center items-center min-h-screen">
+        <div className="flex fixed inset-0 z-50 flex-col justify-center items-center min-h-screen top-[-480px]">
           {/* Encabezado */}
           {/* <header className="py-4 text-center text-white bg-gray-800"> */}
           {/*   <h1 className="text-2xl font-bold">Iniciar sesión</h1> */}
           {/* </header> */}
           {/**/}
           {/* Contenido principal */}
+
           <div className="flex flex-grow justify-center items-center">
             {/* Campos de usuario y contraseña */}
             <div className="py-8 px-6 w-full max-w-md bg-white rounded-lg shadow-lg">
               <div className="m-8 ml-16 w-1/2 lg:block">
                 <button
-                  className="absolute py-2 px-4 m-4 font-bold text-white bg-red-600 rounded hover:bg-red-700 top-[295px] left-[420px]"
+                  className="absolute py-2 px-4 m-4 font-bold text-white bg-red-600 rounded hover:bg-red-700 top-[510px] left-[420px]"
                   onClick={toggleModal}
                 >
                   Cerrar
@@ -41,14 +60,16 @@ const Modal = () => {
                 Ingresa tus credenciales
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label htmlFor="username" className="block mb-2 text-lg">
                     Usuario
                   </label>
                   <input
-                    type="text"
-                    id="username"
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
                     className="py-2 px-4 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
                   />
                 </div>
@@ -60,6 +81,8 @@ const Modal = () => {
                   <input
                     type="password"
                     id="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
                     className="py-2 px-4 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:outline-none"
                   />
                 </div>
@@ -107,14 +130,6 @@ const Modal = () => {
               </form>
               {/* Imagen animada */}
             </div>
-            {/* <div className="m-8 ml-16 w-1/2 lg:block"> */}
-            {/*   <img */}
-            {/*     src="../../../../public/document.png" */}
-            {/*     alt="Imagen animada" */}
-            {/*     className="transform translate-x-[50px] h-[700px] w-[700px]" */}
-            {/*   /> */}
-            {/* </div> */}
-            {/* Pie de página */}
           </div>
         </div>
       )}
