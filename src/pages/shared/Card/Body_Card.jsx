@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db, auth } from "../../utils/firebase.js";
+import { db, auth } from "../../../utils/firebase.js";
 
 function isUserOwner(ownerId) {
   return auth.currentUser && ownerId === auth.currentUser.uid;

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
-import { db2 } from "../../utils/firebase.js";
+import { db2 } from "../../../utils/firebase.js";
 
 const Card = (props) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -79,9 +79,8 @@ const Card = (props) => {
             {images.map((image, index) => (
               <li
                 key={index}
-                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${
-                  index === currentImageIndex ? "bg-gray-600" : ""
-                }`}
+                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+                  }`}
                 onClick={() => handleImageClick(index)}
               ></li>
             ))}
@@ -96,10 +95,10 @@ const Card = (props) => {
           </div>
         </div>
       </div>
-      <div class="ml-4">
+      <div class="py-2 ml-4">
         <p className="text-xl font-semibold text-gray-900 lg:text-xl">{name}</p>
         <span className="text-gray-600">${price}</span>
-        <p className="text-gray-600">{inventory} Bowls available</p>
+        <p className="text-gray-600">{inventory} available</p>
       </div>
     </div>
   );

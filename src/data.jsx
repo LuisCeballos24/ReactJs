@@ -10,12 +10,12 @@ import {
 } from "react-icons/io";
 
 // import images
-import Features1Img from "./media/img/features-1.png";
-import Features2Img from "./media/img/features-2.png";
-import ChairImg from "./media/img/chair.png";
-import BedImg from "./media/img/bed.png";
-import CupboardImg from "./media/img/cupboard.png";
-import LightingImg from "./media/img/lighting.png";
+import Features1Img from "./media/img/commitment.png";
+import Features2Img from "./media/img/elearning.png";
+import ChairImg from "./media/img/subasta.png";
+import BedImg from "./media/img/intercambio.png";
+import CupboardImg from "./media/img/venta.png";
+import LightingImg from "./media/img/vacio.png";
 import Product1Img from "./media/img/products/product-1.png";
 import Product2Img from "./media/img/products/product-2.png";
 import Product3Img from "./media/img/products/product-3.png";
@@ -26,7 +26,7 @@ import Product7Img from "./media/img/products/product-7.png";
 import Product8Img from "./media/img/products/product-8.png";
 import Product9Img from "./media/img/products/product-9.png";
 import Product10Img from "./media/img/products/product-10.png";
-import TestimonialImg from "./media/img/testimonial.png";
+import TestimonialImg from "./media/img/coding.png";
 import Avatar1Img from "./media/img/avatar-1.png";
 import Avatar2Img from "./media/img/avatar-2.png";
 import Avatar3Img from "./media/img/avatar-3.png";
@@ -34,33 +34,33 @@ import Avatar4Img from "./media/img/avatar-4.png";
 
 export const navigation = [
   {
-    name: "home",
+    name: "HOME",
     href: "home",
   },
   {
-    name: "about",
+    name: "Acerca",
     href: "about",
   },
   {
-    name: "features",
+    name: "Novedades",
     href: "features",
   },
   {
-    name: "contact",
+    name: "Contactos",
     href: "contact",
   },
 ];
 
 export const hero = {
-  title: "Creative Home Simpify your Furniture",
+  title: "Vende , compra , intercambia , y subasta todo lo que tu deses",
   subtitle:
-    "Do i have consent to record this meeting gain locaion, root-and-branch, review, nor game plan who’s the goto",
-  buttonText: "Shop Now",
+    "Encontrarás una amplia variedad de productos y servicios para satisfacer tus necesidades",
+  buttonText: "Ver catalogo ",
 };
 
 export const stats = [
   {
-    value: "7",
+    value: "2",
     text: "Year Experience",
   },
   {
@@ -79,22 +79,22 @@ export const stats = [
 
 export const features = {
   image: <Features1Img />,
-  title: "We Create your home more aesthetic",
-  subtitle:
-    "Furniture power is a software as services for multipurpose business management system",
+  title:
+    "Hacemos de tu compra una experiencia satisfactoria y sin complicaciones.",
+  subtitle: " ",
   buttonText: "Show Now",
   items: [
     {
       icon: <IoIosCheckmarkCircle />,
-      title: "Valuation Services",
+      title: "Servicio de valoracion",
       subtitle:
-        "Sometimes features require a short description.  This can be detailed description",
+        "A veces las características requieren una breve descripción. Esta puede ser una descripción detallada",
     },
     {
       icon: <IoIosCheckmarkCircle />,
-      title: "Development of Furniture Models",
+      title: "Recomendaciones personalizadas",
       subtitle:
-        "Sometimes features require a short description.  This can be detailed description",
+        "Brindamos a los usuarios sugerencias y recomendaciones basadas en sus preferencias y comportamiento de compra",
     },
   ],
   feature2: {
@@ -106,8 +106,9 @@ export const features = {
 };
 
 export const newInStore = {
-  title: "New In Store Now",
-  subtitle: "Get the latest items immediately with promo prices",
+  title: "Nueva en tienda ahora",
+  subtitle:
+    "Obtenga los últimos artículos de inmediato con precios promocionales",
   link: "Check all",
   icon: <IoIosArrowRoundForward />,
   products: [
@@ -131,9 +132,8 @@ export const newInStore = {
 };
 
 export const products = {
-  title: "All Products",
-  subtitle:
-    "The products we provide only for you as our service are selected from the best products with number 1 quality in the world",
+  title: "Todos los productos",
+  subtitle: "Los productos que brindamos solo para sus preferencias ",
   pages: [
     {
       productList: [
@@ -287,19 +287,19 @@ export const products = {
 };
 
 export const testimonial = {
-  title: "What people are saying about us",
+  title: "Colaboradores del Proyecto",
   image: <TestimonialImg />,
   persons: [
     {
       avatar: <Avatar1Img />,
-      name: "Josh Smith",
+      name: "Guillermo Gordon",
       occupation: "Manager of The New York Times",
       message:
         "“They are have a perfect touch for make something so professional ,interest and useful for a lot of people .”",
     },
     {
       avatar: <Avatar2Img />,
-      name: "Brandi Johns",
+      name: "Astrid Balter",
       occupation: "Manager of The New York Times",
       message:
         "“They are have a perfect touch for make something so professional ,interest and useful for a lot of people .”",
@@ -315,10 +315,10 @@ export const testimonial = {
 };
 
 export const newsletter = {
-  title: "Get more discount Off your order",
-  subtitle: "Join our mailing list",
+  title: "Obten mas informacion sobre nosotros",
+  subtitle: "Únete a nuestra lista de correos",
   placeholder: "Your email address",
-  buttonText: "Shop Now",
+  buttonText: "Ver catalogo ",
 };
 
 export const footer = {
@@ -340,5 +340,5 @@ export const footer = {
       href: "#",
     },
   ],
-  copyright: "FurniShop 2022 - All Rights Reserved.",
+  copyright: "TN & BSS 2023 - All Rights Reserved.",
 };

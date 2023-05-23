@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaUser, FaStore } from 'react-icons/fa';
-import { Dropdown } from 'react-bootstrap';
-import '../styles/layout.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaUser, FaStore } from "react-icons/fa";
+import { Dropdown } from "react-bootstrap";
+import "../styles/layout.css";
 
 function Layout(props) {
   return (
@@ -25,7 +25,9 @@ function Layout(props) {
               <FaStore size={20} />
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href="/store/my-products">Mis productos</Dropdown.Item>
+              <Dropdown.Item href="/store/my-products">
+                Mis productos
+              </Dropdown.Item>
               <Dropdown.Item href="/store/orders">Pedidos</Dropdown.Item>
               <Dropdown.Item href="/store/stats">Estadísticas</Dropdown.Item>
             </Dropdown.Menu>

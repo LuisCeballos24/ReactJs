@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import HOME_PAGE from "./pages/shared/Home";
-import Home_page_user from "./pages/shared/Home_page_user";
+import HOME_PAGE from "./pages/shared/Landing/Home";
+import Home_page_user from "./pages/shared/Landing/Home_page_user";
 
 function App() {
   const [pathname, setPathname] = useState(window.location.pathname);

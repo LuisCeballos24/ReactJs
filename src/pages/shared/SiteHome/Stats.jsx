@@ -4,7 +4,7 @@ import { stats } from "../../../data";
 
 const Stats = () => {
   return (
-    <div className="p-12 bg-accent rounded-[20px]">
+    <div className="p-12 bg-[#285e7d] rounded-[20px]">
       <div className="flex flex-wrap gap-y-8">
         {stats.map((item, index) => {
           return (

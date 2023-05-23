@@ -1,10 +1,10 @@
 .productSlider .swiper-pagination-bullet {
-  background: #23262f;
+  background: #286f6c;
 }
 
 .productSlider .swiper-button-prev,
 .productSlider .swiper-button-next {
-  background: #23262f;
+  background: #286f6c;
   box-shadow: 0px 4px 10px rgba(15, 27, 51, 0.1);
   top: 97%;
   width: 50px;
@@ -42,7 +42,7 @@
 
 .testimonialSlider .swiper-button-prev,
 .testimonialSlider .swiper-button-next {
-  background: #23262f;
+  background: #286f6c;
   box-shadow: 0px 4px 10px rgba(15, 27, 51, 0.1);
   top: 85%;
   width: 50px;

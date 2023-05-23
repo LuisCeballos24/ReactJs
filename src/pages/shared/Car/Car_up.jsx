@@ -7,7 +7,7 @@ import {
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db2 } from "../../utils/firebase.js";
+import { db2 } from "../../../utils/firebase.js";
 
 const handleDelete = async (id) => {
   const querySnapshot = await db2

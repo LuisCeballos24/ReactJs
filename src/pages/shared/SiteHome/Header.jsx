@@ -25,7 +25,7 @@ const Header = () => {
       className={`${
         // if bg is true
         bg
-          ? "bg-primary py-4 lg:py-6"
+          ? "bg-[#285e7d] py-4 lg:py-6"
           : // if bg is false
           "bg-none"
         }

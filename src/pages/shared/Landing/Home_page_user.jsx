@@ -8,13 +8,15 @@ import {
   RiArrowDownSLine,
 } from "react-icons/ri";
 // Components
-import Sidebar from "./Sidebar";
-import Car from "./Car";
-import Car_up from "./Car_up";
-import Header from "./Header";
-import Header_Lg from "./Header_LG";
-import Card from "./Card";
-import ProductCatalog from "./Body_Card";
+import { FaGoogle, FaMicrosoft } from "react-icons/fa";
+
+import Sidebar from "../Sidebar/Sidebar";
+import Car from "../Car/Car";
+import Car_up from "../Car/Car_up";
+import Header from "../Header/Header";
+import Header_Lg from "../Header/Header_LG";
+import Card from "../Card/Card";
+import ProductCatalog from "../Card/Body_Card";
 function HomePage_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
@@ -56,7 +58,7 @@ function HomePage_user() {
           {/* Header */}
           <Header_Lg />
 
-          <Header />
+          {/* <Header /> */}
           {/* Title content */}
           <div className="flex justify-between items-center mb-16">
             <h2 className="text-xl text-gray-300">Choose Dishes</h2>
@@ -65,12 +67,6 @@ function HomePage_user() {
             </button>
           </div>
           {/* Content */}
-          <Card
-            img="dish.png"
-            description="Speacy seasoned seafood nodles"
-            price="2.29"
-            inventory="20"
-          />
           <ProductCatalog />
         </div>
       </main>

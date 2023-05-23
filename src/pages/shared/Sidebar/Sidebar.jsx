@@ -8,7 +8,7 @@ import {
   RiSettings4Line,
   RiLogoutCircleRLine,
 } from "react-icons/ri";
-
+import Modal from "../ModalWindow/Modal";
 const Sidebar = (props) => {
   const { showMenu } = props;
 
