@@ -1,5 +1,5 @@
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
-
+import Home_page_user from "../Landing/Home_page_user";
 import React, { useState } from "react";
 
 const Modal_12 = () => {

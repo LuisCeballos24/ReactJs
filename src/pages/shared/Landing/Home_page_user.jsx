@@ -17,7 +17,7 @@ import Header from "../Header/Header";
 import Header_Lg from "../Header/Header_LG";
 import Card from "../Card/Card";
 import ProductCatalog from "../Card/Body_Card";
-function HomePage_user() {
+function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
 
@@ -74,4 +74,4 @@ function HomePage_user() {
   );
 }
 
-export default HomePage_user;
+export default Home_Page_user;

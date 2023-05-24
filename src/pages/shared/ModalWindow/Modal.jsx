@@ -7,19 +7,27 @@ const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
+      setLoading(true);
       await auth.signInWithEmailAndPassword(email, password);
       setEmail("");
       setPassword("");
       setError(null);
       console.log("Ingresaste");
+
+      // Redirigir a la página deseada
+      window.location.href = "/user"; // Reemplaza "/ruta" con la ruta a la que deseas redirigir
     } catch (error) {
       console.log("ERROR");
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,9 +98,13 @@ const Modal = () => {
                 <button
                   type="submit"
                   className="py-2 px-4 mb-4 w-full font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                  disabled={loading}
                 >
-                  Iniciar sesión
+                  {loading ? "Cargando..." : "Iniciar sesión"}
                 </button>
+
+                {/* Mensaje de error */}
+                {error && <p className="text-red-500">{error}</p>}
 
                 {/* Botones de registro con Google y Outlook */}
                 <div className="flex justify-center">
@@ -138,64 +150,3 @@ const Modal = () => {
 };
 
 export default Modal;
-
-// export default Modal;
-//
-// import React, { useState } from "react";
-// import { FaGoogle, FaMicrosoft } from "react-icons/fa";
-//
-// const Modal = ({ isOpen, onClose }) => {
-//   const toggleModal = () => {
-//     onClose(!isOpen);
-//   };
-//
-//   return (
-//     <div>
-//       <button
-//         className="py-2 px-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-//         onClick={toggleModal}
-//       >
-//         Registrarse
-//       </button>
-//       {isOpen && (
-//         <div className="flex fixed inset-0 z-50 flex-col justify-center items-center min-h-screen">
-//           <button
-//             className="py-2 px-4 font-bold text-white bg-gray-500 rounded hover:bg-gray-700"
-//             onClick={toggleModal}
-//           >
-//             Cerrar
-//           </button>
-//           <div className="flex flex-grow justify-center items-center">
-//             <div className="py-8 px-6 w-full max-w-md bg-white rounded-lg shadow-lg">
-//               <div className="m-8 ml-16 w-1/2 lg:block">
-//                 <img
-//                   src="/imagen-445-removebg-preview.png"
-//                   alt="Imagen animada"
-//                   className="transform translate-x-[82px] h-[70px] w-[70px]"
-//                 />
-//               </div>
-//               <h2 className="mb-8 text-2xl font-bold">
-//                 Ingresa tus credenciales
-//               </h2>
-//               <form>{/* Campos de usuario y contraseña */}</form>
-//               <button
-//                 type="submit"
-//                 className="py-2 px-4 mb-4 w-full font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-//               >
-//                 Iniciar sesión
-//               </button>
-//               <div className="flex justify-center">
-//                 {/* Botones de registro con Google y Outlook */}
-//               </div>
-//               <div className="mt-4 text-center">
-//                 {/* Enlaces adicionales */}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-//
-// export default Modal;

@@ -14,7 +14,14 @@ const Card = (props) => {
   const images = ["chair.png", "dish.png", "../../media/img/hero-bg.png"];
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
   const [opcionAbierta, setOpcionAbierta] = useState(null);
-  const opciones = ["Opción 1", "Opción 2", "Opción 3"];
+  const [opcionAbiertaProducto, setOpcionAbiertaProducto] = useState(null);
+
+  const [opciones, setOpciones] = useState([
+    "Opción 1",
+    "Opción 2",
+    "Opción 3",
+  ]);
+
   const handleClick = async () => {
     console.log("------- Agregado -----");
 
@@ -64,12 +71,6 @@ const Card = (props) => {
     console.log(index);
   };
 
-  // const handleClickChange = (index) => {
-  //   const opciones = document.getElementById("opciones");
-  //   console.log("Entro-4564");
-  //   opciones.classList.toggle("hidden");
-  // };
-
   const handleClickChange = () => {
     setMostrarOpciones(!mostrarOpciones);
   };
@@ -81,17 +82,10 @@ const Card = (props) => {
       setOpcionAbierta(index); // Si es una nueva opción, se abre
     }
   };
-  document.addEventListener("DOMContentLoaded", function () {
-    const boton = document.getElementById("boton");
-    const opciones = document.getElementById("opciones");
-    console.log("Entro-4564");
-
-    boton.addEventListener("click", () => {
-      console.log("Contaer");
-      opciones.classList.toggle("hidden");
-    });
-  });
-
+  const handleEliminarOpcion = (index) => {
+    const nuevasOpciones = opciones.filter((_, i) => i !== index); // Filtra las opciones para eliminar la opción correspondiente al índice
+    setOpciones(nuevasOpciones);
+  };
   return (
     <div>
       <div
@@ -103,7 +97,7 @@ const Card = (props) => {
             <img
               src={images[currentImageIndex]}
               alt=""
-              class="object-cover absolute inset-0 w-72 h-72 rounded-xl"
+              className="object-cover absolute inset-0 w-72 h-72 rounded-xl"
             />
           </div>
 
@@ -133,25 +127,25 @@ const Card = (props) => {
                 <div
                   key={index}
                   className={`p-2 hover:border-gray-900 ${
-                    opcionAbierta === index ? " bg-[#286f6c]  text-white" : ""
+                    opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
                   }`}
-                  onClick={() => handleAbrirOpcion(index)}
+                  onClick={() => {
+                    handleAbrirOpcion(index);
+                    handleEliminarOpcion(index);
+                  }}
                 >
                   {opcion}
                 </div>
               ))}
             </div>
-            {/*  */}
-            <button //className="flex items-center gap-4 text-gray-300 bg-[#1F1D2B] py-2 px-4 rounded-lg"
-              className="flex p-2 rounded-lg"
-              onClick={handleClick}
-            >
+            {/* Resto del código */}
+            <button className="flex p-2 rounded-lg" onClick={handleClick}>
               <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
             </button>
           </div>
         </div>
       </div>
-      <div class="py-2 ml-4">
+      <div className="py-2 ml-4">
         <p className="text-xl font-semibold text-gray-900 lg:text-xl">{name}</p>
         <span className="text-gray-600">${price}</span>
         <p className="text-gray-600">{inventory} available</p>
