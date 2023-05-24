@@ -55,10 +55,9 @@ function Home_Page_user() {
 
       <main className="pb-20 lg:pr-96 lg:pl-32">
         <div className="p-4 md:p-8">
-          {/* Header */}
-          <Header_Lg />
-
-          {/* <Header /> */}
+          {/* Header  */}
+          {/* <Header_Lg /> */}
+          <Header />
           {/* Title content */}
           <div className="flex justify-between items-center mb-16">
             <h2 className="text-xl text-gray-300">Choose Dishes</h2>

@@ -2,6 +2,7 @@ import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { HiPlus } from "react-icons/hi";
 import React, { useState } from "react";
 import { auth, db } from "../../../utils/firebase";
+import { Link, useNavigate } from "react-router-dom";
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +10,8 @@ const Modal = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,7 +25,7 @@ const Modal = () => {
       console.log("Ingresaste");
 
       // Redirigir a la página deseada
-      window.location.href = "/user"; // Reemplaza "/ruta" con la ruta a la que deseas redirigir
+      navigate("/user"); // Reemplaza "/ruta" con la ruta a la que deseas redirigir
     } catch (error) {
       console.log("ERROR");
       setError(error.message);
@@ -118,26 +121,26 @@ const Modal = () => {
 
                 {/* Enlaces adicionales */}
                 <div className="mt-4 text-center">
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
                     Olvidar contraseña
-                  </a>
+                  </Link>
                   <span className="mx-2 text-gray-500">|</span>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
                     Mantener la sesión
-                  </a>
+                  </Link>
                   <span className="mx-2 text-gray-500">|</span>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
                     Aún no tienes cuenta
-                  </a>
+                  </Link>
                 </div>
               </form>
               {/* Imagen animada */}
