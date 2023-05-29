@@ -1,17 +1,42 @@
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { HiPlus } from "react-icons/hi";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, db } from "../../../utils/firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   const navigate = useNavigate();
+
+  /*   useEffect(() => { */
+  const checkUserSession = async () => {
+    try {
+      setLoading(true);
+      await auth.onAuthStateChanged((user) => {
+        if (user) {
+          navigate("/user"); // Redirigir al usuario si ya ha iniciado sesión
+        } else {
+          setLoading(false);
+        }
+      });
+    } catch (error) {
+      console.log("Error al verificar la sesión:", error);
+      setLoading(false);
+    }
+  };
+  //
+  //   checkUserSession();
+  // }, [navigate]);
+
+  const toggleModal = () => {
+    checkUserSession();
+
+    setIsOpen(!isOpen);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -34,10 +59,6 @@ const Modal = () => {
     }
   };
 
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div>
       <HiPlus className="text-xl text-primary" onClick={toggleModal} />
@@ -46,13 +67,13 @@ const Modal = () => {
         <div className="flex fixed inset-0 z-50 flex-col justify-center items-center min-h-screen top-[-480px]">
           {/* Encabezado */}
           {/* <header className="py-4 text-center text-white bg-gray-800"> */}
-          {/*   <h1 className="text-2xl font-bold">Iniciar sesión</h1> */}
+          {/*   <h1 className="text-2xl font-bold">Iniciar sesiÃ³n</h1> */}
           {/* </header> */}
           {/**/}
           {/* Contenido principal */}
 
           <div className="flex flex-grow justify-center items-center">
-            {/* Campos de usuario y contraseña */}
+            {/* Campos de usuario y contraseÃ±a */}
             <div className="py-8 px-6 w-full max-w-md bg-white rounded-lg shadow-lg">
               <div className="m-8 ml-16 w-1/2 lg:block">
                 <button
@@ -87,7 +108,7 @@ const Modal = () => {
 
                 <div className="mb-6">
                   <label htmlFor="password" className="block mb-2 text-lg">
-                    Contraseña
+                    ContraseÃ±a
                   </label>
                   <input
                     type="password"
@@ -103,7 +124,7 @@ const Modal = () => {
                   className="py-2 px-4 mb-4 w-full font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                   disabled={loading}
                 >
-                  {loading ? "Cargando..." : "Iniciar sesión"}
+                  {loading ? "Verificando..." : "Iniciar sesion"}
                 </button>
 
                 {/* Mensaje de error */}
@@ -125,21 +146,21 @@ const Modal = () => {
                     to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
-                    Olvidar contraseña
+                    Olvidar contraseÃ±a
                   </Link>
                   <span className="mx-2 text-gray-500">|</span>
                   <Link
                     to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
-                    Mantener la sesión
+                    Mantener la sesiÃ³n
                   </Link>
                   <span className="mx-2 text-gray-500">|</span>
                   <Link
                     to="#"
                     className="text-blue-500 underline hover:text-blue-600"
                   >
-                    Aún no tienes cuenta
+                    AÃºn no tienes cuenta
                   </Link>
                 </div>
               </form>

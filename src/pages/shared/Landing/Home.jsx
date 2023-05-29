@@ -9,19 +9,8 @@ import Products from "../SiteHome/Products";
 import Testimonial from "../SiteHome/Testimonial";
 import Newsletter from "../SiteHome/Newsletter";
 import Footer from "../SiteHome/Footer";
-// import Login from "../Login/Login";
-// import Modal from "../ModalWindow/Modal";
-const Home = () => {
-  // const [showLogin, setShowLogin] = useState(false);
-  //
-  // const handleShowLogin = () => {
-  //   setShowLogin(true);
-  // };
-  //
-  // const handleHideLogin = () => {
-  //   setShowLogin(false);
-  // };
 
+const Home = () => {
   return (
     <div className="mx-auto w-full bg-white max-w-[1440px]">
       <Header />

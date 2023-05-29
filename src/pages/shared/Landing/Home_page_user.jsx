@@ -14,9 +14,11 @@ import Sidebar from "../Sidebar/Sidebar";
 import Car from "../Car/Car";
 import Car_up from "../Car/Car_up";
 import Header from "../Header/Header";
+import Header_catalogo from "../Header/Header_catalogo";
 import Header_Lg from "../Header/Header_LG";
 import Card from "../Card/Card";
 import ProductCatalog from "../Card/Body_Card";
+import Card_Nov from "../Card/Card_Nov";
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
@@ -55,18 +57,22 @@ function Home_Page_user() {
 
       <main className="pb-20 lg:pr-96 lg:pl-32">
         <div className="p-4 md:p-8">
+          {" "}
           {/* Header  */}
           {/* <Header_Lg /> */}
-          <Header />
-          {/* Title content */}
-          <div className="flex justify-between items-center mb-16">
-            <h2 className="text-xl text-gray-300">Choose Dishes</h2>
-            <button className="flex items-center gap-4 text-gray-300 bg-[#285e7d] py-2 px-4 rounded-lg">
-              <RiArrowDownSLine /> Dine in
-            </button>
-          </div>
-          {/* Content */}
+          <Header_catalogo />
+          <Card_Nov />
           <ProductCatalog />
+          {/**/}
+          {/* Title content */}
+          {/* <div className="flex justify-between items-center mb-16"> */}
+          {/*   <h2 className="text-xl text-gray-300">Choose Dishes</h2> */}
+          {/*   <button className="flex items-center gap-4 text-gray-300 bg-[#285e7d] py-2 px-4 rounded-lg"> */}
+          {/*     <RiArrowDownSLine /> Dine in */}
+          {/*   </button> */}
+          {/* </div> */}
+          {/* Content Agregar Productos */}
+          {/*   <ProductCatalog /> */}
         </div>
       </main>
     </div>
