@@ -3,17 +3,21 @@ import { RiCloseLine, RiDeleteBin6Line } from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db2 } from "../../../utils/firebase.js";
+import { db, auth } from "../../../utils/firebase.js";
+function isUserOwner(ownerId) {
+  return auth.currentUser && ownerId === auth.currentUser.uid;
+}
 
 const handleDelete = async (id) => {
-  const querySnapshot = await db2
-    .collection("Carrito")
-    .where("id", "==", id)
+  const querySnapshot = await db
+    .collection("ordenes")
+    .where("productId", "==", id)
+    .where("buyerId", "==", auth.currentUser.uid)
     .get();
 
   if (!querySnapshot.empty) {
-    const docId = querySnapshot.docs[0].id;
-    await db2.collection("Carrito").doc(docId).delete();
+    const docId = querySnapshot.docs[0].productId;
+    await db.collection("ordenes").doc(docId).delete();
     console.log(`Producto con uid ${id} eliminado correctamente`);
   } else {
     console.log(`Producto con id ${id} NO eliminado de forma correcta`);
@@ -21,18 +25,19 @@ const handleDelete = async (id) => {
 };
 
 const handleMinus = async (id) => {
-  const querySnapshot = await db2
-    .collection("Carrito")
+  const querySnapshot = await db
+    .collection("ordenes")
     .where("id", "==", id)
+    .where("buyerId", "==", auth.currentUser.uid)
     .get();
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
-    const docId = querySnapshot.docs[0].id;
-    const docRef = db2.collection("Carrito").doc(docId);
+    const docId = querySnapshot.docs[0].productId;
+    const docRef = db.collection("ordenes").doc(docId);
     const docSnapshot = await docRef.get();
     await docRef.update({
-      cantidad: docSnapshot.data().cantidad - 1,
+      quantity: docSnapshot.data().quantity - 1,
     });
     console.log(`Producto con id ${docId} actualizado en el carrito`);
   } else {
@@ -41,15 +46,15 @@ const handleMinus = async (id) => {
 };
 
 const handlePlus = async (id) => {
-  const querySnapshot = await db2
-    .collection("Carrito")
+  const querySnapshot = await db
+    .collection("ordenes")
     .where("id", "==", id)
     .get();
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
-    const docId = querySnapshot.docs[0].id;
-    const docRef = db2.collection("Carrito").doc(docId);
+    const docId = querySnapshot.docs[0].productId;
+    const docRef = db2.collection("ordenes").doc(docId);
     const docSnapshot = await docRef.get();
     await docRef.update({
       cantidad: docSnapshot.data().cantidad + 1,
@@ -63,8 +68,11 @@ const Card_car = (props) => {
   let sum = 0;
 
   const { showOrder, setShowOrder } = props;
+  const currentUser = auth.currentUser;
 
-  const [orders, loading, error] = useCollectionData(db2.collection("Carrito"));
+  const [orders, loading, error] = useCollectionData(
+    db.collection("ordenes").where("buyerId", "==", currentUser?.uid || "")
+  );
 
   if (loading) {
     return <p>Cargando órdenes...</p>;
@@ -76,8 +84,9 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white  lg:w-96  lg:right-0   lg:h-[700px] transition-all z-50  my-56 m-4 rounded-lg border border-[#E89440] ${showOrder ? "right-0" : "-right-full"
-        }`}
+      className={`lg:col-span-2 fixed top-0 bg-white  lg:w-96  lg:right-0   lg:h-[700px] transition-all z-50  my-56 m-4 rounded-lg border border-gray-300 ${
+        showOrder ? "right-0" : "-right-full"
+      }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -109,10 +118,10 @@ const Card_car = (props) => {
           {/* Products */}
           <div className="overflow-y-scroll h-[400px] md:h-[700px] lg:h-[340px]">
             {orders.map((order) => {
-              const totalPrice = order.precio * order.cantidad;
+              const totalPrice = order.price * order.quantity;
               sum += totalPrice; // Acumula el precio total
               return (
-                <div className="bg-white p-4 rounded-xl mb-4 border border-[#E89440] ">
+                <div className="bg-white p-4 rounded-xl mb-4 border border-gray-300 hover:border-[#E89440] ">
                   <div className="grid grid-cols-6 mb-4">
                     {/* Product description */}
                     <div className="flex col-span-4 gap-3 items-center">
@@ -121,23 +130,18 @@ const Card_car = (props) => {
                         className="object-cover w-10 h-10"
                       />
                       <div>
-                        <h5 className="text-sm text-gray-900">
-                          {" "}
-                          {order.nombre}
-                        </h5>
-                        <p className="text-xs text-gray-900">
-                          $ {order.precio}
-                        </p>
+                        <h5 className="text-sm text-gray-900"> {order.name}</h5>
+                        <p className="text-xs text-gray-900">$ {order.price}</p>
                       </div>
                     </div>
                     {/* Qty */}
                     <div>
-                      <span className="text-gray-900">{order.cantidad}</span>
+                      <span className="text-gray-900">{order.quantity}</span>
                     </div>
                     {/* Price */}
                     <div>
                       <span className="text-gray-900">
-                        $ {order.precio * order.cantidad}
+                        $ {order.price * order.quantity}
                       </span>
                     </div>
                   </div>
@@ -153,22 +157,22 @@ const Card_car = (props) => {
                     <div className="flex space-x-1">
                       <button
                         className="p-2 rounded-lg border hover:border-red-500"
-                        onClick={() => handleDelete(order.id)}
+                        onClick={() => handleDelete(order.productId)}
                       >
                         <RiDeleteBin6Line className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-red-500"
-                        onClick={() => handleMinus(order.id)}
+                        onClick={() => handleMinus(order.productId)}
 
-                      // onClick={handleMinus}
+                        // onClick={handleMinus}
                       >
                         <FaMinus className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-green-500"
-                        onClick={() => handlePlus(order.id)}
-                      // onClick={handlePlus}
+                        onClick={() => handlePlus(order.productId)}
+                        // onClick={handlePlus}
                       >
                         <HiPlus className="text-green-500" />
                       </button>

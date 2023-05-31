@@ -19,6 +19,7 @@ import Header_Lg from "../Header/Header_LG";
 import Card from "../Card/Card";
 import ProductCatalog from "../Card/Body_Card";
 import Card_Nov from "../Card/Card_Nov";
+import CardAddProduct from "../Add_Product/CardAddProduct";
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
@@ -61,8 +62,9 @@ function Home_Page_user() {
           {/* Header  */}
           {/* <Header_Lg /> */}
           <Header_catalogo />
-          <Card_Nov />
-          <ProductCatalog />
+          {/* <Card_Nov /> */}
+          {/* <ProductCatalog /> */}
+          <CardAddProduct />
           {/**/}
           {/* Title content */}
           {/* <div className="flex justify-between items-center mb-16"> */}
