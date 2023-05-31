@@ -64,18 +64,29 @@ function Card_Nov() {
 
   return (
     <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-1 lg:gap-[30px]">
-      {products.map((product) => (
-        <Card_P
-          name={product.name}
-          img="dish.png"
-          description={product.description}
-          price={product.price}
-          productId={product.id}
-          inventory="20"
-        />
-      ))}
+      <Card_P
+      // name={product.name}
+      // img="dish.png"
+      // description={product.description}
+      // price={product.price}
+      // productId={product.id}
+      // inventory="20"
+      />
     </div>
   );
 }
 
 export default Card_Nov;
+//
+// <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-1 lg:gap-[30px]">
+//   {products.map((product) => (
+//     <Card_P
+//     // name={product.name}
+//     // img="dish.png"
+//     // description={product.description}
+//     // price={product.price}
+//     // productId={product.id}
+//     // inventory="20"
+//     />
+//   ))}
+// </div>;

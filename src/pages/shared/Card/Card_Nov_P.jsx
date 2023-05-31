@@ -87,66 +87,32 @@ const Card = (props) => {
     setOpciones(nuevasOpciones);
   };
   return (
-    <div>
-      <div
-        id="Product"
-        className="flex flex-col gap-2 items-center p-6 text-left text-gray-300 bg-gray-200 rounded-xl border border-grey-300 transition hover:border-[#E89440]"
-      >
-        <div className="flex relative justify-center items-center w-full h-full rounded-[18px] max-w-[285px] max-h-[298px] mb-[15px]">
-          <div className="flex h-[400px] w-[400px] mb-[20px]">
-            <img
-              src={images[currentImageIndex]}
-              alt=""
-              className="object-cover absolute inset-0 w-72 h-72 rounded-xl"
-            />
+    <div className="flex items-center p-6 text-left text-gray-300 bg-gray-200 rounded-xl border transition border-grey-300">
+      <div className="w-1/2"></div>
+      <div className="relative w-1/2">
+        <div className="absolute rounded-bl-2xl transform w-[920px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 left-[-640px]"></div>
+        <div className="absolute rounded-bl-2xl transform w-[900px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle left-[-640px]">
+          <div className="p-10 mb-4">
+            <h2 className="text-3xl font-bold text-gray-50">
+              Bienvenido al Intercambio de Bienes
+            </h2>
           </div>
-
-          <ul className="flex absolute bottom-0 justify-center w-full">
-            {images.map((image, index) => (
-              <li
-                key={index}
-                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-                  }`}
-                onClick={() => handleImageClick(index)}
-              ></li>
-            ))}
-          </ul>
-          <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
-            {/* Boton de mostrar opciones*/}
-            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-              <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
-            </button>
-            <div
-              id="opciones"
-              className={`${mostrarOpciones ? "" : "hidden"
-                } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
-            >
-              {opciones.map((opcion, index) => (
-                <div
-                  key={index}
-                  className={`p-2 hover:border-gray-900 ${opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
-                    }`}
-                  onClick={() => {
-                    handleAbrirOpcion(index);
-                    handleEliminarOpcion(index);
-                  }}
-                >
-                  {opcion}
-                </div>
-              ))}
-            </div>
-            {/* Resto del código */}
-            <button className="flex p-2 rounded-lg" onClick={handleClick}>
-              <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
-            </button>
-          </div>
-        </div>
-        <div className="py-2 ml-4">
-          <p className="text-xl font-semibold text-gray-900 lg:text-xl">
-            {name}
+          <p className="p-8 text-gray-100 w-[600px]">
+            En nuestro sitio, puedes explorar una amplia variedad de productos y
+            servicios disponibles para el intercambio. Descubre nuevas
+            oportunidades para intercambiar tus bienes por otros que sean de tu
+            interés. ¡Encuentra el objeto perfecto para intercambiar y haz un
+            trueque emocionante!
           </p>
-          <span className="text-gray-600">${price}</span>
-          <p className="text-gray-600">{inventory} available</p>
+        </div>
+
+        <div className="relative w-full h-80">
+          <img
+            id="Promo"
+            src="../../../../public/Business.svg"
+            alt=""
+            className="object-cover w-full h-full rounded-xl promo-image"
+          />
         </div>
       </div>
     </div>
@@ -154,3 +120,37 @@ const Card = (props) => {
 };
 
 export default Card;
+
+//
+// <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
+//            {/* Boton de mostrar opciones*/}
+//            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
+//              <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
+//            </button>
+//            <div
+//              id="opciones"
+//              className={`${
+//                mostrarOpciones ? "" : "hidden"
+//              } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
+//            >
+//              {opciones.map((opcion, index) => (
+//                <div
+//                  key={index}
+//                  className={`p-2 hover:border-gray-900 ${
+//                    opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
+//                  }`}
+//                  onClick={() => {
+//                    handleAbrirOpcion(index);
+//                    handleEliminarOpcion(index);
+//                  }}
+//                >
+//                  {opcion}
+//                </div>
+//              ))}
+//            </div>
+//            {/* Resto del código */}
+//            <button className="flex p-2 rounded-lg" onClick={handleClick}>
+//              <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
+//            </button>
+//          </div>
+//

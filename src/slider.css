@@ -68,3 +68,20 @@
     display: none;
   }
 }
+.diagonal-triangle {
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 200px 320px 0;
+  border-color: transparent transparent #285e7d transparent; /* Ajusta el color del triángulo */
+}
+.diagonal-triangle-2 {
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 200px 320px 0;
+  border-color: transparent transparent #ea8337 transparent; /* Ajusta el color del triángulo */
+}
