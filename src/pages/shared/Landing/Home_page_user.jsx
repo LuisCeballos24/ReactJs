@@ -82,11 +82,13 @@ function Home_Page_user() {
               <Header />
               <Card_Nov />
               <ProductCatalog />
+              <Card_Nov />
+              <ProductCatalog />
             </>
           )}
           {/**/}
           {/* <Card_Nov /> */}
-          {/* <CardAddProduct /> */}
+          <CardAddProduct />
           {/*Add producto  */}
           {/* Title content */}
           {/* <div className="flex justify-between items-center mb-16"> */}

@@ -5,11 +5,8 @@ const Header = () => {
   return (
     <header>
       {/* Title and search */}
-      <div className="flex flex-col gap-4 mb-6 md:flex-row md:justify-between md:items-center">
-        <div>
-          <h1 className="text-2xl text-gray-900">Jeager Resto</h1>
-          <p className="text-gray-500">07 octubre 2022</p>
-        </div>
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+        <div></div>
         <form>
           <div className="relative w-full">
             <RiSearch2Line className="absolute left-3 top-1/2 text-gray-900 -translate-y-1/2" />
