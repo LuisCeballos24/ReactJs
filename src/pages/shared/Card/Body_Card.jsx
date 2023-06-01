@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db, auth } from "../../../utils/firebase.js";
+import { db } from "../../../utils/firebase.js";
 
 function ProductCatalog() {
   /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
     db.collection("productos")
+    // .where(" uid", "==", auth.currentUser.uid)
   );
-  // .where(" uid", "==", auth.currentUser.uid)
 
   if (loading) {
     return <p>Cargando productos...</p>;
@@ -18,29 +18,11 @@ function ProductCatalog() {
     return <p>Error al cargar productos: {error.message}</p>;
   }
 
-  const handleProductDelete = async (uid) => {
-    try {
-      const querySnapshot = await db
-        .collection("productos")
-        .where("uid", "==", uid)
-        .get();
-
-      if (!querySnapshot.empty) {
-        const docId = querySnapshot.docs[0].id;
-        await db.collection("productos").doc(docId).delete();
-        console.log(`Producto con uid ${uid} eliminado correctamente`);
-      }
-    } catch (error) {
-      console.error(
-        `Error al eliminar producto con uid ${uid}: ${error.message}`
-      );
-    }
-  };
-
   return (
-    <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-[30px]">
-      {products.map((product) => (
+    <div className="grid grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+      {products.map((product, index) => (
         <Card
+          key={index}
           name={product.name}
           img="dish.png"
           description={product.description}

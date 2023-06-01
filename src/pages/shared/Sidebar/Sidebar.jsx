@@ -12,11 +12,13 @@ import {
 import { auth } from "../../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { changeShowStore } from "../Landing/Home_page_user";
+
 const Sidebar = (props) => {
   const { showMenu } = props;
   const [isVertical, setIsVertical] = useState(false);
   const navigate = useNavigate();
   const [estadoHijo, setEstadoHijo] = useState(false);
+
   const handleChange = () => {
     const nuevoEstado = !estadoHijo;
     setEstadoHijo(nuevoEstado);
@@ -27,6 +29,7 @@ const Sidebar = (props) => {
     console.log("Paso ");
     changeShowStore();
   };
+
   const handleLogout = async () => {
     try {
       // Cerrar sesión del usuario
@@ -38,6 +41,7 @@ const Sidebar = (props) => {
       console.log("Error al cerrar sesión:", error);
     }
   };
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -101,7 +105,6 @@ const Sidebar = (props) => {
             <a
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
-              // Apply the function on onClick event
             >
               <RiPieChartLine className="text-xl" />
             </a>

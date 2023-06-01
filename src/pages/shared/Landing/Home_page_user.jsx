@@ -31,7 +31,7 @@ export const changeShowStore = (toggleStore) => {
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
-  const [showStore, setShowStore] = useState(true);
+  const [showStore, setShowStore] = useState(false);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -49,7 +49,7 @@ function Home_Page_user() {
     <div id="HomePage_user" className="w-full min-h-screen bg-white">
       <Sidebar showMenu={showMenu} onCambioEstado={manejarCambioEstado} />
       <Car_up showOrder={showOrder} setShowOrder={setShowOrder} />
-
+      {/**/}
       <Car showOrder={showOrder} setShowOrder={setShowOrder} />
       {/* Menu movil */}
       <nav className="bg-[#285e7d]  lg:hidden fixed w-full bottom-0 left-0 text-3xl text-bg-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
@@ -68,9 +68,8 @@ function Home_Page_user() {
       </nav>
 
       <main className="pb-20 lg:pr-96 lg:pl-32">
-        <div className="p-4 md:p-8">
+        <div className="grid-cols-1 p-4 sm:grid-cols-2 md:p-8">
           {/* Header  */}
-
           {showStore ? (
             <>
               <Header_Store />
@@ -86,20 +85,7 @@ function Home_Page_user() {
               <ProductCatalog />
             </>
           )}
-          {/**/}
-          {/* <Card_Nov /> */}
-          <CardAddProduct />
-          {/*Add producto  */}
-          {/* Title content */}
-          {/* <div className="flex justify-between items-center mb-16"> */}
-          {/*   <h2 className="text-xl text-gray-300">Choose Dishes</h2> */}
-          {/*   <button className="flex items-center gap-4 text-gray-300 bg-[#285e7d] py-2 px-4 rounded-lg"> */}
-          {/*     {" "} */}
-          {/*     <RiArrowDownSLine /> Dine in */}
-          {/*   </button> */}
-          {/* </div> */}
-          {/* Content Agregar Productos */}
-          {/*   <ProductCatalog /> */}
+          {/* <CardAddProduct /> */}
         </div>
       </main>
     </div>

@@ -4,6 +4,7 @@ import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db, auth } from "../../../utils/firebase.js";
+
 function isUserOwner(ownerId) {
   return auth.currentUser && ownerId === auth.currentUser.uid;
 }
@@ -64,6 +65,7 @@ const handlePlus = async (id) => {
     console.log(`Producto con id ${id} NO eliminado de forma correcta`);
   }
 };
+
 const Card_car = (props) => {
   let sum = 0;
 
@@ -84,7 +86,7 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white  lg:w-96  lg:right-0   lg:h-[700px] transition-all z-50  my-56 m-4 rounded-lg border border-gray-300 ${
+      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[700px] transition-all z-50 my-56 m-4 rounded-lg border border-gray-300 ${
         showOrder ? "right-0" : "-right-full"
       }`}
     >
@@ -94,7 +96,7 @@ const Card_car = (props) => {
           onClick={() => setShowOrder(false)}
           className="box-content absolute top-4 left-4 p-3 text-xl text-gray-900 bg-white rounded-full lg:hidden"
         />
-        <h1 className="my-4 text-2xl text-gray-900">Orders </h1>
+        <h1 className="my-4 text-2xl text-gray-900">Orders</h1>
         {/* Pills */}
         <div className="flex flex-wrap gap-4 items-center mb-8">
           <button className="bg-[#E89440] text-white py-2 px-4 rounded-xl">
@@ -121,16 +123,17 @@ const Card_car = (props) => {
               const totalPrice = order.price * order.quantity;
               sum += totalPrice; // Acumula el precio total
               return (
-                <div className="bg-white p-4 rounded-xl mb-4 border border-gray-300 hover:border-[#E89440] ">
+                <div className="bg-white p-4 rounded-xl mb-4 border border-gray-300 hover:border-[#E89440]">
                   <div className="grid grid-cols-6 mb-4">
                     {/* Product description */}
                     <div className="flex col-span-4 gap-3 items-center">
                       <img
                         src="comida.png"
                         className="object-cover w-10 h-10"
+                        alt=""
                       />
                       <div>
-                        <h5 className="text-sm text-gray-900"> {order.name}</h5>
+                        <h5 className="text-sm text-gray-900">{order.name}</h5>
                         <p className="text-xs text-gray-900">$ {order.price}</p>
                       </div>
                     </div>
@@ -150,7 +153,7 @@ const Card_car = (props) => {
                     <form className="col-span-4">
                       <input
                         type="text"
-                        className="bg-white py-2 px-1 rounded-lg outline-none  border border-[#4da7a5]"
+                        className="bg-white py-2 px-1 rounded-lg outline-none border border-[#4da7a5]"
                         placeholder="Order note."
                       />
                     </form>
@@ -164,15 +167,12 @@ const Card_car = (props) => {
                       <button
                         className="p-2 rounded-lg hover:border-red-500"
                         onClick={() => handleMinus(order.productId)}
-
-                        // onClick={handleMinus}
                       >
                         <FaMinus className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-green-500"
                         onClick={() => handlePlus(order.productId)}
-                        // onClick={handlePlus}
                       >
                         <HiPlus className="text-green-500" />
                       </button>
@@ -185,10 +185,7 @@ const Card_car = (props) => {
         </div>
         {/* Submit payment */}
         <div className="absolute bottom-0 left-0 p-4 w-full bg-white rounded-t-lg">
-          <div className="flex justify-between items-center mb-4">
-            {/* <span className="text-gray-400">Discount</span> */}
-            {/* <span>$0</span> */}
-          </div>
+          <div className="flex justify-between items-center mb-4"></div>
           <div className="flex justify-between items-center mb-6">
             <span className="text-gray-900">Subtotal</span>
             <span id="precio_total" className="font-bold text-gray-900">

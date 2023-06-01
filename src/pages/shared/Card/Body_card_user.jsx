@@ -4,11 +4,9 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db, auth } from "../../../utils/firebase.js";
 
 function ProductCatalog_user() {
-  /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
     db.collection("productos")
   );
-  // .where("uid", "==", auth.currentUser.uid)
 
   if (loading) {
     return <p>Cargando productos...</p>;
@@ -38,9 +36,10 @@ function ProductCatalog_user() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-[30px]">
+    <div className="grid grid-cols-1 gap-16 p-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <Card
+          key={product.id}
           name={product.name}
           img="dish.png"
           description={product.description}
@@ -49,40 +48,17 @@ function ProductCatalog_user() {
           inventory="20"
         />
       ))}
-      {/* <Card */}
-      {/*   name={"Agregar"} */}
-      {/*   img="dish.png" */}
-      {/*   description={"Agregar Producto"} */}
-      {/*   price0={"55"} */}
-      {/*   productId={"5"} */}
-      {/*   inventory="20" */}
-      {/* /> */}
-      <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 bg-red-50 md:grid-cols-3 lg:grid-cols-4 lg:gap-[30px]">
-        <div
-          id="Product"
-          className="flex flex-col gap-2 items-center p-6 text-left text-center text-gray-300 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]"
-        >
-          <div className="flex relative justify-center items-center w-full h-full rounded-[18px] mb-[15px]">
-            <div className="relative w-full h-full">
-              <img
-                alt=""
-                className="object-cover absolute inset-0 w-72 h-72 rounded-xl"
-              />
-            </div>
-
-            <ul className="flex absolute bottom-0 justify-center w-full"></ul>
-            <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
-              {/* Boton de mostrar opciones*/}
-              <button className="flex p-2 rounded-lg"></button>
-
-              {/* Resto del código */}
-              <button className="flex p-2 rounded-lg"></button>
-            </div>
+      <div className="p-8 bg-gray-100 rounded-xl">
+        <div className="flex flex-col gap-8 items-center my-20 justify-center p-6 text-left text-center text-gray-600 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]">
+          <h2 className="text-xl font-semibold">Agregar Producto</h2>
+          <p className="text-gray-600">Descripción del producto</p>
+          <div className="flex gap-4 justify-center">
+            <button className="py-2 px-4 text-white bg-blue-500 rounded-md">
+              Agregar al carrito
+            </button>
           </div>
         </div>
       </div>
-
-      <div />
     </div>
   );
 }
