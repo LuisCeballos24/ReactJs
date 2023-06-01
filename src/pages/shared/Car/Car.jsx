@@ -83,10 +83,13 @@ const Card_car = (props) => {
   if (error) {
     return <p>Error al cargar órdenes: {error.message}</p>;
   }
+  {
+    /*  lg:col-span-2 fixed top-0 bg-[#1F1D2B] w-full lg:w-96 lg:right-0 h-full transition-all z-50 */
+  }
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[700px] transition-all z-50 my-56 m-4 rounded-lg border border-gray-300 ${
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] transition-all z-50 my-56 m-4 rounded-lg border border-gray-300 ${
         showOrder ? "right-0" : "-right-full"
       }`}
     >

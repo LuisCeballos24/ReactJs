@@ -19,6 +19,7 @@ const Card = () => {
               oportunidades para intercambiar tus bienes por otros que sean de
               tu interés. ¡Encuentra el objeto perfecto para intercambiar y haz
               un trueque emocionante!
+              <div className="w-44 h-44 bg-yellow-900 border-transparent border-solid border-t-44 border-r-44"></div>
             </p>
           </div>
 
