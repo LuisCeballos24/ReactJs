@@ -137,9 +137,9 @@ function CardAddProduct() {
             </button>
           </form>
         </div>
-        <div className="w-1/2">
+        <div className="justify-center w-1/2">
           //vista
-          <div className="relative w-full h-80">
+          <div className="relative left-40 z-20 justify-center border border-gray-600 h-[360px] w-[300px]">
             {previewImages.length > 0 && (
               <img
                 src={previewImages[currentImageIndex]}
@@ -148,21 +148,21 @@ function CardAddProduct() {
               />
             )}
           </div>
-          {previewImages.length > 1 && (
-            <div className="flex justify-center mt-4">
-              {previewImages.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full mx-1 ${index === currentImageIndex ? "bg-gray-600" : "bg-gray-100"
-                    }`}
-                  onClick={() => handleImageChange(index)}
-                />
-              ))}
-            </div>
-          )}
+          {/* {previewImages.length > 1 && ( */}
+          {/*   <div className="flex justify-center mt-4"> */}
+          {/*     {previewImages.map((_, index) => ( */}
+          {/*       <button */}
+          {/*         key={index} */}
+          {/*         className={`w-2 h-2 rounded-full mx-1 ${index === currentImageIndex ? "bg-gray-600" : "bg-gray-400" */}
+          {/*           }`} */}
+          {/*         onClick={() => handleImageChange(index)} */}
+          {/*       /> */}
+          {/*     ))} */}
+          {/*   </div> */}
+          {/* )} */}
           //
           <div className="flex flex-col justify-center items-center h-full">
-            <div className="mt-4">
+            <div className="justify-center mt-4">
               <label className="block mb-2 font-bold text-gray-700">
                 Vista previa de imágenes:
               </label>
@@ -180,7 +180,7 @@ function CardAddProduct() {
                 {previewImages.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-4 h-4 mx-1 rounded-full ${index === currentImageIndex
+                    className={`w-4 h-4 mx-1 right-9 rounded-full ${index === currentImageIndex
                         ? "bg-blue-500"
                         : "bg-gray-300"
                       }`}

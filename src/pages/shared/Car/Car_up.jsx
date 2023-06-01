@@ -80,7 +80,7 @@ const Card_up = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[180px] transition-all z-50 m-4 rounded-lg border border-[#E89440] ${showOrder ? "right-0" : "-right-full"
+      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[180px] transition-all z-50 m-4 rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
         }`}
     >
       {/* Orders */}
@@ -109,16 +109,13 @@ const Card_up = (props) => {
         {/* Pills */}
         <div className="flex flex-wrap gap-2 justify-end items-center py-7 mb-4">
           <button className="bg-[#E89440] text-white py-2 px-4 rounded-md text-base">
-            Dine In
+            Tienda
           </button>
           <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
-            To Go
+            Carrito
           </button>
           <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
             To
-          </button>
-          <button className="text-[#E89440] py-2 px-4 rounded-md text-base border border-[#285e7d]">
-            Delivery
           </button>
         </div>
         {/* Car */}

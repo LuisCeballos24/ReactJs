@@ -3,10 +3,10 @@ import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db, auth } from "../../../utils/firebase.js";
 
-function ProductCatalog() {
+function ProductCatalog_user() {
   /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
-    db.collection("productos")
+    db.collection("productos").where("uid", "==", auth.currentUser.uid)
   );
   // .where(" uid", "==", auth.currentUser.uid)
 
@@ -53,4 +53,4 @@ function ProductCatalog() {
   );
 }
 
-export default ProductCatalog;
+export default ProductCatalog_user;
