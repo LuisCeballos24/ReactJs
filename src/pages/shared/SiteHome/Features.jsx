@@ -34,6 +34,22 @@ const Features = () => {
                 );
               })}
             </div>
+            <div>
+              {items.map((item, index) => {
+                const { icon, title, subtitle } = item;
+                return (
+                  <div className="flex mb-6 lg:last:mb-0" key={index}>
+                    <div className="mr-4 text-2xl lg:text-3xl">{icon}</div>
+                    <div>
+                      <h4 className="mb-3 text-base font-semibold lg:text-xl">
+                        {title}
+                      </h4>
+                      <p>{subtitle}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

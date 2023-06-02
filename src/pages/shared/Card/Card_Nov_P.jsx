@@ -1,28 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { features } from "../../../data.jsx";
 
 const Card = () => {
-  return (
-    <div className="grid-cols-1 gap-x-5 gap-16 p-8 md:grid-cols-4 lg:grid-cols-0">
-      <div className="flex items-center p-6 text-left bg-gray-800 rounded-xl border transition border-grey-300">
-        <div className="w-full md:w-1/2"></div>
-        <div className="relative w-full md:w-1/2">
-          <div className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 md:w-[920px] md:left-[-640px]"></div>
-          <div className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle md:w-[900px] md:left-[-640px]">
-            <div className="p-10 mb-4">
-              <h2 className="text-3xl font-bold text-gray-50">
-                Bienvenido al Intercambio de Bienes
-              </h2>
-            </div>
-            <p className="flex p-8 text-gray-100">
-              En nuestro sitio, puedes explorar una amplia variedad de productos
-              y servicios disponibles para el intercambio. Descubre nuevas
-              oportunidades para intercambiar tus bienes por otros que sean de
-              tu interés. ¡Encuentra el objeto perfecto para intercambiar y haz
-              un trueque emocionante!
-              <div className="w-44 h-44 bg-yellow-900 border-transparent border-solid border-t-44 border-r-44"></div>
-            </p>
-          </div>
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [triangle2Display, setTriangle2Display] = useState("block");
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+
+      if (window.innerWidth < 1400) {
+        setTriangle2Display("none");
+      } else {
+        setTriangle2Display("block");
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const { title, subtitle, image, items } = features;
+  const triangle1Width = windowWidth >= 1280 ? 920 : 600;
+
+  return (
+    <div className="container mx-auto">
+      <div className="flex flex-col items-center p-6 text-left bg-gray-300 rounded-xl border transition lg:flex-row border-grey-300">
+        {/* seccion  */}
+        <div className="w-full md:w-1/2"></div>
+        <div className="relative md:w-96">
+          <div className="absolute h-80">
+            <div
+              className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 md:w-[925px] md:left-[-600px]"
+              style={{ display: triangle2Display }}
+            ></div>
+            <div
+              className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle md:w-[900px] md:left-[-600px]"
+              style={{ display: triangle2Display }}
+            >
+              <div className="p-10 mb-4">
+                <h2 className="text-3xl font-bold text-gray-50">
+                  Bienvenido al Intercambio de Bienes
+                </h2>
+              </div>
+              <p className="flex flex-1 order-1 p-8 text-gray-100 lg:-order-1">
+                En nuestro sitio, puedes explorar una amplia variedad de
+                productos y servicios disponibles para el intercambio. Descubre
+                nuevas oportunidades para intercambiar tus bienes por otros que
+                sean de tu interés. ¡Encuentra el objeto perfecto para
+                intercambiar y haz un trueque emocionante!
+              </p>
+            </div>
+          </div>
           <div className="relative w-full h-80">
             <img
               id="Promo"
@@ -38,36 +70,93 @@ const Card = () => {
 };
 
 export default Card;
-//
-// <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
-//            {/* Boton de mostrar opciones*/}
-//            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-//              <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
-//            </button>
-//            <div
-//              id="opciones"
-//              className={`${
-//                mostrarOpciones ? "" : "hidden"
-//              } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
-//            >
-//              {opciones.map((opcion, index) => (
-//                <div
-//                  key={index}
-//                  className={`p-2 hover:border-gray-900 ${
-//                    opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
-//                  }`}
-//                  onClick={() => {
-//                    handleAbrirOpcion(index);
-//                    handleEliminarOpcion(index);
-//                  }}
-//                >
-//                  {opcion}
-//                </div>
-//              ))}
-//            </div>
-//            {/* Resto del código */}
-//            <button className="flex p-2 rounded-lg" onClick={handleClick}>
-//              <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
-//            </button>
-//          </div>
-//
+{
+  /* <section className="bg-red-100 section"> */
+}
+{
+  /*   <div className="container mx-auto bg-red-200"> */
+}
+{
+  /*     <div className="flex flex-col bg-red-300 lg:flex-row lg:gap-x-[100px]"> */
+}
+
+{
+  /*       <div className="flex-1 order-1 bg-blue-400 lg:-order-1"> */
+}
+{
+  /*         <img src={image.type} alt="" /> */
+}
+{
+  /*       </div> */
+}
+
+{
+  /*       <div className="flex flex-col flex-1 justify-end"> */
+}
+{
+  /*         <h2 className="title">{title}</h2> */
+}
+{
+  /*         <p className="subtitle">{subtitle}</p> */
+}
+
+{
+  /*         <div> */
+}
+{
+  /*           {items.map((item, index) => { */
+}
+{
+  /*             const { icon, title, subtitle } = item; */
+}
+{
+  /*             return ( */
+}
+{
+  /*               <div className="flex mb-6 lg:last:mb-0" key={index}> */
+}
+{
+  /*                 <div className="mr-4 text-2xl lg:text-3xl">{icon}</div> */
+}
+{
+  /*                 <div> */
+}
+{
+  /*                   <h4 className="mb-3 text-base font-semibold lg:text-xl"> */
+}
+{
+  /*                     {title} */
+}
+{
+  /*                   </h4> */
+}
+{
+  /*                   <p>{subtitle}</p> */
+}
+{
+  /*                 </div> */
+}
+{
+  /*               </div> */
+}
+{
+  /*             ); */
+}
+{
+  /*           })} */
+}
+{
+  /*         </div> */
+}
+{
+  /*       </div> */
+}
+{
+  /*     </div> */
+}
+{
+  /*   </div> */
+}
+{
+  /* </section> */
+}

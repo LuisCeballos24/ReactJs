@@ -67,22 +67,56 @@
   .testimonialSlider .swiper-button-next {
     display: none;
   }
+  .diagonal-triangle {
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0px 0px 0px 0;
+    border-color: transparent transparent #285e7d transparent; /* Ajusta el color del triángulo */
+  }
 }
 
 .diagonal-triangle {
-  top: 0;
   right: 0;
-  width: 0;
+  width: 12;
   height: 0;
   border-style: solid;
-  border-width: 10px 200px 320px 0;
+  border-width: 10px 200px 308px 0;
   border-color: transparent transparent #285e7d transparent; /* Ajusta el color del triángulo */
 }
 .diagonal-triangle-2 {
   right: 0;
   width: 0;
-  height: 0;
+
   border-style: solid;
-  border-width: 10px 200px 320px 0;
+  border-width: 10px 200px 308px 0;
   border-color: transparent transparent #ea8337 transparent; /* Ajusta el color del triángulo */
 }
+
+/* .triangle-container { */
+/*   position: relative; */
+/*   overflow: hidden; */
+/* } */
+/**/
+/* .triangle { */
+/*   position: absolute; */
+/*   top: -20px; */
+/*   transform: rotate(-30deg); */
+/* } */
+/**/
+/* .triangle-1 { */
+/*   width: 920px; */
+/*   left: -640px; */
+/* } */
+/**/
+/* .triangle-2 { */
+/*   width: 900px; */
+/*   left: -640px; */
+/* } */
+/**/
+/* .content { */
+/*   padding: 10px; */
+/*   margin-bottom: 4px; */
+/* } */
