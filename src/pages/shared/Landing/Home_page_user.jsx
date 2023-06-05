@@ -52,7 +52,7 @@ function Home_Page_user() {
       {/**/}
       <Car showOrder={showOrder} setShowOrder={setShowOrder} />
       {/* Menu movil */}
-      <nav className="bg-[#285e7d]  lg:hidden fixed w-full bottom-0 left-0 text-3xl text-bg-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
+      <nav className="bg-[#285e7d]  lg:hidden z-50 fixed w-full bottom-0 left-0 text-3xl text-bg-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
         <button className="p-2">
           <RiUser3Line />
         </button>
@@ -68,7 +68,7 @@ function Home_Page_user() {
       </nav>
 
       <main className="pb-20 lg:pr-96 lg:pl-32">
-        <div className="grid-cols-1 p-4 sm:grid-cols-2 md:p-8">
+        <div className="grid-cols-1 p-4 md:p-8">
           {/* Header  */}
           {showStore ? (
             <>

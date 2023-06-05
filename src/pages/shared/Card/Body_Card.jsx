@@ -19,7 +19,7 @@ function ProductCatalog() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid z-10 grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => (
         <Card
           key={index}

@@ -73,9 +73,9 @@ function CardAddProduct() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-1 lg:gap-[30px]">
+    <div className="grid grid-cols-1 gap-x-5 gap-16 p-8 md:grid-cols-2 lg:grid-cols-1 md:gap-[30px]">
       <div className="flex items-center p-6 text-left text-gray-300 bg-gray-100 rounded-xl border transition border-grey-300">
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <form>
             <div className="mb-4">
               <label
@@ -137,30 +137,16 @@ function CardAddProduct() {
             </button>
           </form>
         </div>
-        <div className="justify-center w-1/2">
-          //vista
+        <div className="justify-center w-full md:w-1/2">
           <div className="relative left-40 z-20 justify-center border border-gray-600 h-[360px] w-[300px]">
             {previewImages.length > 0 && (
               <img
                 src={previewImages[currentImageIndex]}
                 alt={`Preview ${currentImageIndex + 1}`}
-                className="object-cover rounded w-200 h-200"
+                className="object-cover w-full h-full rounded"
               />
             )}
           </div>
-          {/* {previewImages.length > 1 && ( */}
-          {/*   <div className="flex justify-center mt-4"> */}
-          {/*     {previewImages.map((_, index) => ( */}
-          {/*       <button */}
-          {/*         key={index} */}
-          {/*         className={`w-2 h-2 rounded-full mx-1 ${index === currentImageIndex ? "bg-gray-600" : "bg-gray-400" */}
-          {/*           }`} */}
-          {/*         onClick={() => handleImageChange(index)} */}
-          {/*       /> */}
-          {/*     ))} */}
-          {/*   </div> */}
-          {/* )} */}
-          //
           <div className="flex flex-col justify-center items-center h-full">
             <div className="justify-center mt-4">
               <label className="block mb-2 font-bold text-gray-700">
@@ -180,10 +166,11 @@ function CardAddProduct() {
                 {previewImages.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-4 h-4 mx-1 right-9 rounded-full ${index === currentImageIndex
+                    className={`w-4 h-4 mx-1 right-9 rounded-full ${
+                      index === currentImageIndex
                         ? "bg-blue-500"
                         : "bg-gray-300"
-                      }`}
+                    }`}
                     onClick={() => setCurrentImageIndex(index)}
                   ></button>
                 ))}
