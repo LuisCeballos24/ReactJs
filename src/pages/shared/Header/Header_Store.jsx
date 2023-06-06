@@ -1,54 +1,69 @@
 import React, { useEffect, useState } from "react";
 import { RiSearch2Line } from "react-icons/ri";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { FaCertificate } from "react-icons/fa";
 const Header_Store = () => {
-  return (
-    <div className="grid grid-cols-2 gap-x-5 gap-16 p-8 md:grid-cols-3 lg:grid-cols-1 lg:gap-[30px]">
-      <div className="flex items-center p-6 text-left text-gray-300 bg-gray-200 rounded-xl border transition border-grey-300">
-        <div className="w-1/2"></div>
-        <div className="relative w-1/2">
-          <div className="absolute rounded-bl-2xl transform w-[920px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 left-[-640px]"></div>
-          <div className="absolute rounded-bl-2xl transform w-[900px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle left-[-640px]">
-            <div className="p-10 mb-4">
-              <h2 className="text-3xl font-bold text-gray-50">
-                Bienvenido A mi tienda
-              </h2>
-            </div>
-            <p className="flex flex-1 order-1 p-8 text-gray-100 lg:-order-1">
-              En nuestro sitio, te ofrecemos la oportunidad de explorar una
-              amplia gama de productos y servicios disponibles para el
-              intercambio. Si estás buscando nuevas opciones para intercambiar
-              tus bienes por otros que sean de tu interés, has llegado al lugar
-              adecuado. Nuestra plataforma te brinda la posibilidad de descubrir
-              el objeto perfecto para realizar un emocionante trueque. !
-            </p>
-            <div className="flex items-center mt-4">
-              <div className="flex items-center mr-4">
-                <FaCertificate className="text-2xl text-green-500" />
-                <span className="ml-2 text-sm text-gray-500">
-                  Certificación de calidad
-                </span>
-              </div>
-              <div className="flex items-center">
-                <AiFillStar size={24} className="text-yellow-500" />
-                <AiFillStar size={24} className="text-yellow-500" />
-                <AiFillStar size={24} className="text-yellow-500" />
-                <AiFillStar size={24} className="text-yellow-500" />
-                <AiFillStar size={24} className="text-gray-500" />
-                <span className="ml-2 text-gray-500">(4.0)</span>
-              </div>
-            </div>
-          </div>
+  const [rating, setRating] = useState(0);
 
-          <div className="relative w-full h-80">
+  const handleStarClick = (starIndex) => {
+    setRating(starIndex + 1);
+  };
+  return (
+    <div className="bg-white rounded-lg shadow-lg card">
+      <div className="flex flex-col md:flex-row">
+        <div className="p-6 md:w-1/2">
+          <div className="relative">
             <img
-              id="Promo"
-              src="../../../../public/Store.svg"
-              alt=""
-              className="object-cover w-full h-full rounded-xl promo-image"
+              src="../../../../public/dish.png"
+              alt="Imagen de perfil"
+              className="mx-auto mb-4 w-44 h-44 rounded-full"
             />
           </div>
+          <h3 className="mb-4 text-2xl font-bold">Bienvenido A mi tienda</h3>
+          <div className="mb-4 border-b-2 border-gray-300"></div>
+          <p className="mb-4">
+            Descripción de la promoción que destaca sus beneficios principales.
+          </p>
+          <p className="text-sm italic text-gray-500">
+            En nuestro sitio, te ofrecemos la oportunidad de explorar una amplia
+            gama de productos y servicios disponibles para el intercambio. Si
+            estás buscando nuevas opciones para intercambiar tus bienes por
+            otros que sean de tu interés, has llegado al lugar adecuado. Nuestra
+            plataforma te brinda la posibilidad de descubrir el objeto perfecto
+            para realizar un emocionante trueque. !
+          </p>
+          <div className="flex items-center mt-4">
+            <div className="flex items-center mr-4">
+              {[...Array(5)].map((_, index) => (
+                <span
+                  key={index}
+                  onClick={() => handleStarClick(index)}
+                  className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-500"
+                    }`}
+                >
+                  {index < rating ? (
+                    <AiFillStar size={24} />
+                  ) : (
+                    <AiOutlineStar size={24} />
+                  )}
+                </span>
+              ))}
+              <span className="ml-2 text-gray-500">({rating.toFixed(1)})</span>
+            </div>
+            <div className="flex items-center">
+              <FaCertificate className="text-2xl text-green-500" />
+              <span className="ml-2 text-sm text-gray-500">
+                Certificación de calidad
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col justify-center p-6 md:w-1/2">
+          <img
+            src="../../../../public/Store.svg"
+            alt="Imagen promocional"
+            className="w-full h-auto rounded-lg shadow"
+          />
         </div>
       </div>
     </div>
