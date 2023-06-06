@@ -98,64 +98,40 @@ const Card = (props) => {
     setOpciones(nuevasOpciones);
   };
   return (
-    <div>
-      <div
-        id="Product"
-        className="  shadow-xl flex flex-col gap-2 items-center p-6 text-left text-center text-gray-300 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]"
-      >
-        <div className="flex relative justify-center items-center w-full h-full rounded-[18px] max-w-[285px] max-h-[298px] mb-[15px]">
-          <div className="relative w-72 h-72 mb-[20px]">
-            <img
-              src={images[currentImageIndex]}
-              alt=""
-              className="object-cover absolute inset-0 w-72 h-72 rounded-xl"
-            />
-          </div>
-
-          <ul className="flex absolute bottom-0 justify-center w-full">
-            {images.map((image, index) => (
-              <li
-                key={index}
-                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-                  }`}
-                onClick={() => handleImageClick(index)}
-              ></li>
-            ))}
-          </ul>
-          <div className="flex absolute justify-end bottom-[-27px] right-[-11px]">
-            {/* Boton de mostrar opciones*/}
-            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-              <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
-            </button>
-            <div
-              id="opciones"
-              className={`${mostrarOpciones ? "" : "hidden"
-                } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
-            >
-              {opciones.map((opcion, index) => (
-                <div
-                  key={index}
-                  className={`p-2 hover:border-gray-900 ${opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
-                    }`}
-                  onClick={() => {
-                    handleAbrirOpcion(index);
-                    handleEliminarOpcion(index);
-                  }}
-                >
-                  {opcion}
-                </div>
-              ))}
-            </div>
-            {/* Resto del código */}
-            <button className="flex p-2 rounded-lg" onClick={handleClick}>
-              <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
-            </button>
-          </div>
-        </div>
+    <div
+      id="Card"
+      className="shadow-xl flex flex-col items-center p-6 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
+      style={{ overflow: "hidden" }}
+    >
+      <div className="overflow-hidden relative mb-4 w-72 h-72">
+        <img
+          src={images[currentImageIndex]}
+          alt=""
+          className="object-cover w-full h-full rounded-xl"
+        />
       </div>
-      <div className="py-2 ml-4">
-        <p className="text-xl font-semibold text-gray-900 lg:text-xl">{name}</p>
-        <span className="text-gray-600">${price}</span>
+      <ul className="flex justify-center mb-4">
+        {images.map((image, index) => (
+          <li
+            key={index}
+            className={`w-2 h-2 rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+              }`}
+            onClick={() => handleImageClick(index)}
+          ></li>
+        ))}
+      </ul>
+      <div className="flex justify-between items-center w-full">
+        <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
+          <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
+        </button>
+
+        <button className="flex p-2 rounded-lg" onClick={handleClick}>
+          <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />
+        </button>
+      </div>
+      <div className="mt-2">
+        <p className="text-xl font-semibold text-gray-900">{name}</p>
+        <p className="text-gray-600">${price}</p>
         <p className="text-gray-600">{inventory} available</p>
       </div>
     </div>

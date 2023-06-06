@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { RiSearch2Line } from "react-icons/ri";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { FaCertificate } from "react-icons/fa";
+import { FaCertificate, FaTags } from "react-icons/fa";
 const Header_Store = () => {
   const [rating, setRating] = useState(0);
 
@@ -19,7 +19,9 @@ const Header_Store = () => {
               className="mx-auto mb-4 w-44 h-44 rounded-full"
             />
           </div>
-          <h3 className="mb-4 text-2xl font-bold">Bienvenido A mi tienda</h3>
+          <h3 className="mb-4 text-2xl font-bold text-center">
+            Bienvenido A mi tienda
+          </h3>
           <div className="mb-4 border-b-2 border-gray-300"></div>
           <p className="mb-4">
             Descripción de la promoción que destaca sus beneficios principales.

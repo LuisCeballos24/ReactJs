@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { RiSearch2Line } from "react-icons/ri";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { FaCertificate, FaTags, FaStore } from "react-icons/fa";
 import { features } from "../../../data.jsx";
 
-const Card = () => {
+const Card_p = () => {
+  const [rating, setRating] = useState(0);
+
+  const handleStarClick = (starIndex) => {
+    setRating(starIndex + 1);
+  };
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [triangle2Display, setTriangle2Display] = useState("block");
 
@@ -27,136 +35,100 @@ const Card = () => {
   const triangle1Width = windowWidth >= 1280 ? 920 : 600;
 
   return (
-    <div className="container mx-auto">
-      <div className="flex flex-col items-center p-6 text-left bg-gray-300 rounded-xl border transition lg:flex-row border-grey-300">
-        {/* seccion  */}
-        <div className="w-full md:w-1/2"></div>
-        <div className="relative md:w-96">
-          <div className="absolute h-80">
-            <div
-              className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 md:w-[925px] md:left-[-600px]"
-              style={{ display: triangle2Display }}
-            ></div>
-            <div
-              className="absolute rounded-bl-2xl transform rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle md:w-[900px] md:left-[-600px]"
-              style={{ display: triangle2Display }}
-            >
-              <div className="p-10 mb-4">
-                <h2 className="text-3xl font-bold text-gray-50">
-                  Bienvenido al Intercambio de Bienes
-                </h2>
+    <div className="bg-white rounded-lg shadow-lg card">
+      <div className="flex flex-col md:flex-row">
+        <div className="p-6 md:w-1/2">
+          <div className="relative">
+            <img
+              src="../../../../public/dish.png"
+              alt="Imagen de perfil"
+              className="mx-auto mb-4 w-24 h-24 rounded-full"
+            />
+            <div className="relative py-1 my-10 mt-11">
+              <div className="relative">
+                <div className="absolute top-1/2 left-1/2 w-4/5 h-0.5 bg-gray-300 transform -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="flex absolute top-1/2 left-1/2 justify-center items-center w-10 h-10 bg-white rounded-full border-2 border-gray-300 transform -translate-x-1/2 -translate-y-1/2">
+                  <FaStore className="text-lg text-gray-500" />
+                </div>
               </div>
-              <p className="flex flex-1 order-1 p-8 text-gray-100 lg:-order-1">
-                En nuestro sitio, puedes explorar una amplia variedad de
-                productos y servicios disponibles para el intercambio. Descubre
-                nuevas oportunidades para intercambiar tus bienes por otros que
-                sean de tu interés. ¡Encuentra el objeto perfecto para
-                intercambiar y haz un trueque emocionante!
-              </p>
+            </div>
+            <h3 className="mb-5 text-2xl font-bold text-center">
+              Título de la promoción
+            </h3>
+          </div>
+
+          <div className="mb-4 border-b-2 border-gray-300"></div>
+          <p className="mb-4">
+            Descripción de la promoción que destaca sus beneficios principales.
+          </p>
+          <p className="text-sm italic text-gray-500">
+            Detalles adicionales de la promoción, fechas, condiciones, etc.
+          </p>
+          <div className="flex items-center mt-4">
+            <div className="flex items-center mr-4">
+              {[...Array(5)].map((_, index) => (
+                <span
+                  key={index}
+                  onClick={() => handleStarClick(index)}
+                  className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-500"
+                    }`}
+                >
+                  {index < rating ? (
+                    <AiFillStar size={24} />
+                  ) : (
+                    <AiOutlineStar size={24} />
+                  )}
+                </span>
+              ))}
+              <span className="ml-2 text-gray-500">({rating.toFixed(1)})</span>
+            </div>
+            <div className="flex items-center">
+              <FaCertificate className="text-2xl text-green-500" />
+              <span className="ml-2 text-sm text-gray-500">
+                Certificación de calidad
+              </span>
             </div>
           </div>
-          <div className="relative w-full h-80">
-            <img
-              id="Promo"
-              src="../../../../public/Business.svg"
-              alt=""
-              className="object-cover w-full h-full rounded-xl promo-image"
-            />
+        </div>
+        <div className="flex flex-col justify-center p-6 md:w-1/2">
+          <div className="relative">
+            <div className="absolute top-1/2 left-1/2 w-4/5 h-0.5 bg-gray-300 transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex absolute top-1/2 left-1/2 justify-center items-center w-10 h-10 bg-white rounded-full border-2 border-gray-300 transform -translate-x-1/2 -translate-y-1/2">
+              <FaTags className="text-lg text-gray-500" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-3">
+            <div className="flex flex-col items-center text-center">
+              <img
+                src="../../../../public/Store.svg"
+                alt="Imagen promocional 1"
+                className="w-full h-auto rounded-lg shadow"
+              />
+              <h4 className="mt-2 text-lg font-bold">Título de la imagen 1</h4>
+              <p className="text-sm text-gray-500">Descuento: 20%</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <img
+                src="../../../../public/Store.svg"
+                alt="Imagen promocional 2"
+                className="w-full h-auto rounded-lg shadow"
+              />
+              <h4 className="mt-2 text-lg font-bold">Título de la imagen 2</h4>
+              <p className="text-sm text-gray-500">Descuento: 15%</p>
+            </div>
+            <div className="flex flex-col items-center text-center">
+              <img
+                src="../../../../public/Store.svg"
+                alt="Imagen promocional 3"
+                className="w-full h-auto rounded-lg shadow"
+              />
+              <h4 className="mt-2 text-lg font-bold">Título de la imagen 3</h4>
+              <p className="text-sm text-gray-500">Descuento: 10%</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
-
-export default Card;
-{
-  /* <section className="bg-red-100 section"> */
-}
-{
-  /*   <div className="container mx-auto bg-red-200"> */
-}
-{
-  /*     <div className="flex flex-col bg-red-300 lg:flex-row lg:gap-x-[100px]"> */
-}
-
-{
-  /*       <div className="flex-1 order-1 bg-blue-400 lg:-order-1"> */
-}
-{
-  /*         <img src={image.type} alt="" /> */
-}
-{
-  /*       </div> */
-}
-
-{
-  /*       <div className="flex flex-col flex-1 justify-end"> */
-}
-{
-  /*         <h2 className="title">{title}</h2> */
-}
-{
-  /*         <p className="subtitle">{subtitle}</p> */
-}
-
-{
-  /*         <div> */
-}
-{
-  /*           {items.map((item, index) => { */
-}
-{
-  /*             const { icon, title, subtitle } = item; */
-}
-{
-  /*             return ( */
-}
-{
-  /*               <div className="flex mb-6 lg:last:mb-0" key={index}> */
-}
-{
-  /*                 <div className="mr-4 text-2xl lg:text-3xl">{icon}</div> */
-}
-{
-  /*                 <div> */
-}
-{
-  /*                   <h4 className="mb-3 text-base font-semibold lg:text-xl"> */
-}
-{
-  /*                     {title} */
-}
-{
-  /*                   </h4> */
-}
-{
-  /*                   <p>{subtitle}</p> */
-}
-{
-  /*                 </div> */
-}
-{
-  /*               </div> */
-}
-{
-  /*             ); */
-}
-{
-  /*           })} */
-}
-{
-  /*         </div> */
-}
-{
-  /*       </div> */
-}
-{
-  /*     </div> */
-}
-{
-  /*   </div> */
-}
-{
-  /* </section> */
-}
+export default Card_p;
