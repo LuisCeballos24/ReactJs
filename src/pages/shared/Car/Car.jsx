@@ -89,9 +89,8 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${
-        showOrder ? "right-0" : "-right-full"
-      }`}
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
+        }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -99,17 +98,17 @@ const Card_car = (props) => {
           onClick={() => setShowOrder(false)}
           className="box-content absolute top-4 left-4 p-3 text-xl text-gray-900 bg-white rounded-full lg:hidden"
         />
-        <h1 className="my-4 text-2xl text-gray-900">Orders</h1>
+        {/*   <h1 className="my-4 text-2xl text-gray-900">Orders</h1> */}
         {/* Pills */}
         <div className="flex flex-wrap gap-4 items-center mb-8">
           <button className="bg-[#E89440] text-white py-2 px-4 rounded-xl">
-            Dine In
+            Compras
           </button>
           <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
-            To Go
+            Intercambio
           </button>
           <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
-            Delivery
+            Subasta
           </button>
         </div>
         {/* Car */}
@@ -154,11 +153,11 @@ const Card_car = (props) => {
                   {/* Note */}
                   <div className="grid grid-cols-6 items-center">
                     <form className="col-span-4">
-                      <input
-                        type="text"
-                        className="bg-white py-2 px-1 rounded-lg outline-none border border-[#4da7a5]"
-                        placeholder="Order note."
-                      />
+                      {/* <input */}
+                      {/*   type="text" */}
+                      {/*   className="bg-white py-2 px-1 rounded-lg outline-none border border-[#4da7a5]" */}
+                      {/*   placeholder="Order note." */}
+                      {/* /> */}
                     </form>
                     <div className="flex space-x-1">
                       <button

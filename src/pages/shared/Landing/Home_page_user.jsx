@@ -31,7 +31,7 @@ export const changeShowStore = (toggleStore) => {
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
-  const [showStore, setShowStore] = useState(false);
+  const [showStore, setShowStore] = useState(true);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -85,7 +85,7 @@ function Home_Page_user() {
               <ProductCatalog />
             </>
           )}
-          {/* <CardAddProduct /> */}
+          <CardAddProduct />
         </div>
       </main>
     </div>

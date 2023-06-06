@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db, auth } from "../../../utils/firebase.js";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { db, auth, storage } from "../../../utils/firebase.js";
 
 function CardAddProduct() {
   const [previewImages, setPreviewImages] = useState([]);
-
+  const [user] = useAuthState(auth);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
 
   const handleImageUpload = (event) => {
     const files = event.target.files;
@@ -27,6 +31,46 @@ function CardAddProduct() {
       setPreviewImages(imageUrls);
       setCurrentImageIndex(0);
     });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Agregar el producto a Firestore
+      const productRef = await db.collection("productos").add({
+        id: Date.now(), // Asignar un ID único al producto
+        name,
+        description,
+        price,
+        uid: user.uid, // Agregar el UID del usuario autenticado como propietario del producto
+      });
+
+      // Subir las imágenes al Storage
+      //
+      const urls = await Promise.all(
+        imageUrls.map(async (imageUrl) => {
+          const imageFile = await fetch(imageUrl).then((res) => res.blob());
+          const uploadTask = storage
+            .ref(`images/${productRef.id}/${imageFile.name}`)
+            .put(imageFile);
+          const snapshot = await uploadTask;
+          const url = await snapshot.ref.getDownloadURL();
+          return url;
+        })
+      );
+
+      // Actualizar el producto con las URLs de las imágenes
+      await productRef.update({ images: urls });
+
+      // Reiniciar el formulario
+      setName("");
+      setDescription("");
+      setPrice("");
+      setImageUrls([]);
+      alert("Producto agregado");
+    } catch (error) {
+      console.error("Error al agregar el producto:", error);
+    }
   };
 
   const handleImageChange = (index) => {
@@ -76,7 +120,7 @@ function CardAddProduct() {
     <div className="grid grid-cols-1 gap-x-5 gap-16 p-8 md:grid-cols-2 lg:grid-cols-1 md:gap-[30px]">
       <div className="flex items-center p-6 text-left text-gray-300 bg-gray-100 rounded-xl border transition border-grey-300">
         <div className="w-full md:w-1/2">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -87,6 +131,8 @@ function CardAddProduct() {
               <input
                 type="text"
                 id="name"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
             </div>
@@ -98,8 +144,10 @@ function CardAddProduct() {
                 Precio:
               </label>
               <input
+                onChange={(e) => setPrice(e.target.value)}
                 type="number"
                 id="price"
+                name="price"
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
             </div>
@@ -124,8 +172,10 @@ function CardAddProduct() {
                 Categoría:
               </label>
               <input
+                onChange={(e) => setDescription(e.target.value)}
                 type="text"
-                id="category"
+                id="description"
+                name="description"
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
             </div>
@@ -166,11 +216,10 @@ function CardAddProduct() {
                 {previewImages.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-4 h-4 mx-1 right-9 rounded-full ${
-                      index === currentImageIndex
+                    className={`w-4 h-4 mx-1 right-9 rounded-full ${index === currentImageIndex
                         ? "bg-blue-500"
                         : "bg-gray-300"
-                    }`}
+                      }`}
                     onClick={() => setCurrentImageIndex(index)}
                   ></button>
                 ))}

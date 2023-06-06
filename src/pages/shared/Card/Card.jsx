@@ -1,9 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RiCloseLine, RiExchangeBoxLine } from "react-icons/ri";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
-import { db2 } from "../../../utils/firebase.js";
+import { db, auth } from "../../../utils/firebase.js";
 
 const Card = (props) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -16,11 +17,21 @@ const Card = (props) => {
   const [opcionAbierta, setOpcionAbierta] = useState(null);
   const [opcionAbiertaProducto, setOpcionAbiertaProducto] = useState(null);
 
+  const [products, loading, error] = useCollectionData(
+    db.collection("productos").where("uid", "==", auth.currentUser.uid)
+  );
   const [opciones, setOpciones] = useState([
     "Opción 1",
     "Opción 2",
     "Opción 3",
   ]);
+
+  useEffect(() => {
+    if (products) {
+      const opciones = products.map((producto) => producto.name);
+      setOpciones(opciones);
+    }
+  }, [products]);
 
   const handleClick = async () => {
     console.log("------- Agregado -----");
@@ -29,7 +40,7 @@ const Card = (props) => {
 
     try {
       // Verificar si el producto ya está en el carrito
-      const querySnapshot = await db2
+      const querySnapshot = await db
         .collection("Carrito")
         /*  .where("id_user", "==", userId) */
         .where("id", "==", productId)
@@ -38,7 +49,7 @@ const Card = (props) => {
       if (!querySnapshot.empty) {
         // Si el producto ya está en el carrito, actualizar la cantidad
         const docId = querySnapshot.docs[0].id;
-        const docRef = db2.collection("Carrito").doc(docId);
+        const docRef = db.collection("Carrito").doc(docId);
         const docSnapshot = await docRef.get();
         await docRef.update({
           cantidad: docSnapshot.data().cantidad + 1,
@@ -90,7 +101,7 @@ const Card = (props) => {
     <div>
       <div
         id="Product"
-        className="flex flex-col gap-2 items-center p-6 text-left text-center text-gray-300 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]"
+        className="  shadow-xl flex flex-col gap-2 items-center p-6 text-left text-center text-gray-300 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]"
       >
         <div className="flex relative justify-center items-center w-full h-full rounded-[18px] max-w-[285px] max-h-[298px] mb-[15px]">
           <div className="relative w-72 h-72 mb-[20px]">
@@ -105,9 +116,8 @@ const Card = (props) => {
             {images.map((image, index) => (
               <li
                 key={index}
-                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${
-                  index === currentImageIndex ? "bg-gray-600" : ""
-                }`}
+                className={`w-2 h-2  rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+                  }`}
                 onClick={() => handleImageClick(index)}
               ></li>
             ))}
@@ -119,16 +129,14 @@ const Card = (props) => {
             </button>
             <div
               id="opciones"
-              className={`${
-                mostrarOpciones ? "" : "hidden"
-              } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
+              className={`${mostrarOpciones ? "" : "hidden"
+                } absolute right-0 py-5 mt-8 w-48 text-gray-800 bg-white rounded shadow-lg`}
             >
               {opciones.map((opcion, index) => (
                 <div
                   key={index}
-                  className={`p-2 hover:border-gray-900 ${
-                    opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
-                  }`}
+                  className={`p-2 hover:border-gray-900 ${opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
+                    }`}
                   onClick={() => {
                     handleAbrirOpcion(index);
                     handleEliminarOpcion(index);

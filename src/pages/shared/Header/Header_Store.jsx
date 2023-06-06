@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiSearch2Line } from "react-icons/ri";
 import { AiFillStar } from "react-icons/ai";
 import { FaCertificate } from "react-icons/fa";
@@ -15,7 +15,7 @@ const Header_Store = () => {
                 Bienvenido A mi tienda
               </h2>
             </div>
-            <p className="p-8 text-gray-100 w-[600px]">
+            <p className="flex flex-1 order-1 p-8 text-gray-100 lg:-order-1">
               En nuestro sitio, te ofrecemos la oportunidad de explorar una
               amplia gama de productos y servicios disponibles para el
               intercambio. Si estás buscando nuevas opciones para intercambiar

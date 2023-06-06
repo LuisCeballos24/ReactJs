@@ -5,7 +5,7 @@ import { db, auth } from "../../../utils/firebase.js";
 
 function ProductCatalog_user() {
   const [products, loading, error] = useCollectionData(
-    db.collection("productos")
+    db.collection("productos").where("uid", "==", auth.currentUser.uid)
   );
 
   if (loading) {
