@@ -4,15 +4,14 @@ import { RiCloseLine, RiExchangeBoxLine } from "react-icons/ri";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
-import { db, auth } from "../../../utils/firebase.js";
-
+import { db, auth, storage } from "../../../utils/firebase.js";
+const images = ["chair.png", "dish.png", "../../media/img/hero-bg.png"];
 const Card = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
   const { name, img, description, price, productId, inventory } = props;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const images = ["chair.png", "dish.png", "../../media/img/hero-bg.png"];
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
   const [opcionAbierta, setOpcionAbierta] = useState(null);
   const [opcionAbiertaProducto, setOpcionAbiertaProducto] = useState(null);
@@ -25,6 +24,66 @@ const Card = (props) => {
     "Opción 2",
     "Opción 3",
   ]);
+
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    const getImagesFromStorage = async () => {
+      try {
+        const storageRef = storage.ref(); // Obtener la referencia a la raíz del Storage
+
+        const urls = await Promise.all(
+          images.map(async (imageName) => {
+            const imageUrl = await storageRef.child(imageName).getDownloadURL();
+            return imageUrl;
+          })
+        );
+
+        setImageUrls(urls);
+      } catch (error) {
+        console.error("Error al obtener las imágenes:", error);
+        // Maneja el error de alguna manera apropiada
+      }
+    };
+
+    getImagesFromStorage();
+  }, []); // Ejemplo de uso:
+  const fetchImages = async () => {
+    try {
+      const urls = await getImagesFromStorage();
+      console.log("URLs de las imágenes:", urls);
+      // Realiza cualquier otra operación con las URLs de las imágenes
+    } catch (error) {
+      console.error("Error al obtener las imágenes:", error);
+      // Maneja el error de alguna manera apropiada
+    }
+  };
+
+  useEffect(() => {
+    const fetchImageUrls = async () => {
+      try {
+        const imagePromises = images.map(async (imageName) => {
+          // Obtener la referencia al archivo en Firebase Storage
+          const imageRef = storage.ref(imageName);
+
+          // Obtener la URL de descarga del archivo
+          const url = await imageRef.getDownloadURL();
+
+          return url;
+        });
+
+        // Esperar a que todas las promesas se resuelvan y obtener las URLs de las imágenes
+        const urls = await Promise.all(imagePromises);
+
+        // Establecer las URLs de las imágenes en el estado
+        setImageUrls(urls);
+      } catch (error) {
+        console.error("Error al obtener las URLs de las imágenes:", error);
+      }
+    };
+
+    fetchImageUrls();
+  }, []);
 
   useEffect(() => {
     if (products) {
@@ -44,6 +103,8 @@ const Card = (props) => {
         .collection("Carrito")
         /*  .where("id_user", "==", userId) */
         .where("id", "==", productId)
+        .where("uid", "==", auth.currentUser.uid)
+
         .get();
 
       if (!querySnapshot.empty) {
@@ -83,6 +144,7 @@ const Card = (props) => {
   };
 
   const handleClickChange = () => {
+    console.log(mostrarOpciones);
     setMostrarOpciones(!mostrarOpciones);
   };
 
@@ -114,7 +176,7 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-2 h-2 rounded-full bg-gray-100 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
               }`}
             onClick={() => handleImageClick(index)}
           ></li>
@@ -124,6 +186,27 @@ const Card = (props) => {
         <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
           <RiExchangeBoxLine className="text-xl bg-white hover:text-yellow-700 text-primary" />
         </button>
+        <div
+          id="opciones"
+          className={`${mostrarOpciones ? "" : "hidde  inset-0 fixed "
+            }right-0 top-full py-5 mt-4 w-52 cursor-pointer  text-gray-800 bg-white rounded shadow-lg z-50 `}
+          style={{ overflow: "hidden" }}
+        >
+          {opciones.map((opcion, index) => (
+            <div
+              key={index}
+              className={`p-2 hover:border-gray-900 ${opcionAbierta === index ? "bg-[#286f6c] text-white" : ""
+                }`}
+              onClick={() => {
+                handleAbrirOpcion(index);
+                handleEliminarOpcion(index);
+              }}
+            >
+              {index}
+              {opcion}
+            </div>
+          ))}
+        </div>
 
         <button className="flex p-2 rounded-lg" onClick={handleClick}>
           <BsCartPlus className="text-xl bg-white hover:text-green-500 text-primary" />

@@ -22,6 +22,7 @@ import ProductCatalog from "../Card/Body_Card";
 import ProductCatalog_user from "../Card/Body_card_user";
 import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
+import Card_product from "../Card/Card_product";
 
 export const changeShowStore = (toggleStore) => {
   console.log("Hola mundo");
@@ -85,6 +86,7 @@ function Home_Page_user() {
               <ProductCatalog />
             </>
           )}
+          <Card_product />
           <CardAddProduct />
         </div>
       </main>

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db, auth, storage } from "../../../utils/firebase.js";
+import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
+import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 function CardAddProduct() {
   const [previewImages, setPreviewImages] = useState([]);
@@ -46,16 +48,20 @@ function CardAddProduct() {
       });
 
       // Subir las imágenes al Storage
-      //
       const urls = await Promise.all(
-        imageUrls.map(async (imageUrl) => {
-          const imageFile = await fetch(imageUrl).then((res) => res.blob());
-          const uploadTask = storage
-            .ref(`images/${productRef.id}/${imageFile.name}`)
-            .put(imageFile);
-          const snapshot = await uploadTask;
-          const url = await snapshot.ref.getDownloadURL();
-          return url;
+        previewImages.map(async (imageUrl) => {
+          try {
+            const imageFile = await fetch(imageUrl).then((res) => res.blob());
+            const uploadTask = storage
+              .ref(`images/${productRef.id}/${imageFile.name}`)
+              .put(imageFile);
+            const snapshot = await uploadTask;
+            const url = await snapshot.ref.getDownloadURL();
+            return url;
+          } catch (error) {
+            console.error("Error al subir una imagen:", error);
+            throw error;
+          }
         })
       );
 
@@ -66,13 +72,15 @@ function CardAddProduct() {
       setName("");
       setDescription("");
       setPrice("");
-      setImageUrls([]);
+      setPreviewImages([]);
       alert("Producto agregado");
     } catch (error) {
       console.error("Error al agregar el producto:", error);
+      alert(
+        "Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo."
+      );
     }
   };
-
   const handleImageChange = (index) => {
     setCurrentImageIndex(index);
   };
@@ -117,10 +125,12 @@ function CardAddProduct() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-x-5 gap-16 p-8 md:grid-cols-2 lg:grid-cols-1 md:gap-[30px]">
-      <div className="flex items-center p-6 text-left text-gray-300 bg-gray-100 rounded-xl border transition border-grey-300">
-        <div className="w-full md:w-1/2">
-          <form onSubmit={handleSubmit}>
+    <div className="flex justify-center p-8 shadow-lg">
+      <div className="flex flex-col bg-white rounded-xl border-t border-b">
+        <h2 className="p-4 text-2xl font-bold lef-3">Agregar producto</h2>
+        <div className="flex flex-col md:flex-row md:mt-0">
+          <div className="p-11 text-gray-300 bg-white rounded-xl border-t border-b border-l transition md:mt-0 md:w-1/2 right-46 md:w-1/2text-left">
+            {/* ... Código del formulario ... */}
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -135,194 +145,194 @@ function CardAddProduct() {
                 onChange={(e) => setName(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
-            </div>
-            <div className="mb-4">
               <label
-                htmlFor="price"
-                className="block mb-2 font-bold text-gray-900"
-              >
-                Precio:
-              </label>
-              <input
-                onChange={(e) => setPrice(e.target.value)}
-                type="number"
-                id="price"
-                name="price"
-                className="p-2 text-gray-800 rounded-lg border border-gray-300"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="quantity"
-                className="block mb-2 font-bold text-gray-900"
-              >
-                Cantidad:
-              </label>
-              <input
-                type="number"
-                id="quantity"
-                className="p-2 text-gray-800 rounded-lg border border-gray-300"
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="category"
+                htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
               >
-                Categoría:
+                Nombre:
               </label>
               <input
-                onChange={(e) => setDescription(e.target.value)}
                 type="text"
-                id="description"
-                name="description"
+                id="name"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
-            </div>
-            <button
-              type="submit"
-              className="py-2 px-4 font-bold text-white bg-blue-500 rounded"
-            >
-              Agregar producto
-            </button>
-          </form>
-        </div>
-        <div className="justify-center w-full md:w-1/2">
-          <div className="relative left-40 z-20 justify-center border border-gray-600 h-[360px] w-[300px]">
-            {previewImages.length > 0 && (
-              <img
-                src={previewImages[currentImageIndex]}
-                alt={`Preview ${currentImageIndex + 1}`}
-                className="object-cover w-full h-full rounded"
-              />
-            )}
-          </div>
-          <div className="flex flex-col justify-center items-center h-full">
-            <div className="justify-center mt-4">
-              <label className="block mb-2 font-bold text-gray-700">
-                Vista previa de imágenes:
+              <label
+                htmlFor="name"
+                className="block mb-2 font-bold text-gray-700"
+              >
+                Nombre:
               </label>
-              <div className="flex flex-wrap gap-2">
-                {previewImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Preview ${index + 1}`}
-                    className="object-cover w-24 h-24 rounded-md"
-                  />
-                ))}
+              <input
+                type="text"
+                id="name"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                className="p-2 text-gray-800 rounded-lg border border-gray-300"
+              />
+              <label
+                htmlFor="name"
+                className="block mb-2 font-bold text-gray-700"
+              >
+                Nombre:
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+                className="p-2 text-gray-800 rounded-lg border border-gray-300"
+              />
+              {/* Resto de inputs del formulario */}
+            </div>
+          </div>
+          <div className="flex items-center p-6 text-left text-gray-300 bg-white border-t border-b transition">
+            {/* ... Código del formulario ... */}
+
+            <div className="mb-4">
+              {/* Resto de inputs del formulario */}{" "}
+              <div className="container">
+                <div className="p-4 border border-red-500">Contenido 1</div>{" "}
+                {/* Área con borde rojo */}
+                <div className="p-4">Contenido 2</div>
+                <div className="p-4 border-t border-b border-blue-500">
+                  Contenido 3
+                </div>{" "}
+                {/* Área superior e inferior con borde azul */}
+                <div className="p-4">Contenido 4</div>
+                <div className="p-4 border border-green-500">
+                  Contenido 5
+                </div>{" "}
+                {/* Área con borde verde */}
               </div>
-              <div className="flex mt-2">
-                {previewImages.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`w-4 h-4 mx-1 right-9 rounded-full ${index === currentImageIndex
-                        ? "bg-blue-500"
-                        : "bg-gray-300"
-                      }`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  ></button>
-                ))}
+              <div className="flex gap-3 items-center mt-4">
+                <div className="flex justify-end mb-2">
+                  <button className="p-2 h-14 text-white bg-green-400 rounded-full">
+                    <FaShoppingCart size={20} />
+                  </button>
+                </div>
+                <div className="flex justify-end mb-2">
+                  <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
+                    <FaExchangeAlt size={20} />
+                  </button>
+                </div>
+              </div>{" "}
+            </div>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6 text-left text-gray-300 bg-white rounded-xl border-t border-r border-b transition">
+            <div className="relative justify-center border border-gray-600 h-[360px] w-[300px]">
+              {/* ... Código de la imagen principal ... */}
+              <div className="relative left-0 z-20 justify-center border h-[360px] w-[300px]">
+                {previewImages.length > 0 && (
+                  <img
+                    src={previewImages[currentImageIndex]}
+                    alt={`Preview ${currentImageIndex + 1}`}
+                    className="object-cover w-full h-full rounded"
+                  />
+                )}
               </div>
             </div>
-            <label
-              htmlFor="images"
-              className="mt-4 mb-2 font-bold text-gray-700"
-            >
-              Subir imagen:
-            </label>
-            <input
-              type="file"
-              id="images"
-              className="p-2 rounded-lg border border-gray-300"
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-            />
+            <div className="flex flex-col justify-center items-center h-full">
+              <div className="justify-center mt-4">
+                {/* ... Código de las imágenes previas ... */}
+                <div className="justify-center mt-4">
+                  <label className="block mb-2 font-bold text-gray-700">
+                    Imágenes previas:
+                  </label>
+                  <div className="flex justify-center space-x-2">
+                    {previewImages.map((image, index) => (
+                      <button
+                        key={index}
+                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
+                            ? "bg-blue-500"
+                            : "bg-gray-300"
+                          }`}
+                        onClick={() => handleImageChange(index)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <label
+                htmlFor="images"
+                className="mt-4 mb-2 font-bold text-gray-700"
+              >
+                Subir imagen:
+              </label>
+              {/* Resto del código del input de imágenes */}
+              <input
+                type="file"
+                id="images"
+                name="images"
+                onChange={handleImageUpload}
+                multiple
+                className="p-2 text-gray-800 rounded-lg"
+              />
+            </div>
           </div>
         </div>
+        <button
+          type="submit"
+          className="py-2 px-4 mt-4 ml-4 text-white bg-blue-500 rounded"
+          onClick={handleSubmit}
+        >
+          Agregar producto
+        </button>
       </div>
     </div>
   );
 }
 
 export default CardAddProduct;
-
-{
-  /* <div className="relative w-1/2"> */
-}
-{
-  /*   <div className="absolute rounded-bl-2xl transform w-[920px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle-2 left-[-640px]"></div> */
-}
-{
-  /*   <div className="absolute rounded-bl-2xl transform w-[900px] rounded-lg-2xl top-[-20px] -rotate-30 diagonal-triangle left-[-640px]"> */
-}
-{
-  /*     <div className="p-10 mb-4"> */
-}
-{
-  /*       <h2 className="text-3xl font-bold text-gray-50"> */
-}
-{
-  /*         Bienvenido al Intercambio de Bienes */
-}
-{
-  /*       </h2> */
-}
-{
-  /*     </div> */
-}
-{
-  /*     <p className="p-8 text-gray-100 w-[600px]"> */
-}
-{
-  /*       En nuestro sitio, puedes explorar una amplia variedad de productos */
-}
-{
-  /*       y servicios disponibles para el intercambio. Descubre nuevas */
-}
-{
-  /*       oportunidades para intercambiar tus bienes por otros que sean de */
-}
-{
-  /*       tu interés. ¡Encuentra el objeto perfecto para intercambiar y haz */
-}
-{
-  /*       un trueque emocionante! */
-}
-{
-  /*     </p> */
-}
-{
-  /*   </div> */
-}
-{
-  /**/
-}
-{
-  /*   <div className="relative w-full h-80"> */
-}
-{
-  /*     <img */
-}
-{
-  /*       id="Promo" */
-}
-{
-  /*       src="../../../../public/Business.svg" */
-}
-{
-  /*       alt="" */
-}
-{
-  /*       className="object-cover w-full h-full rounded-xl promo-image" */
-}
-{
-  /*     /> */
-}
-{
-  /*   </div> */
-}
-{
-  /* </div> */
-}
+<div className="flex items-center p-6 text-left text-gray-300 bg-gray-100 rounded-xl border transition border-grey-300">
+  {/* ... Código del formulario ... */}
+  <div className="mb-4">
+    <label htmlFor="name" className="block mb-2 font-bold text-gray-700">
+      Nombre:
+    </label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      onChange={(e) => setName(e.target.value)}
+      className="p-2 text-gray-800 rounded-lg border border-gray-300"
+    />
+  </div>
+  <div className="mb-4">
+    <label htmlFor="price" className="block mb-2 font-bold text-gray-900">
+      Precio:
+    </label>
+    <input
+      onChange={(e) => setPrice(e.target.value)}
+      type="number"
+      id="price"
+      name="price"
+      className="p-2 text-gray-800 rounded-lg border border-gray-300"
+    />
+  </div>
+  <div className="mb-4">
+    <label htmlFor="quantity" className="block mb-2 font-bold text-gray-900">
+      Cantidad:
+    </label>
+    <input
+      type="number"
+      id="quantity"
+      className="p-2 text-gray-800 rounded-lg border border-gray-300"
+    />
+  </div>
+  <div className="mb-4">
+    <label htmlFor="category" className="block mb-2 font-bold text-gray-700">
+      Categoría:
+    </label>
+    <input
+      onChange={(e) => setDescription(e.target.value)}
+      type="text"
+      id="description"
+      name="description"
+      className="p-2 text-gray-800 rounded-lg border border-gray-300"
+    />
+  </div>
+</div>;
