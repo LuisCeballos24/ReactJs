@@ -142,6 +142,7 @@ function CardAddProduct() {
                 type="text"
                 id="name"
                 name="name"
+                placeholder="Ingresa el nombre del producto"
                 onChange={(e) => setName(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
@@ -149,7 +150,7 @@ function CardAddProduct() {
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
               >
-                Nombre:
+                descripcion:
               </label>
               <input
                 type="text"
@@ -162,10 +163,10 @@ function CardAddProduct() {
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
               >
-                Nombre:
+                Precio:
               </label>
               <input
-                type="text"
+                type="number"
                 id="name"
                 name="name"
                 onChange={(e) => setName(e.target.value)}
@@ -175,10 +176,10 @@ function CardAddProduct() {
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
               >
-                Nombre:
+                Cantidad:
               </label>
               <input
-                type="text"
+                type="number"
                 id="name"
                 name="name"
                 onChange={(e) => setName(e.target.value)}
@@ -192,28 +193,25 @@ function CardAddProduct() {
 
             <div className="mb-4">
               {/* Resto de inputs del formulario */}{" "}
-              <div className="container">
-                <div className="p-4 border border-red-500">Contenido 1</div>{" "}
-                {/* Área con borde rojo */}
-                <div className="p-4">Contenido 2</div>
-                <div className="p-4 border-t border-b border-blue-500">
-                  Contenido 3
-                </div>{" "}
-                {/* Área superior e inferior con borde azul */}
-                <div className="p-4">Contenido 4</div>
-                <div className="p-4 border border-green-500">
-                  Contenido 5
-                </div>{" "}
-                {/* Área con borde verde */}
-              </div>
+              {/* <div className="container"> */}
+              {/*   <div className="p-4 border border-red-500">Contenido 1</div>{" "} */}
+              {/*   <div className="p-4">Contenido 2</div> */}
+              {/*   <div className="p-4 border-t border-b border-blue-500"> */}
+              {/*     Contenido 3 */}
+              {/*   </div>{" "} */}
+              {/*   <div className="p-4">Contenido 4</div> */}
+              {/*   <div className="p-4 border border-green-500"> */}
+              {/*     Contenido 5 */}
+              {/*   </div>{" "} */}
+              {/* </div> */}
               <div className="flex gap-3 items-center mt-4">
                 <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-white bg-green-400 rounded-full">
+                  <button className="p-2 h-14 text-green-400 bg-white rounded-full hover:text-white hover:bg-green-400">
                     <FaShoppingCart size={20} />
                   </button>
                 </div>
                 <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
+                  <button className="p-2 h-14 text-yellow-400 bg-white rounded-full hover:text-white hover:bg-yellow-400">
                     <FaExchangeAlt size={20} />
                   </button>
                 </div>
@@ -244,10 +242,11 @@ function CardAddProduct() {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${
+                          index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                          }`}
+                        }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}
@@ -287,52 +286,3 @@ function CardAddProduct() {
 }
 
 export default CardAddProduct;
-<div className="flex items-center p-6 text-left text-gray-300 bg-gray-100 rounded-xl border transition border-grey-300">
-  {/* ... Código del formulario ... */}
-  <div className="mb-4">
-    <label htmlFor="name" className="block mb-2 font-bold text-gray-700">
-      Nombre:
-    </label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      onChange={(e) => setName(e.target.value)}
-      className="p-2 text-gray-800 rounded-lg border border-gray-300"
-    />
-  </div>
-  <div className="mb-4">
-    <label htmlFor="price" className="block mb-2 font-bold text-gray-900">
-      Precio:
-    </label>
-    <input
-      onChange={(e) => setPrice(e.target.value)}
-      type="number"
-      id="price"
-      name="price"
-      className="p-2 text-gray-800 rounded-lg border border-gray-300"
-    />
-  </div>
-  <div className="mb-4">
-    <label htmlFor="quantity" className="block mb-2 font-bold text-gray-900">
-      Cantidad:
-    </label>
-    <input
-      type="number"
-      id="quantity"
-      className="p-2 text-gray-800 rounded-lg border border-gray-300"
-    />
-  </div>
-  <div className="mb-4">
-    <label htmlFor="category" className="block mb-2 font-bold text-gray-700">
-      Categoría:
-    </label>
-    <input
-      onChange={(e) => setDescription(e.target.value)}
-      type="text"
-      id="description"
-      name="description"
-      className="p-2 text-gray-800 rounded-lg border border-gray-300"
-    />
-  </div>
-</div>;

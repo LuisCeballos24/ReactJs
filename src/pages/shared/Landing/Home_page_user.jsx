@@ -23,6 +23,7 @@ import ProductCatalog_user from "../Card/Body_card_user";
 import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
 import Card_product from "../Card/Card_product";
+import Card_subasta from "../Card/Card_subasta";
 
 export const changeShowStore = (toggleStore) => {
   console.log("Hola mundo");
@@ -88,6 +89,7 @@ function Home_Page_user() {
           )}
           <Card_product />
           <CardAddProduct />
+          <Card_subasta />
         </div>
       </main>
     </div>
