@@ -4,30 +4,36 @@ import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import Countdown from "react-countdown";
 
 const Card_subasta = ({ endTime }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(Date.parse(endTime) - Date.now());
-
+  const [progress, setProgress] = useState(100);
+  const [currentBid, setCurrentBid] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(Date.parse(endTime) - Date.now());
-    }, 10000);
+      const currentTimeLeft = Date.parse(endTime) - Date.now();
+      setTimeLeft(currentTimeLeft);
+      setProgress((currentTimeLeft / (1000 * 60)) * 100); // Calcula el progreso basado en los minutos restantes
+    }, 1000);
 
     return () => {
       clearInterval(interval);
     };
   }, [endTime]);
-  //
-  // const totalTime = 1200000;
 
-  // Tiempo total en milisegundos
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const formatTime = (time) => {
+    const minutes = Math.floor((time / 1000 / 60) % 60);
+    const seconds = Math.floor((time / 1000) % 60);
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
   const images = [
     "../../../../public/Store.svg",
     "../../../../public/Store.svg",
     "../../../../public/Store.svg",
     "../../../../public/Store.svg",
     "../../../../public/Store.svg",
-  ]; // Agrega aquí las rutas de las imágenes
+  ];
   const users = [
     {
       name: "Usuario 1",
@@ -44,29 +50,17 @@ const Card_subasta = ({ endTime }) => {
       profilePicture: "../../../../public/chair.png",
       bidAmount: 100,
     },
-  ]; // Agrega aquí los datos de los usuarios y sus ofertas
+  ];
 
   const handleChangeImage = (index) => {
     setCurrentImageIndex(index);
   };
 
   const handleBid = (action) => {
-    // Lógica para manejar la oferta
-  };
-
-  const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
-    if (completed) {
-      // Acciones cuando el contador finaliza
-      return <span>Subasta finalizada</span>;
-    } else {
-      // Renderizar el contador en formato HH:MM:SS
-      return (
-        <span>
-          {hours.toString().padStart(2, "0")}:
-          {minutes.toString().padStart(2, "0")}:
-          {seconds.toString().padStart(2, "0")}
-        </span>
-      );
+    if (action === "-") {
+      setCurrentBid((prevBid) => Math.max(prevBid - 5, 0));
+    } else if (action === "+") {
+      setCurrentBid((prevBid) => prevBid + 5);
     }
   };
 
@@ -157,56 +151,22 @@ const Card_subasta = ({ endTime }) => {
                 tortor metus a dui.
               </p>
             </div>
-            {/* <div className="mt-4"> */}
-            {/*   <h3 className="mb-2 font-bold">Título de la descripción</h3> */}
-            {/*   <p className="text-gray-600"> */}
-            {/*     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce */}
-            {/*     malesuada ultrices malesuada. Donec viverra velit id turpis */}
-            {/*     feugiat, eget posuere ex tempor. Sed sodales ex ac lectus */}
-            {/*     efficitur, a ullamcorper nisi tincidunt. Curabitur tempus, metus */}
-            {/*     in volutpat vulputate, justo enim tincidunt mauris, id cursus */}
-            {/*     tortor metus a dui. */}
-            {/*   </p> */}
-            {/* </div> */}
-            {/* <div className="mt-4"> */}
-            {/*   <h3 className="mb-2 font-bold">Título de la descripción</h3> */}
-            {/*   <p className="text-gray-600"> */}
-            {/*     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce */}
-            {/*     malesuada ultrices malesuada. Donec viverra velit id turpis */}
-            {/*     feugiat, eget posuere ex tempor. Sed sodales ex ac lectus */}
-            {/*     efficitur, a ullamcorper nisi tincidunt. Curabitur tempus, metus */}
-            {/*     in volutpat vulputate, justo enim tincidunt mauris, id cursus */}
-            {/*     tortor metus a dui. */}
-            {/*   </p> */}
-            {/* </div> */}
           </div>
           <div className="mt-4">
             <h3 className="mb-2 text-xl font-bold">Tiempo restante</h3>
             <div className="flex gap-2 items-center">
-              <Countdown
-                date={Date.now() + timeLeft}
-                renderer={({ minutes, seconds, completed }) => {
-                  if (completed) {
-                    return <span>La subasta ha finalizado</span>;
-                  }
-
-                  return (
-                    <span>
-                      {minutes}:{seconds}
-                    </span>
-                  );
-                }}
-              />{" "}
+              <div className="countdown-card">
+                <h2>Countdown</h2>
+                <div
+                  className="progress-bar"
+                  style={{ width: `${progress}%` }}
+                ></div>
+                <div className="countdown-timer">{formatTime(timeLeft)}</div>
+              </div>
               <div className="w-full h-2 bg-gray-300 rounded">
                 <div
                   className="h-full bg-blue-500 rounded"
-                  style={{
-                    width: `${
-                      (timeLeft /
-                        (timeLeft + (Date.parse(endTime) - Date.now()))) *
-                      100
-                    }%`,
-                  }} // Aquí debes ajustar el ancho de la barra según el tiempo restante
+                  style={{ width: `${progress}%` }}
                 ></div>
               </div>
             </div>
@@ -223,7 +183,7 @@ const Card_subasta = ({ endTime }) => {
               <input
                 type="text"
                 className="py-2 px-4 rounded border border-gray-300"
-                value="100" // Aquí debes establecer el valor de la puja actual
+                value={currentBid}
               />
               <button
                 className="p-2 text-white bg-blue-500 rounded"
@@ -237,7 +197,6 @@ const Card_subasta = ({ endTime }) => {
             </div>
           </div>
           <div className="mt-4">
-            {/* Lista de usuarios  */}
             <h3 className="mb-2 font-bold">Ofertas</h3>
             {users.map((user, index) => (
               <div key={index} className="flex items-center mt-2">
@@ -263,9 +222,7 @@ const Card_subasta = ({ endTime }) => {
   );
 };
 
-export default Card_subasta;
-//
-// const users = [
+export default Card_subasta; // const users = [
 //   {
 //     name: "Usuario 1",
 //     profilePicture: "../../../../public/chair.png",
