@@ -1,18 +1,26 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { db, auth, storage } from "../../../utils/firebase.js";
+import { db2, auth, storage2 } from "../../../utils/firebase.js";
 import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
-import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
 function CardAddProduct() {
   const [previewImages, setPreviewImages] = useState([]);
   const [user] = useAuthState(auth);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // Varibles de el producto
   const [name, setName] = useState("");
+  const [id_proct, setProduct] = useState("");
   const [description, setDescription] = useState("");
+  const [Status, setStatus] = useState(false);
+  const [Dispo, setDispo] = useState(true);
   const [price, setPrice] = useState("");
+  const [cuanty, setCuanty] = useState("");
+  const [imageUrls, setImageUrls] = useState([]);
+  const [url, setUrl] = useState("");
+  const [currentBid, setCurrentBid] = useState(0);
 
+  // const [isVertical, setIsVertical] = useState(false);
   const handleImageUpload = (event) => {
     const files = event.target.files;
     const imageFiles = Array.from(files);
@@ -32,28 +40,32 @@ function CardAddProduct() {
     Promise.all(readerPromises).then((imageUrls) => {
       setPreviewImages(imageUrls);
       setCurrentImageIndex(0);
+      setUrl(imageUrls[0]); // Establecer la URL de la primera imagen como el valor inicial de "url"
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setProduct(Date.now());
     try {
       // Agregar el producto a Firestore
-      const productRef = await db.collection("productos").add({
-        id: Date.now(), // Asignar un ID único al producto
+      const productRef = await db2.collection("productos").add({
+        id: id_proct,
         name,
         description,
         price,
-        uid: user.uid, // Agregar el UID del usuario autenticado como propietario del producto
+        Status,
+        Dispo,
+        uid: user.uid,
+        url, // Agregar la URL al objeto
       });
-
       // Subir las imágenes al Storage
       const urls = await Promise.all(
         previewImages.map(async (imageUrl) => {
           try {
             const imageFile = await fetch(imageUrl).then((res) => res.blob());
-            const uploadTask = storage
-              .ref(`images/${productRef.id}/${imageFile.name}`)
+            const uploadTask = storage2
+              .ref(`images/${productRef.id}/${productRef.name}`)
               .put(imageFile);
             const snapshot = await uploadTask;
             const url = await snapshot.ref.getDownloadURL();
@@ -64,10 +76,54 @@ function CardAddProduct() {
           }
         })
       );
+      if (Status) {
+        console.log("Entro al carrito");
+        try {
+          // Verificar si el producto ya está en el carrito
+          const querySnapshot = await db2
+            .collection("ordenes")
+            .where("id", "==", id_proct)
+            .where("buyerId", "==", auth.currentUser.uid)
+            .get();
+
+          if (!querySnapshot.empty) {
+            // Si el producto ya está en el carrito, actualizar la cantidad
+            const docId = querySnapshot.docs[0].id;
+            const docRef = db2.collection("ordenes").doc(docId);
+            const docSnapshot = await docRef.get();
+            await docRef.update({
+              cantidad: docSnapshot.data().cantidad + 1,
+            });
+            console.log(
+              `Producto con id ${id_proct} actualizado en el carrito`
+            );
+          } else {
+            // Si el producto no está en el carrito, agregarlo con cantidad 1
+            const productData = {
+              cantidad: 1,
+              descripción: description,
+              id: id_proct,
+              buyerId: auth.currentUser.uid,
+              nombre: name,
+              precio: price,
+              images: url,
+              time: "",
+              compara: "",
+              Diponibilidad: Dispo,
+            };
+            const docRef = await db2.collection("ordenes").add(productData);
+            console.log(`Producto con id ${id_proct} agregado al carrito`);
+          }
+        } catch (error) {
+          console.error(
+            `Error al agregar el producto al carrito: ${error.message}`
+          );
+        }
+      }
 
       // Actualizar el producto con las URLs de las imágenes
       await productRef.update({ images: urls });
-
+      await productRef.update({ images: urls, url: imageUrls });
       // Reiniciar el formulario
       setName("");
       setDescription("");
@@ -83,6 +139,7 @@ function CardAddProduct() {
   };
   const handleImageChange = (index) => {
     setCurrentImageIndex(index);
+    setUrl(previewImages[index]);
   };
 
   // Función para manejar la carga de imágenes
@@ -93,8 +150,15 @@ function CardAddProduct() {
       previewImages.forEach((preview) => URL.revokeObjectURL(preview));
     };
   }, [previewImages]);
+
+  useEffect(() => {
+    return () => {
+      previewImages.forEach((preview) => URL.revokeObjectURL(preview));
+    };
+  }, [previewImages]);
+
   const [products, loading, error] = useCollectionData(
-    db.collection("productos")
+    db2.collection("productos")
   );
 
   if (loading) {
@@ -104,10 +168,22 @@ function CardAddProduct() {
   if (error) {
     return <p>Error al cargar productos: {error.message}</p>;
   }
+  const handleBid = (action) => {
+    if (action === "-") {
+      setStatus(false);
+      console.log(Status);
+      setCurrentBid(1);
+    } else if (action === "+") {
+      setStatus(true);
+      console.log(Status);
+
+      setCurrentBid(2);
+    }
+  };
 
   const handleProductDelete = async (uid) => {
     try {
-      const querySnapshot = await db
+      const querySnapshot = await db2
         .collection("productos")
         .where("uid", "==", uid)
         .get();
@@ -150,15 +226,19 @@ function CardAddProduct() {
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
               >
-                descripcion:
+                Descripción:
               </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
-                className="p-2 text-gray-800 rounded-lg border border-gray-300"
-              />
+              <div className="relative">
+                <textarea
+                  id="description"
+                  name="description"
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="p-2 h-40 text-gray-800 rounded-lg border border-gray-300 resize-none"
+                ></textarea>
+                <div className="absolute right-0 bottom-0 p-2 text-gray-400 pointer-events-none">
+                  {description.length} / 200 caracteres
+                </div>
+              </div>
               <label
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
@@ -167,9 +247,9 @@ function CardAddProduct() {
               </label>
               <input
                 type="number"
-                id="name"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
+                id="price"
+                name="price"
+                onChange={(e) => setPrice(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
               <label
@@ -180,9 +260,9 @@ function CardAddProduct() {
               </label>
               <input
                 type="number"
-                id="name"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
+                id="cuanty"
+                name="cuanty"
+                onChange={(e) => setCuanty(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
               {/* Resto de inputs del formulario */}
@@ -192,26 +272,24 @@ function CardAddProduct() {
             {/* ... Código del formulario ... */}
 
             <div className="mb-4">
-              {/* Resto de inputs del formulario */}{" "}
-              {/* <div className="container"> */}
-              {/*   <div className="p-4 border border-red-500">Contenido 1</div>{" "} */}
-              {/*   <div className="p-4">Contenido 2</div> */}
-              {/*   <div className="p-4 border-t border-b border-blue-500"> */}
-              {/*     Contenido 3 */}
-              {/*   </div>{" "} */}
-              {/*   <div className="p-4">Contenido 4</div> */}
-              {/*   <div className="p-4 border border-green-500"> */}
-              {/*     Contenido 5 */}
-              {/*   </div>{" "} */}
-              {/* </div> */}
               <div className="flex gap-3 items-center mt-4">
                 <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-green-400 bg-white rounded-full hover:text-white hover:bg-green-400">
+                  <button
+                    onClick={() => handleBid("-")}
+                    className={` ${
+                      !Status ? "bg-green-400 text-white " : " "
+                    } p-2 h-14 rounded-full bg-white  text-green-400  hover:text-white hover:bg-green-400 `}
+                  >
                     <FaShoppingCart size={20} />
                   </button>
                 </div>
                 <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-yellow-400 bg-white rounded-full hover:text-white hover:bg-yellow-400">
+                  <button
+                    onClick={() => handleBid("+")}
+                    className={` ${
+                      Status ? "bg-yellow-400 text-white " : " "
+                    } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
+                  >
                     <FaExchangeAlt size={20} />
                   </button>
                 </div>

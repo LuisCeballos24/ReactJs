@@ -1,12 +1,15 @@
 import { useState } from "react";
 import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db, auth } from "../../../utils/firebase.js";
+import { db2, auth } from "../../../utils/firebase.js";
 
 function ProductCatalog_user() {
   //Error al dejar que el catagolo envie al usuario
+
+  const currentUser = auth.currentUser;
+
   const [products, loading, error] = useCollectionData(
-    db.collection("productos")
+    db2.collection("productos").where("uid", "==", currentUser?.uid || "")
   );
 
   if (loading) {
@@ -23,11 +26,12 @@ function ProductCatalog_user() {
         <Card
           key={product.id}
           name={product.name}
-          img="dish.png"
+          img={product.images}
           description={product.description}
           price={product.price}
           productId={product.id}
-          inventory="20"
+          inventory={product.cuanty}
+          Status={product.Status}
         />
       ))}
       <div className="p-8 bg-gray-100 rounded-xl">

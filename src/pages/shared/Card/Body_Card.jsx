@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db } from "../../../utils/firebase.js";
+import { db2 } from "../../../utils/firebase.js";
 
 function ProductCatalog() {
   /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
-    db.collection("productos")
+    db2.collection("productos")
     // .where(" uid", "==", auth.currentUser.uid)
   );
 
@@ -23,12 +23,14 @@ function ProductCatalog() {
       {products.map((product, index) => (
         <Card
           key={index}
+          id={product.id}
           name={product.name}
-          img="dish.png"
+          img={product.images}
           description={product.description}
           price={product.price}
           productId={product.id}
-          inventory="20"
+          inventory={product.cuanty}
+          Status={product.Status}
         />
       ))}
     </div>

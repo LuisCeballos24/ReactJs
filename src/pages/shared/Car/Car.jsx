@@ -3,14 +3,14 @@ import { RiCloseLine, RiDeleteBin6Line } from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db, auth } from "../../../utils/firebase.js";
+import { db2, auth } from "../../../utils/firebase.js";
 
 function isUserOwner(ownerId) {
   return auth.currentUser && ownerId === auth.currentUser.uid;
 }
 
 const handleDelete = async (id) => {
-  const querySnapshot = await db
+  const querySnapshot = await db2
     .collection("ordenes")
     .where("productId", "==", id)
     .where("buyerId", "==", auth.currentUser.uid)
@@ -18,7 +18,7 @@ const handleDelete = async (id) => {
 
   if (!querySnapshot.empty) {
     const docId = querySnapshot.docs[0].productId;
-    await db.collection("ordenes").doc(docId).delete();
+    await dbw.collection("ordenes").doc(docId).delete();
     console.log(`Producto con uid ${id} eliminado correctamente`);
   } else {
     console.log(`Producto con id ${id} NO eliminado de forma correcta`);
@@ -26,7 +26,7 @@ const handleDelete = async (id) => {
 };
 
 const handleMinus = async (id) => {
-  const querySnapshot = await db
+  const querySnapshot = await db2
     .collection("ordenes")
     .where("id", "==", id)
     .where("buyerId", "==", auth.currentUser.uid)
@@ -35,7 +35,7 @@ const handleMinus = async (id) => {
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
     const docId = querySnapshot.docs[0].productId;
-    const docRef = db.collection("ordenes").doc(docId);
+    const docRef = db2.collection("ordenes").doc(docId);
     const docSnapshot = await docRef.get();
     await docRef.update({
       quantity: docSnapshot.data().quantity - 1,
@@ -47,9 +47,11 @@ const handleMinus = async (id) => {
 };
 
 const handlePlus = async (id) => {
-  const querySnapshot = await db
+  const querySnapshot = await db2
     .collection("ordenes")
     .where("id", "==", id)
+    .where("buyerId", "==", auth.currentUser.uid)
+    .where("Diponibilidad", "==", true)
     .get();
 
   if (!querySnapshot.empty) {
@@ -67,13 +69,23 @@ const handlePlus = async (id) => {
 };
 
 const Card_car = (props) => {
+  // const images = [img];
   let sum = 0;
 
   const { showOrder, setShowOrder } = props;
   const currentUser = auth.currentUser;
 
   const [orders, loading, error] = useCollectionData(
-    db.collection("ordenes").where("buyerId", "==", currentUser?.uid || "")
+    /**
+     * Función handleClick
+     * Descripción: Maneja el evento de clic en el botón.
+     * @param {object} event - Evento de clic.
+     * @returns {void}
+     */
+    db2
+      .collection("ordenes")
+      .where("buyerId", "==", currentUser?.uid || "")
+      .where("Diponibilidad", "==", true)
   );
 
   if (loading) {
@@ -89,8 +101,9 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
-        }`}
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${
+        showOrder ? "right-0" : "-right-full"
+      }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -122,7 +135,7 @@ const Card_car = (props) => {
           {/* Products */}
           <div className="overflow-y-scroll h-[400px] md:h-[700px] lg:h-[340px]">
             {orders.map((order) => {
-              const totalPrice = order.price * order.quantity;
+              const totalPrice = order.precio * order.cantidad;
               sum += totalPrice; // Acumula el precio total
               return (
                 <div className="bg-white p-4 rounded-xl mb-4 border border-gray-300 hover:border-[#E89440]">
@@ -135,18 +148,22 @@ const Card_car = (props) => {
                         alt=""
                       />
                       <div>
-                        <h5 className="text-sm text-gray-900">{order.name}</h5>
-                        <p className="text-xs text-gray-900">$ {order.price}</p>
+                        <h5 className="text-sm text-gray-900">
+                          {order.nombre}
+                        </h5>
+                        <p className="text-xs text-gray-900">
+                          $ {order.precio}
+                        </p>
                       </div>
                     </div>
                     {/* Qty */}
                     <div>
-                      <span className="text-gray-900">{order.quantity}</span>
+                      <span className="text-gray-900">{order.cantidad}</span>
                     </div>
                     {/* Price */}
                     <div>
                       <span className="text-gray-900">
-                        $ {order.price * order.quantity}
+                        $ {order.precio * order.cantidad}
                       </span>
                     </div>
                   </div>
@@ -162,19 +179,19 @@ const Card_car = (props) => {
                     <div className="flex space-x-1">
                       <button
                         className="p-2 rounded-lg border hover:border-red-500"
-                        onClick={() => handleDelete(order.productId)}
+                        onClick={() => handleDelete(order.id)}
                       >
                         <RiDeleteBin6Line className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-red-500"
-                        onClick={() => handleMinus(order.productId)}
+                        onClick={() => handleMinus(order.id)}
                       >
                         <FaMinus className="text-red-500" />
                       </button>
                       <button
                         className="p-2 rounded-lg hover:border-green-500"
-                        onClick={() => handlePlus(order.productId)}
+                        onClick={() => handlePlus(order.id)}
                       >
                         <HiPlus className="text-green-500" />
                       </button>

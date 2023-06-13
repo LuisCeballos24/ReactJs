@@ -80,15 +80,16 @@ const Card_up = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[180px] transition-all z-50 m-4 rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
-        }`}
+      className={`lg:col-span-2 fixed top-0 bg-white lg:w-96 lg:right-0 lg:h-[180px] transition-all z-50 m-4 rounded-lg border border-gray-300 ${
+        showOrder ? "right-0" : "-right-full"
+      }`}
     >
       {/* Orders */}
       <div className="relative p-4 pt-12 h-full text-gray-300 lg:pt-8">
         <div className="flex justify-end items-center">
           <div className="flex gap-2 items-center">
             <img
-              src="../../../public/dish.png"
+              src="https://firebasestorage.googleapis.com/v0/b/fb-api-4000.appspot.com/o/WhatsApp%20Image%202023-03-30%20at%209.04.37%20PM.png?alt=media&token=53f22c1f-0a62-4daf-aa15-a94b19e65f87"
               alt="profile"
               className="w-12 h-12 rounded-full"
             />
