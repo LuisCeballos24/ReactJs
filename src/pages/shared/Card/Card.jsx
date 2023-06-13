@@ -151,15 +151,36 @@ const Card = (props) => {
     }
   };
 
-  const handleEliminarOpcion = (index, idProduct) => {
+  const handleEliminarOpcion = async (index, idProduct) => {
     const nuevasOpciones = opciones.filter((_, i) => i !== index);
-    // Filtra las opciones para eliminar la opción correspondiente al índice
     setOpciones(nuevasOpciones);
     setMostrarOpciones(!mostrarOpciones);
     console.log(idProduct);
-    // const [Busqueda] = useCollectionData(
-    //   db2.collection("productos").where("uid", "==", currentUser?.uid || "")
-    // );
+
+    try {
+      const ordenRef = db2.collection("ordenes").doc(idProduct);
+      const ordenSnapshot = await ordenRef.get();
+
+      if (ordenSnapshot.exists) {
+        await ordenRef.update({
+          Disponibilidad: true,
+        });
+
+        const ordenData = ordenSnapshot.data();
+        const compareArray = ordenData.Compara || [];
+        compareArray.push(index);
+
+        await ordenRef.update({
+          Compara: compareArray,
+        });
+
+        console.log("Orden actualizada con éxito");
+      } else {
+        console.log("La orden no existe");
+      }
+    } catch (error) {
+      console.log("Error al actualizar la orden:", error);
+    }
   };
 
   return (
