@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RiSearch2Line } from "react-icons/ri";
+
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { FaCertificate, FaTags, FaStore } from "react-icons/fa";
 import { features } from "../../../data.jsx";
@@ -10,8 +10,6 @@ const Card_p = () => {
   const handleStarClick = (starIndex) => {
     setRating(starIndex + 1);
   };
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [triangle2Display, setTriangle2Display] = useState("block");
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,9 +28,6 @@ const Card_p = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const { title, subtitle, image, items } = features;
-  const triangle1Width = windowWidth >= 1280 ? 920 : 600;
 
   return (
     <div className="bg-white rounded-lg shadow-lg card">
@@ -70,8 +65,9 @@ const Card_p = () => {
                 <span
                   key={index}
                   onClick={() => handleStarClick(index)}
-                  className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-500"
-                    }`}
+                  className={`cursor-pointer ${
+                    index < rating ? "text-yellow-500" : "text-gray-500"
+                  }`}
                 >
                   {index < rating ? (
                     <AiFillStar size={24} />

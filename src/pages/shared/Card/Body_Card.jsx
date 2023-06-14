@@ -3,7 +3,18 @@ import Card from "./Card";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2 } from "../../../utils/firebase.js";
 
-function ProductCatalog() {
+function ProductCatalog(props) {
+  const [estadoHijo, setEstadoHijo] = useState(false);
+  const [Ventana, setVentana] = useState(0);
+
+  const Vista_Previa = (productId) => {
+    const nuevoEstado = !estadoHijo;
+    const nuevoParam1 = "texto1";
+    const nuevoParam2 = "texto2";
+    setEstadoHijo(nuevoEstado);
+    props.VistaPrevia(nuevoEstado, nuevoParam1, nuevoParam2);
+  };
+
   /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
     db2.collection("productos")
@@ -31,6 +42,8 @@ function ProductCatalog() {
           productId={product.id}
           inventory={product.cuanty}
           Status={product.Status}
+          onClick={() => Vista_Previa(product.id)}
+          cursor-pointer
         />
       ))}
     </div>

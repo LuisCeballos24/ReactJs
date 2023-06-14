@@ -33,18 +33,89 @@ export const changeShowStore = (toggleStore) => {
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
-  const [showStore, setShowStore] = useState(true);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
     setShowOrder(false);
   };
+
+  const [showStore, setShowStore] = useState(true);
   const manejarCambioEstado = (nuevoEstado) => {
     setShowStore(nuevoEstado);
   };
-
+  // PARAMETROS PARA LA VISTA PREVIA
+  const [vista, setVista_A] = useState(false);
+  const [vista_A, setVista_B] = useState(2);
+  const [param1, setParam1] = useState("default1");
+  const [param2, setParam2] = useState("default2");
+  const Vista = (vista_A, vista_B, Producto, text) => {
+    setVista_A(vista_A);
+    setVista_B(vista_B);
+    setParam1(Producto);
+    setParam2(text);
+  };
   const toggleOrders = () => {
     setShowOrder(!showStore);
+  };
+  const renderContent = () => {
+    switch (showStore) {
+      case true:
+        return (
+          <>
+            <Header_Store />
+            <Header_catalogo />
+            {/* {vista ? ( */}
+            {/*   <CardAddProduct VistaPrevia={Vista} /> */}
+            {/* ) : ( */}
+            {/*   <ProductCatalog_user VistaPrevia={Vista} /> */}
+            {/* )} */}
+            {/* <Card_product /> */}
+
+            {/* <Card_subasta /> */}
+            {typeof vista_A === "number" ? (
+              vista_A === 1 ? (
+                <ProductCatalog_user VistaPrevia={Vista} />
+              ) : vista_A === 2 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 2
+                <CardAddProduct VistaPrevia={Vista} />
+              ) : vista_A === 3 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 3
+
+                <Card_product VistaPrevia={Vista} />
+              ) : vista_A === 4 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                {
+                  /* <AnotherComponent3 /> */
+                }
+              ) : (
+                // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
+                {
+                  /* <DefaultComponent /> */
+                }
+              )
+            ) : (
+              // Otra alternativa si vista_A no es un número
+              {
+                /* <DefaultComponent /> */
+              }
+            )}
+          </>
+        );
+      case false:
+        return (
+          <>
+            <Header />
+            <Card_Nov />
+            <ProductCatalog />
+            <Card_product />
+
+            {/* <Card_Nov /> */}
+            {/* <ProductCatalog /> */}
+          </>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -68,30 +139,14 @@ function Home_Page_user() {
           {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
         </button>
       </nav>
-
+      return ( // ...
       <main className="pb-20 lg:pr-96 lg:pl-32">
         <div className="grid-cols-1 p-4 md:p-8">
-          {/* Header  */}
-          {showStore ? (
-            <>
-              <Header_Store />
-              <Header_catalogo />
-              <ProductCatalog_user />
-            </>
-          ) : (
-            <>
-              <Header />
-              <Card_Nov />
-              <ProductCatalog />
-              <Card_Nov />
-              <ProductCatalog />
-            </>
-          )}
-          <Card_product />
-          <CardAddProduct />
-          <Card_subasta />
+          {/* Header */}
+          {renderContent()}
         </div>
       </main>
+      // ... );{" "}
     </div>
   );
 }

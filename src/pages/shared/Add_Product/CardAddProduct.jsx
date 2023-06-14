@@ -3,11 +3,17 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { db2, auth, storage2 } from "../../../utils/firebase.js";
 import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
+import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
-function CardAddProduct() {
+function CardAddProduct(props) {
+  //Control de vista
+  const [estadoHijo, setEstadoHijo] = useState(false);
+  const [Ventana, setVentana] = useState(0);
+
+  //
   const [previewImages, setPreviewImages] = useState([]);
   const [user] = useAuthState(auth);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(1);
   // Varibles de el producto
   const [name, setName] = useState("");
   const [id_proct, setProduct] = useState("");
@@ -21,6 +27,17 @@ function CardAddProduct() {
   const [currentBid, setCurrentBid] = useState(0);
 
   // const [isVertical, setIsVertical] = useState(false);
+  //Para cerrar la ventana
+  const Vista_Previa = () => {
+    console.log("Paso por aqui");
+    const nuevoEstado = !estadoHijo;
+    const ven = 1;
+    setVentana(ven);
+    setEstadoHijo(nuevoEstado);
+    props.VistaPrevia(nuevoEstado, ven);
+  };
+
+  //
   const handleImageUpload = (event) => {
     const files = event.target.files;
     const imageFiles = Array.from(files);
@@ -202,6 +219,12 @@ function CardAddProduct() {
 
   return (
     <div className="flex justify-center p-8 shadow-lg">
+      <button
+        onClick={() => Vista_Previa()}
+        className="py-2 px-4 mt-4 h-14 text-red-500 rounded md:mt-0 md:ml-4 hover:text-white hover:bg-red-500"
+      >
+        <BsFillArrowLeftSquareFill className="ml-2" size={20} />
+      </button>{" "}
       <div className="flex flex-col bg-white rounded-xl border-t border-b">
         <h2 className="p-4 text-2xl font-bold lef-3">Agregar producto</h2>
         <div className="flex flex-col md:flex-row md:mt-0">

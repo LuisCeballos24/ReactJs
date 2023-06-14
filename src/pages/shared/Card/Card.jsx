@@ -158,23 +158,34 @@ const Card = (props) => {
     console.log(idProduct);
 
     try {
-      const ordenRef = db2.collection("ordenes").doc(idProduct);
-      const ordenSnapshot = await ordenRef.get();
+      const querySnapshot = await db2
+        .collection("ordenes")
+        .where("id", "==", idProduct)
 
-      if (ordenSnapshot.exists) {
-        await ordenRef.update({
-          Disponibilidad: true,
-        });
+        .get();
 
-        const ordenData = ordenSnapshot.data();
-        const compareArray = ordenData.Compara || [];
-        compareArray.push(index);
+      if (!querySnapshot.empty) {
+        const docId = querySnapshot.docs[0].id;
+        const docRef = db2.collection("ordenes").doc(docId);
+        const docSnapshot = await docRef.get();
 
-        await ordenRef.update({
-          Compara: compareArray,
-        });
+        if (docSnapshot.exists) {
+          await docRef.update({
+            Diponibilidad: true,
+          });
 
-        console.log("Orden actualizada con éxito");
+          const ordenData = docSnapshot.data();
+          const compareArray = ordenData.compara || [];
+          compareArray.push(index);
+
+          await docRef.update({
+            Compara: compareArray,
+          });
+
+          console.log("Orden actualizada con éxito");
+        } else {
+          console.log("La orden no existe");
+        }
       } else {
         console.log("La orden no existe");
       }
@@ -211,7 +222,7 @@ const Card = (props) => {
         {Status && (
           <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
             <RiExchangeBoxLine
-              className={`text-xl bg-white hover:text-yellow-700 text-primary text-yellow-900`}
+              className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
             />
           </button>
         )}
@@ -246,7 +257,7 @@ const Card = (props) => {
             >
               {index} &nbsp;
               <img
-                src={opcion.imageUrl} // Asigna la URL de la imagen como src
+                src={opcion.img} // Asigna la URL de la imagen como src
                 alt=""
                 className="inline w-4 h-4"
               />{" "}
@@ -262,10 +273,11 @@ const Card = (props) => {
           </button>
         )}
       </div>
-      <div className="mt-2">
+      <div className="mt-2 cursor-pointer">
         <p className="text-xl font-semibold text-gray-900">{name}</p>
+        <p className="font-semibold text-yellow-600">{props.productId}</p>
         <p className="font-semibold text-gray-700">{description}</p>
-        <p className="font-semibold text-gray-700">{props.productId}</p>
+
         <p className="text-gray-600">${price}</p>
         <p className="text-gray-600">{props.status} available </p>
       </div>
