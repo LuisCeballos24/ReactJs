@@ -16,10 +16,11 @@ function CardAddProduct(props) {
   const [currentImageIndex, setCurrentImageIndex] = useState(1);
   // Varibles de el producto
   const [name, setName] = useState("");
-  const [id_proct, setProduct] = useState("");
+
   const [description, setDescription] = useState("");
   const [Status, setStatus] = useState(false);
   const [Dispo, setDispo] = useState(true);
+  const [DispoI, setDispoI] = useState(false);
   const [price, setPrice] = useState("");
   const [cuanty, setCuanty] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
@@ -60,7 +61,7 @@ function CardAddProduct(props) {
       setUrl(imageUrls[0]); // Establecer la URL de la primera imagen como el valor inicial de "url"
     });
   };
-
+  const [id_proct, setProduct] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProduct(Date.now());
@@ -126,7 +127,7 @@ function CardAddProduct(props) {
               images: url,
               time: "",
               compara: "",
-              Diponibilidad: Dispo,
+              Diponibilidad: DispoI,
             };
             const docRef = await db2.collection("ordenes").add(productData);
             console.log(`Producto con id ${id_proct} agregado al carrito`);
@@ -299,9 +300,8 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("-")}
-                    className={` ${
-                      !Status ? "bg-green-400 text-white " : " "
-                    } p-2 h-14 rounded-full bg-white  text-green-400  hover:text-white hover:bg-green-400 `}
+                    className={` ${!Status ? "bg-green-400 text-white " : " "
+                      } p-2 h-14 rounded-full bg-white  text-white  hover:text-white hover:bg-green-400 `}
                   >
                     <FaShoppingCart size={20} />
                   </button>
@@ -309,9 +309,8 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("+")}
-                    className={` ${
-                      Status ? "bg-yellow-400 text-white " : " "
-                    } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
+                    className={` ${Status ? "bg-yellow-400 text-white " : " "
+                      } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
                   >
                     <FaExchangeAlt size={20} />
                   </button>
@@ -343,11 +342,10 @@ function CardAddProduct(props) {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${
-                          index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                        }`}
+                          }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}

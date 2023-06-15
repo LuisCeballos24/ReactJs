@@ -75,7 +75,7 @@ const Card_car = (props) => {
   const { showOrder, setShowOrder } = props;
   const currentUser = auth.currentUser;
 
-  const [orders, loading, error] = useCollectionData(
+  const [orders2, loading2, error2] = useCollectionData(
     /**
      * Función handleClick
      * Descripción: Maneja el evento de clic en el botón.
@@ -86,6 +86,16 @@ const Card_car = (props) => {
       .collection("ordenes")
       .where("buyerId", "==", currentUser?.uid || "")
       .where("Diponibilidad", "==", true)
+  );
+
+  const [orders, loading, error] = useCollectionData(
+    /**
+     * Función handleClick
+     * Descripción: Maneja el evento de clic en el botón.
+     * @param {object} event - Evento de clic.
+     * @returns {void}
+     */
+    db2.collection("ordenes").where("buyerId", "==", currentUser?.uid || "")
   );
 
   if (loading) {
@@ -101,9 +111,8 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${
-        showOrder ? "right-0" : "-right-full"
-      }`}
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
+        }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -135,6 +144,72 @@ const Card_car = (props) => {
           {/* Products */}
           <div className="overflow-y-scroll h-[400px] md:h-[700px] lg:h-[340px]">
             {orders.map((order) => {
+              const totalPrice = order.precio * order.cantidad;
+              sum += totalPrice; // Acumula el precio total
+              return (
+                <div className="bg-blue-50 p-4 rounded-xl mb-4 border border-gray-300 hover:border-[#E89440]">
+                  <div className="grid grid-cols-6 mb-4">
+                    {/* Product description */}
+                    <div className="flex col-span-4 gap-3 items-center">
+                      <img
+                        src="comida.png"
+                        className="object-cover w-10 h-10"
+                        alt=""
+                      />
+                      <div>
+                        <h5 className="text-sm text-gray-900">
+                          {order.nombre}
+                        </h5>
+                        <p className="text-xs text-gray-900">
+                          $ {order.precio}
+                        </p>
+                      </div>
+                    </div>
+                    {/* Qty */}
+                    <div>
+                      <span className="text-gray-900">{order.cantidad}</span>
+                    </div>
+                    {/* Price */}
+                    <div>
+                      <span className="text-gray-900">
+                        $ {order.precio * order.cantidad}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Note */}
+                  <div className="grid grid-cols-6 items-center">
+                    <form className="col-span-4">
+                      {/* <input */}
+                      {/*   type="text" */}
+                      {/*   className="bg-white py-2 px-1 rounded-lg outline-none border border-[#4da7a5]" */}
+                      {/*   placeholder="Order note." */}
+                      {/* /> */}
+                    </form>
+                    <div className="flex space-x-1">
+                      <button
+                        className="p-2 rounded-lg border hover:border-red-500"
+                        onClick={() => handleDelete(order.id)}
+                      >
+                        <RiDeleteBin6Line className="text-red-500" />
+                      </button>
+                      <button
+                        className="p-2 rounded-lg hover:border-red-500"
+                        onClick={() => handleMinus(order.id)}
+                      >
+                        <FaMinus className="text-red-500" />
+                      </button>
+                      <button
+                        className="p-2 rounded-lg hover:border-green-500"
+                        onClick={() => handlePlus(order.id)}
+                      >
+                        <HiPlus className="text-green-500" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            {orders2.map((order) => {
               const totalPrice = order.precio * order.cantidad;
               sum += totalPrice; // Acumula el precio total
               return (

@@ -107,7 +107,8 @@ function Home_Page_user() {
             <Header />
             <Card_Nov />
             <ProductCatalog />
-            <Card_product />
+            <Card_subasta />
+            {/* <Card_product /> */}
 
             {/* <Card_Nov /> */}
             {/* <ProductCatalog /> */}

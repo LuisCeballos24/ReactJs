@@ -5,16 +5,16 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2 } from "../../../utils/firebase.js";
 
 const ProductCard = (props) => {
-  const { vista_A, vista_B, Producto, text } = props;
+  const { producto } = props;
   const { id } = "JeBAAug6eZrEd5cATvHd";
   // const { param1, setparam1 } = props.producto;
   try {
-    console.log(param1);
+    console.log(producto);
   } catch (error) {
     console.error(`Error al agregar el producto al carrito: ${error.message}`);
   }
   const [products] = useCollectionData(
-    db2.collection("productos").where("id", "==", "JeBAAug6eZrEd5cATvHd")
+    db2.collection("productos").where("id", "==", producto)
   );
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
