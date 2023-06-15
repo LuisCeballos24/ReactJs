@@ -45,7 +45,7 @@ function Home_Page_user() {
   };
   // PARAMETROS PARA LA VISTA PREVIA
   const [vista, setVista_A] = useState(false);
-  const [vista_A, setVista_B] = useState(2);
+  const [vista_A, setVista_B] = useState(1);
   const [param1, setParam1] = useState("default1");
   const [param2, setParam2] = useState("default2");
   const Vista = (vista_A, vista_B, Producto, text) => {
@@ -81,7 +81,7 @@ function Home_Page_user() {
               ) : vista_A === 3 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 3
 
-                <Card_product VistaPrevia={Vista} />
+                <Card_product VistaPrevia={Vista} producto={param1} />
               ) : vista_A === 4 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
                 {

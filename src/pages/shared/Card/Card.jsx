@@ -20,6 +20,11 @@ const Card = (props) => {
     inventory,
     Status,
   } = props;
+  const VistaPrevia = (index) => {
+    setCurrentImageIndex(index);
+    console.log(index);
+  };
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
@@ -136,6 +141,11 @@ const Card = (props) => {
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
     console.log(index);
+  };
+
+  const Vista = (index) => {
+    console.log(index);
+    props.Vistap(true, 3, index);
   };
 
   const handleClickChange = () => {
@@ -257,7 +267,7 @@ const Card = (props) => {
             >
               {index} &nbsp;
               <img
-                src={opcion.img} // Asigna la URL de la imagen como src
+                src={opcion.imageUrl} // Asigna la URL de la imagen como src
                 alt=""
                 className="inline w-4 h-4"
               />{" "}
@@ -273,7 +283,10 @@ const Card = (props) => {
           </button>
         )}
       </div>
-      <div className="mt-2 cursor-pointer">
+      <div
+        className="mt-2 cursor-pointer"
+        onClick={() => Vista(props.productId)}
+      >
         <p className="text-xl font-semibold text-gray-900">{name}</p>
         <p className="font-semibold text-yellow-600">{props.productId}</p>
         <p className="font-semibold text-gray-700">{description}</p>

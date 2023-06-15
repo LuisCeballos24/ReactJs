@@ -14,7 +14,7 @@ function ProductCatalog_user(props) {
     const nuevoEstado = !estadoHijo;
     const ven = 2;
     setVentana(ven);
-    const nuevoParam2 = "texto2";
+    const nuevoParam2 = productId;
     setEstadoHijo(nuevoEstado);
     props.VistaPrevia(nuevoEstado, ven, nuevoParam2);
   };
@@ -28,6 +28,8 @@ function ProductCatalog_user(props) {
     setVista_B(vista_B);
     setParam1(Producto);
     setParam2(text);
+    console.log(vista_A, vista_B, Producto, text);
+    props.VistaPrevia(vista_A, vista_B, Producto, text);
   };
 
   const [products, loading, error] = useCollectionData(
@@ -76,7 +78,7 @@ function ProductCatalog_user(props) {
           Status={product.Status}
           cursor-pointer
           onClick={() => Vista_Previa(product.id)}
-          VistaPrevia={Vista}
+          Vistap={Vista}
         />
       ))}
     </div>

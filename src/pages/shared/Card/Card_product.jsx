@@ -1,25 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db2 } from "../../../utils/firebase.js";
 
-const ProductCard = () => {
+const ProductCard = (props) => {
+  const { vista_A, vista_B, Producto, text } = props;
+  const { id } = "JeBAAug6eZrEd5cATvHd";
+  // const { param1, setparam1 } = props.producto;
+  try {
+    console.log(param1);
+  } catch (error) {
+    console.error(`Error al agregar el producto al carrito: ${error.message}`);
+  }
+  const [products] = useCollectionData(
+    db2.collection("productos").where("id", "==", "JeBAAug6eZrEd5cATvHd")
+  );
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const images = [
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-  ]; // Agrega aquí las rutas de las imágenes
+
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [url, seturl] = useState("");
+  const [Status, setStatus] = useState(false);
+  const [uid, setuid] = useState("");
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const product = products[0]; // Suponiendo que solo hay un producto con ese ID
+      setNombre(product.name);
+      setDescripcion(product.description);
+      setPrecio(product.price);
+      seturl(product.images);
+      setStatus(product.Status);
+      setuid(product.uid);
+      // Asigna los demás valores a las variables correspondientes
+    }
+  }, [products]);
+
+  const images = [url, "../../../../public/Store.svg"]; // Agrega aquí las rutas de las imágenes
 
   const handleChangeImage = (index) => {
     setCurrentImageIndex(index);
+  };
+  const [estadoHijo, setEstadoHijo] = useState(false);
+  const [Ventana, setVentana] = useState(0);
+  const Vista = () => {
+    const nuevoEstado = !estadoHijo;
+
+    const ven = 1;
+    setVentana(ven);
+
+    setEstadoHijo(nuevoEstado);
+    props.VistaPrevia(nuevoEstado, ven);
   };
 
   return (
     <div className="flex overflow-hidden flex-col justify-center rounded-md shadow-lg md:flex-row card">
       <div className="w-full md:w-1/2">
-        <button className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4">
+        <button
+          onClick={() => Vista()}
+          className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4"
+        >
           <BsFillArrowLeftSquareFill className="ml-2" size={20} />
         </button>{" "}
         <div className="relative">
@@ -50,20 +92,23 @@ const ProductCard = () => {
         <div className="mt-4 w-full">
           <div className="p-4 shadow-lg">
             <div className="card-description">
-              <h2 className="mb-2 text-xl font-bold">Nombre del Producto</h2>
-              <p className="mb-4 text-gray-600">Descripción del Producto</p>
-              <p className="text-2xl font-bold">$99.99</p>
+              <h2 className="mb-2 text-xl font-bold">{nombre}</h2>
+              <p className="mb-4 text-gray-600">{descripcion}</p>
+              <p className="text-2xl font-bold">{precio}</p>
               <div className="flex gap-3 items-center mt-4">
-                <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-white bg-green-400 rounded-full">
-                    <FaShoppingCart size={20} />
-                  </button>
-                </div>
-                <div className="flex justify-end mb-2">
-                  <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
-                    <FaExchangeAlt size={20} />
-                  </button>
-                </div>
+                {!Status ? (
+                  <div className="flex justify-end mb-2">
+                    <button className="p-2 h-14 text-white bg-green-400 rounded-full">
+                      <FaShoppingCart size={20} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex justify-end mb-2">
+                    <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
+                      <FaExchangeAlt size={20} />
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="mt-4">
                 <p className="text-gray-500">Vendedor: John Doe</p>

@@ -9,10 +9,13 @@ function ProductCatalog(props) {
 
   const Vista_Previa = (productId) => {
     const nuevoEstado = !estadoHijo;
-    const nuevoParam1 = "texto1";
-    const nuevoParam2 = "texto2";
+    const nuevoParam1 = productId;
+    const nuevoParam2 = productId;
+    const ven = 3;
+    setVentana(ven);
+
     setEstadoHijo(nuevoEstado);
-    props.VistaPrevia(nuevoEstado, nuevoParam1, nuevoParam2);
+    props.VistaPrevia(nuevoEstado, ven, nuevoParam1, nuevoParam2);
   };
 
   /*  const currentUser = auth.currentUser; */
@@ -33,6 +36,7 @@ function ProductCatalog(props) {
     <div className="grid z-10 grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => (
         <Card
+          Vistap={Vista_Previa}
           key={index}
           id={product.id}
           name={product.name}
@@ -42,7 +46,6 @@ function ProductCatalog(props) {
           productId={product.id}
           inventory={product.cuanty}
           Status={product.Status}
-          onClick={() => Vista_Previa(product.id)}
           cursor-pointer
         />
       ))}
