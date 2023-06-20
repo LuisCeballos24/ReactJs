@@ -45,6 +45,43 @@ const Modal = () => {
 
     console.log("Paso");
   };
+  const handleRegister = async (event) => {
+    event.preventDefault();
+  
+    const firstName = event.target.elements.firstName.value;
+    const lastName = event.target.elements.lastName.value;
+    const birthdate = event.target.elements.birthdate.value;
+    const phoneNumber = event.target.elements.phoneNumber.value;
+    const email = event.target.elements.email.value;
+    const password = event.target.elements.password.value;
+    const confirmPassword = event.target.elements.confirmPassword.value;
+  
+    try {
+      setLoading(true);
+      if (password !== confirmPassword) {
+        throw new Error("Las contraseñas no coinciden");
+      }
+  
+      // Crear el usuario en Firebase Authentication
+      const { user } = await auth.createUserWithEmailAndPassword(email, password);
+  
+      // Guardar datos adicionales en la base de datos
+      await db.collection("users").doc(user.uid).set({
+        firstName,
+        lastName,
+        birthdate,
+        phoneNumber,
+      });
+  
+      setLoading(false);
+      navigate("/user"); // Redirigir a la página deseada después del registro
+    } catch (error) {
+      console.log("Error al registrar el usuario:", error);
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -191,7 +228,7 @@ const Modal = () => {
               Registro e Inicio de Sesión
             </h2>
             <h2 className="mb-8 text-2xl font-bold"></h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleRegister}>
               {/* Campos de registro */}
               <Link
                 to="#"
