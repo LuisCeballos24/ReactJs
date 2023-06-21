@@ -12,7 +12,7 @@ function ProductCatalog_user(props) {
   const Vista_Previa = (productId) => {
     console.log("Paso por aqui");
     const nuevoEstado = !estadoHijo;
-    const ven = 2;
+    const ven = productId;
     setVentana(ven);
     const nuevoParam2 = productId;
     setEstadoHijo(nuevoEstado);
@@ -52,14 +52,14 @@ function ProductCatalog_user(props) {
           <p className="text-gray-600"></p>
           <div className="flex gap-4 justify-center">
             <button
-              onClick={() => Vista_Previa()}
-              className="py-2 px-4 text-white bg-blue-500 rounded-md"
+              onClick={() => Vista_Previa(2)}
+              className="py-2 px-4 text-black bg-green-500 rounded-md"
             >
               Agregar Producto
             </button>
           </div>
           <div className="flex gap-4 justify-center">
-            <button className="hidden py-2 px-4 text-white bg-blue-500 rounded-md">
+            <button className="py-2 px-4 text-black bg-yellow-500 rounded-md">
               Agregar producto de Subasta
             </button>
           </div>
@@ -77,7 +77,7 @@ function ProductCatalog_user(props) {
           inventory={product.cuanty}
           Status={product.Status}
           cursor-pointer
-          onClick={() => Vista_Previa(product.id)}
+          /* onClick={() => Vista_Previa(product.id)} */
           Vistap={Vista}
         />
       ))}

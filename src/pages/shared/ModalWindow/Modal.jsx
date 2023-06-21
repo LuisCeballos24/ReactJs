@@ -1,7 +1,7 @@
 import { FaGoogle, FaMicrosoft } from "react-icons/fa";
 import { HiPlus } from "react-icons/hi";
 import React, { useState, useEffect } from "react";
-import { auth, db } from "../../../utils/firebase";
+import { auth, db, db2 } from "../../../utils/firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 const Modal = () => {
@@ -47,7 +47,7 @@ const Modal = () => {
   };
   const handleRegister = async (event) => {
     event.preventDefault();
-  
+
     const firstName = event.target.elements.firstName.value;
     const lastName = event.target.elements.lastName.value;
     const birthdate = event.target.elements.birthdate.value;
@@ -55,16 +55,19 @@ const Modal = () => {
     const email = event.target.elements.email.value;
     const password = event.target.elements.password.value;
     const confirmPassword = event.target.elements.confirmPassword.value;
-  
+
     try {
       setLoading(true);
       if (password !== confirmPassword) {
         throw new Error("Las contraseñas no coinciden");
       }
-  
+
       // Crear el usuario en Firebase Authentication
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);
-  
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+
       // Guardar datos adicionales en la base de datos
       await db.collection("users").doc(user.uid).set({
         firstName,
@@ -72,7 +75,7 @@ const Modal = () => {
         birthdate,
         phoneNumber,
       });
-  
+
       setLoading(false);
       navigate("/user"); // Redirigir a la página deseada después del registro
     } catch (error) {
@@ -81,7 +84,6 @@ const Modal = () => {
       setLoading(false);
     }
   };
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();

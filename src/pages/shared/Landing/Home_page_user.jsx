@@ -24,6 +24,7 @@ import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
 import Card_product from "../Card/Card_product";
 import Card_subasta from "../Card/Card_subasta";
+import CardADD_subasta from "../Add_Product/CardADD_subasta";
 
 export const changeShowStore = (toggleStore) => {
   console.log("Hola mundo");
@@ -77,7 +78,7 @@ function Home_Page_user() {
                 <ProductCatalog_user VistaPrevia={Vista} />
               ) : vista_A === 2 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 2
-                <CardAddProduct VistaPrevia={Vista} />
+                <CardADD_subasta VistaPrevia={Vista} />
               ) : vista_A === 3 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 3
 
