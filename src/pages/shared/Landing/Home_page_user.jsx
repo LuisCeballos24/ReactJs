@@ -78,16 +78,14 @@ function Home_Page_user() {
                 <ProductCatalog_user VistaPrevia={Vista} />
               ) : vista_A === 2 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 2
-                <CardADD_subasta VistaPrevia={Vista} />
+                <CardAddProduct VistaPrevia={Vista} />
               ) : vista_A === 3 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 3
 
                 <Card_product VistaPrevia={Vista} producto={param1} />
               ) : vista_A === 4 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
-                {
-                  /* <AnotherComponent3 /> */
-                }
+                <CardADD_subasta VistaPrevia={Vista} />
               ) : (
                 // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
                 {

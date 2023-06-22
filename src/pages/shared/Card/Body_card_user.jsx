@@ -59,7 +59,10 @@ function ProductCatalog_user(props) {
             </button>
           </div>
           <div className="flex gap-4 justify-center">
-            <button className="py-2 px-4 text-black bg-yellow-500 rounded-md">
+            <button
+              onClick={() => Vista_Previa(4)}
+              className="py-2 px-4 text-black bg-yellow-500 rounded-md"
+            >
               Agregar producto de Subasta
             </button>
           </div>

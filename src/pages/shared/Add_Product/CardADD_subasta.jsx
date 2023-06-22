@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 
@@ -12,7 +12,12 @@ const CardADD_subasta = (props) => {
   const [auctionStartTime, setAuctionStartTime] = useState("");
   const [auctionEndDate, setAuctionEndDate] = useState("");
   const [auctionEndTime, setAuctionEndTime] = useState("");
-
+  const [previewImages, setPreviewImages] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
+  const [url, setUrl] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(1);
+  const [Ventana, setVentana] = useState(0);
+  const [estadoHijo, setEstadoHijo] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes realizar la lógica para enviar los datos del formulario
@@ -20,6 +25,57 @@ const CardADD_subasta = (props) => {
     console.log("Formulario enviado");
   };
 
+  const Vista_Previa = () => {
+    console.log("Paso por aqui");
+    const nuevoEstado = !estadoHijo;
+    const ven = 1;
+    setVentana(ven);
+    setEstadoHijo(nuevoEstado);
+    props.VistaPrevia(nuevoEstado, ven);
+  };
+
+  const handleImageUpload = (event) => {
+    const files = event.target.files;
+    const imageFiles = Array.from(files);
+
+    const readerPromises = imageFiles.map((file) => {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          resolve(event.target.result);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(readerPromises).then((imageUrls) => {
+      setPreviewImages(imageUrls);
+      setCurrentImageIndex(0);
+      setUrl(imageUrls[0]); // Establecer la URL de la primera imagen como el valor inicial de "url"
+    });
+  };
+
+  const handleImageChange = (index) => {
+    setCurrentImageIndex(index);
+    setUrl(previewImages[index]);
+  };
+
+  // Función para manejar la carga de imágenes
+
+  // Asegurarse de liberar los recursos de las URLs de las imágenes al desmontar el componente
+  useEffect(() => {
+    return () => {
+      previewImages.forEach((preview) => URL.revokeObjectURL(preview));
+    };
+  }, [previewImages]);
+
+  useEffect(() => {
+    return () => {
+      previewImages.forEach((preview) => URL.revokeObjectURL(preview));
+    };
+  }, [previewImages]);
   const handleAuctionTypeChange = (e) => {
     setAuctionType(e.target.value);
     setAuctionTime("");
@@ -99,7 +155,10 @@ const CardADD_subasta = (props) => {
   return (
     <div className="flex overflow-hidden flex-col justify-center rounded-md shadow-lg md:flex-row card">
       <div className="w-full md:w-1/2">
-        <button className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4">
+        <button
+          onClick={() => Vista_Previa()}
+          className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4"
+        >
           <BsFillArrowLeftSquareFill className="ml-2" size={20} />
         </button>{" "}
         <div className="p-4 shadow-lg">
@@ -306,6 +365,60 @@ const CardADD_subasta = (props) => {
       </div>
       <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 p-8">
         <div className="text-center">
+          <div className="flex flex-col justify-center items-center p-6 text-left text-gray-300 bg-white rounded-xl border-t border-r border-b transition">
+            <div className="relative justify-center border border-gray-600 h-[360px] w-[300px]">
+              {/* ... Código de la imagen principal ... */}
+              <div className="relative left-0 z-20 justify-center border h-[360px] w-[300px]">
+                {previewImages.length > 0 && (
+                  <img
+                    src={previewImages[currentImageIndex]}
+                    alt={`Preview ${currentImageIndex + 1}`}
+                    className="object-cover w-full h-full rounded"
+                  />
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col justify-center items-center h-full">
+              <div className="justify-center mt-4">
+                {/* ... Código de las imágenes previas ... */}
+                <div className="justify-center mt-4">
+                  <label className="block mb-2 font-bold text-gray-700">
+                    Imágenes previas:
+                  </label>
+                  <div className="flex justify-center space-x-2">
+                    {previewImages.map((image, index) => (
+                      <button
+                        key={index}
+                        className={`h-12 w-12 rounded-full ${
+                          index === currentImageIndex
+                            ? "bg-blue-500"
+                            : "bg-gray-300"
+                        }`}
+                        onClick={() => handleImageChange(index)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <label
+                htmlFor="images"
+                className="mt-4 mb-2 font-bold text-gray-700"
+              >
+                Subir imagen:
+              </label>
+              {/* Resto del código del input de imágenes */}
+              <input
+                type="file"
+                id="images"
+                name="images"
+                onChange={handleImageUpload}
+                multiple
+                className="p-2 text-gray-800 rounded-lg"
+              />
+            </div>
+          </div>
           <h2 className="mb-4 text-xl font-bold">
             Visualización previa de la Subasta
           </h2>

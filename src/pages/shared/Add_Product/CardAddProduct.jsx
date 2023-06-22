@@ -26,7 +26,7 @@ function CardAddProduct(props) {
   const [imageUrls, setImageUrls] = useState([]);
   const [url, setUrl] = useState("");
   const [currentBid, setCurrentBid] = useState(0);
-
+  const [id_proct, setProduct] = useState("");
   // const [isVertical, setIsVertical] = useState(false);
   //Para cerrar la ventana
   const Vista_Previa = () => {
@@ -61,7 +61,7 @@ function CardAddProduct(props) {
       setUrl(imageUrls[0]); // Establecer la URL de la primera imagen como el valor inicial de "url"
     });
   };
-  const [id_proct, setProduct] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProduct(Date.now());
