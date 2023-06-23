@@ -64,11 +64,11 @@ function CardAddProduct(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setProduct(Date.now());
+    let id_p = Date.now();
     try {
       // Agregar el producto a Firestore
       const productRef = await db2.collection("productos").add({
-        id: id_proct,
+        id: id_p,
         name,
         description,
         price,
@@ -77,6 +77,7 @@ function CardAddProduct(props) {
         uid: user.uid,
         url, // Agregar la URL al objeto
       });
+
       // Subir las imágenes al Storage
       const urls = await Promise.all(
         previewImages.map(async (imageUrl) => {
@@ -94,6 +95,7 @@ function CardAddProduct(props) {
           }
         })
       );
+      const productId = productRef.id;
       if (Status) {
         console.log("Entro al carrito");
         try {
@@ -120,11 +122,11 @@ function CardAddProduct(props) {
             const productData = {
               cantidad: 1,
               descripción: description,
-              id: id_proct,
+              id: productId,
               buyerId: auth.currentUser.uid,
               nombre: name,
               precio: price,
-              images: url,
+              images: urls, // Usar las URLs de las imágenes subidas
               time: "",
               compara: "",
               Diponibilidad: DispoI,
@@ -141,7 +143,6 @@ function CardAddProduct(props) {
 
       // Actualizar el producto con las URLs de las imágenes
       await productRef.update({ images: urls });
-      await productRef.update({ images: urls, url: imageUrls });
       // Reiniciar el formulario
       setName("");
       setDescription("");
