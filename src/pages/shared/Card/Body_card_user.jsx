@@ -8,7 +8,7 @@ function ProductCatalog_user(props) {
 
   const currentUser = auth.currentUser;
   const [estadoHijo, setEstadoHijo] = useState(false);
-  const [Ventana, setVentana] = useState(0);
+
   const Vista_Previa = (productId) => {
     console.log("Paso por aqui");
     const nuevoEstado = !estadoHijo;

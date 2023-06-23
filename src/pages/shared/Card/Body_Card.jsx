@@ -18,6 +18,19 @@ function ProductCatalog(props) {
     props.VistaPrevia(nuevoEstado, ven, nuevoParam1, nuevoParam2);
   };
 
+  const [vista, setVista_A] = useState(false);
+  const [vista_A, setVista_B] = useState(2);
+  const [param1, setParam1] = useState("default1");
+  const [param2, setParam2] = useState("default2");
+  const Vista = (vista_A, vista_B, Producto, text) => {
+    setVista_A(vista_A);
+    setVista_B(vista_B);
+    setParam1(Producto);
+    setParam2(text);
+    console.log(vista_A, vista_B, Producto, text);
+    props.VistaPrevia(vista_A, vista_B, Producto, text);
+  };
+
   /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
     db2.collection("productos")
@@ -36,7 +49,7 @@ function ProductCatalog(props) {
     <div className="grid z-10 grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
       {products.map((product, index) => (
         <Card
-          Vistap={Vista_Previa}
+          Vistap={Vista}
           key={index}
           id={product.id}
           name={product.name}

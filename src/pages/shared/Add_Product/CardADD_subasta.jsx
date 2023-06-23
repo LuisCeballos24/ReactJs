@@ -389,11 +389,10 @@ const CardADD_subasta = (props) => {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${
-                          index === currentImageIndex
-                            ? "bg-blue-500"
-                            : "bg-gray-300"
-                        }`}
+                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
+                          ? "bg-blue-500"
+                          : "bg-gray-300"
+                          }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}
