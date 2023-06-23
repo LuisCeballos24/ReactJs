@@ -105,12 +105,32 @@ function Home_Page_user() {
           <>
             <Header />
             <Card_Nov />
-            <ProductCatalog />
-            <Card_subasta />
-            {/* <Card_product /> */}
+            {/* <Card_subasta /> */}
+            {typeof vista_A === "number" ? (
+              vista_A === 1 ? (
+                <ProductCatalog VistaPrevia={Vista} />
+              ) : vista_A === 2 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 2
+                <CardAddProduct VistaPrevia={Vista} />
+              ) : vista_A === 3 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 3
 
-            {/* <Card_Nov /> */}
-            {/* <ProductCatalog /> */}
+                <Card_product VistaPrevia={Vista} producto={param1} />
+              ) : vista_A === 4 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <CardADD_subasta VistaPrevia={Vista} />
+              ) : (
+                // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
+                {
+                  /* <DefaultComponent /> */
+                }
+              )
+            ) : (
+              // Otra alternativa si vista_A no es un número
+              {
+                /* <DefaultComponent /> */
+              }
+            )}
           </>
         );
       default:
