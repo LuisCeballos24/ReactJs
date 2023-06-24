@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "./Card";
+import Card_sub from "./Car_sub";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
 
@@ -89,7 +90,7 @@ function ProductCatalog_user(props) {
 
       <div className="grid grid-cols-1 gap-16 p-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2">
         {products.map((product) => (
-          <Card
+          <Card_sub
             className="bg-red-800"
             key={product.id}
             name={product.name}
