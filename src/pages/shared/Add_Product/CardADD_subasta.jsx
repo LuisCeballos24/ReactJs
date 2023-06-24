@@ -1,8 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
+import { db2, auth, storage2 } from "../../../utils/firebase.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const CardADD_subasta = (props) => {
+  /*
+  Esta función suma dos números enteros y devuelve el resultado.
+  Parámetros:
+    - num1: primer número entero
+    - num2: segundo número entero
+  Retorna:
+    El resultado de la suma de num1 y num2.
+*/
+  const [user] = useAuthState(auth);
+
+  /*
+
+    
+  Esta función suma dos números enteros y devuelve el resultado.
+  Parámetros:
+    - num1: primer número entero
+    - num2: segundo número entero
+  Retorna:
+    El resultado de la suma de num1 y num2.
+*/
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [startingPrice, setStartingPrice] = useState(0);
@@ -18,12 +40,22 @@ const CardADD_subasta = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(1);
   const [Ventana, setVentana] = useState(0);
   const [estadoHijo, setEstadoHijo] = useState(false);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes realizar la lógica para enviar los datos del formulario
-    // a través de una API o cualquier otro método de tu elección
-    console.log("Formulario enviado");
-  };
+  /*
+  Esta Estas variables son para la funciones de agregar 
+  Parámetros:
+    - num1: texto 
+    - num2: boolenos
+  Retorna:
+    El resultado de la suma de num1 y num2.
+*/
+  const [name, setname] = useState("");
+  const [descripcion, setdescripcion] = useState("");
+  const [price_partida, setprice] = useState("");
+  const [Dura_hD, setDH] = useState("");
+  const [Fecha_I, setInc] = useState("");
+  const [Fecha_C, setCierre] = useState("");
+  const [TIPO, setTipo] = useState("");
+  const [Dis, setDis] = useState(true);
 
   const Vista_Previa = () => {
     console.log("Paso por aqui");
@@ -78,6 +110,7 @@ const CardADD_subasta = (props) => {
   }, [previewImages]);
   const handleAuctionTypeChange = (e) => {
     setAuctionType(e.target.value);
+
     setAuctionTime("");
     setAuctionStartDate("");
     setAuctionStartTime("");
@@ -92,6 +125,7 @@ const CardADD_subasta = (props) => {
   };
 
   const handleAuctionStartDateChange = (e) => {
+    // handleAuctionStartTimeChange();
     setAuctionStartDate(e.target.value);
     setAuctionEndDate(
       calculateAuctionEndDate(auctionTime, e.target.value, auctionStartTime)
@@ -152,6 +186,108 @@ const CardADD_subasta = (props) => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let id_p = Date.now();
+    try {
+      // Agregar el producto a Firestore
+      const productRef = await db2.collection("Subastas").add({
+        id: id_p,
+        name,
+        descripcion,
+        price_partida,
+        auctionTime,
+        auctionStartDate,
+        auctionEndDate,
+        auctionStartTime,
+        auctionEndTime,
+        auctionType,
+        Dis,
+        uid: user.uid,
+        url, // Agregar la URL al objeto
+      });
+
+      // Subir las imágenes al Storage
+      const urls = await Promise.all(
+        previewImages.map(async (imageUrl) => {
+          try {
+            const imageFile = await fetch(imageUrl).then((res) => res.blob());
+            const uploadTask = storage2
+              .ref(`images/${productRef.id}/${productRef.name}`)
+              .put(imageFile);
+            const snapshot = await uploadTask;
+            const url = await snapshot.ref.getDownloadURL();
+            return url;
+          } catch (error) {
+            console.error("Error al subir una imagen:", error);
+            throw error;
+          }
+        })
+      );
+      // const productId = productRef.id;
+      // if (Status) {
+      //   console.log("Entro al carrito");
+      //   try {
+      //     // Verificar si el producto ya está en el carrito
+      //     const querySnapshot = await db2
+      //       .collection("ordenes")
+      //       .where("id", "==", id_proct)
+      //       .where("buyerId", "==", auth.currentUser.uid)
+      //       .get();
+      //
+      //     if (!querySnapshot.empty) {
+      //       // Si el producto ya está en el carrito, actualizar la cantidad
+      //       const docId = querySnapshot.docs[0].id;
+      //       const docRef = db2.collection("ordenes").doc(docId);
+      //       const docSnapshot = await docRef.get();
+      //       await docRef.update({
+      //         cantidad: docSnapshot.data().cantidad + 1,
+      //       });
+      //       console.log(
+      //         `Producto con id ${id_proct} actualizado en el carrito`
+      //       );
+      //     } else {
+      //       // Si el producto no está en el carrito, agregarlo con cantidad 1
+      //       const productData = {
+      //         cantidad: 1,
+      //         descripción: description,
+      //         id: productId,
+      //         buyerId: auth.currentUser.uid,
+      //         nombre: name,
+      //         precio: price,
+      //         images: urls, // Usar las URLs de las imágenes subidas
+      //         time: "",
+      //         compara: "",
+      //         Diponibilidad: DispoI,
+      //       };
+      //       const docRef = await db2.collection("ordenes").add(productData);
+      //       console.log(`Producto con id ${id_proct} agregado al carrito`);
+      //     }
+      //   } catch (error) {
+      //     console.error(
+      //       `Error al agregar el producto al carrito: ${error.message}`
+      //     );
+      //   }
+      // }
+
+      // Actualizar el producto con las URLs de las imágenes
+      await productRef.update({ images: urls });
+      // Reiniciar el formulario
+      setname("");
+      setdescripcion("");
+      setprice("");
+      setPreviewImages([]);
+      alert(" Producto de subasta agregado");
+    } catch (error) {
+      console.error("Error al agregar el producto:");
+      alert(
+        "Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo."
+      );
+    }
+
+    console.log("Fomualario enviado");
+  };
+
   return (
     <div className="flex overflow-hidden flex-col justify-center rounded-md shadow-lg md:flex-row card">
       <div className="w-full md:w-1/2">
@@ -172,8 +308,8 @@ const CardADD_subasta = (props) => {
                 <input
                   type="text"
                   className="p-2 w-full rounded border border-gray-300"
-                  value={productName}
-                  onChange={(e) => setProductName(e.target.value)}
+                  value={name}
+                  onChange={(e) => setname(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -182,8 +318,8 @@ const CardADD_subasta = (props) => {
                 </label>
                 <textarea
                   className="p-2 w-full rounded border border-gray-300"
-                  value={productDescription}
-                  onChange={(e) => setProductDescription(e.target.value)}
+                  value={descripcion}
+                  onChange={(e) => setdescripcion(e.target.value)}
                 ></textarea>
               </div>
               <div className="mb-4">
@@ -193,8 +329,8 @@ const CardADD_subasta = (props) => {
                 <input
                   type="number"
                   className="p-2 w-full rounded border border-gray-300"
-                  value={startingPrice}
-                  onChange={(e) => setStartingPrice(Number(e.target.value))}
+                  value={price_partida}
+                  onChange={(e) => setprice(Number(e.target.value))}
                 />
               </div>
               <div className="mb-4">
@@ -220,14 +356,15 @@ const CardADD_subasta = (props) => {
                       value={auctionTime}
                       onChange={handleAuctionTimeChange}
                     >
+                      {" "}
                       <option value="">Seleccionar</option>
+                      <option value="15 minutos">15 minutos</option>
+                      <option value="30 minutos">30 minutos</option>
+                      <option value="45 minutos">45 minutos</option>
                       <option value="1 horas">1 hora</option>
                       <option value="2 horas">2 horas</option>
                       <option value="3 horas">3 horas</option>
                       <option value="4 horas">4 horas</option>
-                      <option value="15 minutos">15 minutos</option>
-                      <option value="30 minutos">30 minutos</option>
-                      <option value="45 minutos">45 minutos</option>
                     </select>
                   </div>
                   {auctionTime && (
@@ -251,7 +388,7 @@ const CardADD_subasta = (props) => {
                           type="time"
                           className="p-2 w-full rounded border border-gray-300"
                           value={auctionStartTime}
-                          onChange={handleAuctionStartTimeChange}
+                        // onChange={handleAuctionStartTimeChange}
                         />
                       </div>
                       <div className="mb-4">
@@ -390,8 +527,8 @@ const CardADD_subasta = (props) => {
                       <button
                         key={index}
                         className={`h-12 w-12 rounded-full ${index === currentImageIndex
-                          ? "bg-blue-500"
-                          : "bg-gray-300"
+                            ? "bg-blue-500"
+                            : "bg-gray-300"
                           }`}
                         onClick={() => handleImageChange(index)}
                       >

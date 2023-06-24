@@ -89,34 +89,7 @@ const ProductCard = (props) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 w-full">
-          <div className="p-4 shadow-lg">
-            <div className="card-description">
-              <h2 className="mb-2 text-xl font-bold">{nombre}</h2>
-              <p className="mb-4 text-gray-600">{descripcion}</p>
-              <p className="text-2xl font-bold">{precio}</p>
-              <div className="flex gap-3 items-center mt-4">
-                {!Status ? (
-                  <div className="flex justify-end mb-2">
-                    <button className="p-2 h-14 text-white bg-green-400 rounded-full">
-                      <FaShoppingCart size={20} />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex justify-end mb-2">
-                    <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
-                      <FaExchangeAlt size={20} />
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="mt-4">
-                <p className="text-gray-500">Vendedor: John Doe</p>
-                <p className="text-gray-500">Tienda: Mi Tienda</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div className="mt-4 w-full"></div>
       </div>
 
       <div className="mt-4 w-full md:mt-0 md:w-1/2">
@@ -136,6 +109,32 @@ const ProductCard = (props) => {
                 Categoría 3
               </button>
             </nav>
+            <div className="p-4 shadow-lg">
+              <div className="card-description">
+                <h2 className="mb-2 text-xl font-bold">{nombre}</h2>
+                <p className="mb-4 text-gray-600">{descripcion}</p>
+                <p className="text-2xl font-bold">{precio}</p>
+                <div className="flex gap-3 items-center mt-4">
+                  {!Status ? (
+                    <div className="flex justify-end mb-2">
+                      <button className="p-2 h-14 text-white bg-green-400 rounded-full">
+                        <FaShoppingCart size={20} />
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex justify-end mb-2">
+                      <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
+                        <FaExchangeAlt size={20} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-4">
+                  <p className="text-gray-500">Vendedor: John Doe</p>
+                  <p className="text-gray-500">Tienda: Mi Tienda</p>
+                </div>
+              </div>
+            </div>
             <div className="mt-4">
               <h3 className="mb-2 font-bold">Título de la descripción</h3>
               <p className="text-gray-600">
