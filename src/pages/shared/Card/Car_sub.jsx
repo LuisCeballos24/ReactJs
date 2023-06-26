@@ -146,7 +146,7 @@ const Card = (props) => {
 
   const Vista = (index) => {
     console.log(index);
-    props.Vistap(true, 3, index);
+    props.Vistap(true, 5, index);
   };
 
   const handleClickChange = () => {
@@ -205,92 +205,131 @@ const Card = (props) => {
     }
   };
 
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowFullDescription(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowFullDescription(false);
+  };
   return (
     <div
-      id="{key}"
-      className="shadow-xl flex flex-col items-center p-6 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
+      className="shadow-xl flex flex-row items-center p-6 py-5 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
       style={{ overflow: "hidden" }}
     >
-      <div className="overflow-hidden relative mb-4 w-72 h-72">
+      <div id="imagenPrincipal" className="overflow-hidden mr-4 w-72 h-72">
         <img
           src={images[currentImageIndex]}
           alt=""
           className="object-cover w-full h-full rounded-xl"
         />
       </div>
-      <ul className="flex justify-center mb-4">
-        {images.map((image, index) => (
-          <li
-            key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-              }`}
-            onClick={() => handleImageClick(index)}
-          ></li>
-        ))}
-      </ul>
-      <div className="flex justify-between items-center w-full">
-        {Status && (
-          <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-            <RiExchangeBoxLine
-              className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
-            />
-          </button>
-        )}
 
+      <div className="flex flex-col flex-grow">
         <div
-          id="opciones"
-          className={`${mostrarOpciones ? "" : "hidden"
-            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50 `}
-          style={{ overflow: "hidden" }}
+          className="mt-2 cursor-pointer"
+          onClick={() => Vista(props.productId)}
         >
-          <div className="flex items-center px-2">
-            <button
-              className="flex items-center mb-2 w-16 h-5 text-sm text-red-600 rounded hover:text-white hover:bg-red-600"
-              onClick={() => setMostrarOpciones(false)}
-            >
-              <RiCloseLine className="mr-1" /> Cerrar
-            </button>
-          </div>
-          {opciones.map((opcion, index) => (
-            <div
-              key={index}
-              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
-                  ? "hover:bg-[#285e7d] hover:text-white text-black "
-                  : " hover:bg-[#285e7d] hover:text-white text-black "
-                }`}
-              onClick={() => {
-                handleAbrirOpcion(index);
-                handleEliminarOpcion(index, props.productId, opcion.idproducto);
-              }}
-            >
-              {index} &nbsp;
-              <img
-                src={opcion.imageUrl} // Asigna la URL de la imagen como src
-                alt=""
-                className="inline w-4 h-4"
-              />{" "}
-              {opcion.name} {/* Utiliza opcion.name en lugar de opcion */}
-            </div>
-          ))}
+          <p className="text-xl font-semibold text-center text-gray-900">
+            {name}
+          </p>
+          <p className="font-semibold text-yellow-800">{props.productId}</p>
+          <p
+            className="font-semibold text-gray-700"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {showFullDescription
+              ? description
+              : `${description.slice(0, 100)}...`}
+          </p>{" "}
+          <p className="text-gray-600">${price}</p>
+          <p className="text-gray-600">{props.status} available</p>
         </div>
-        {!Status && (
-          <button className="flex p-2 rounded-lg" onClick={handleClick}>
-            <BsCartPlus
-              className={`text-xl bg-white hover:text-green-600 text-primary`}
-            />
-          </button>
-        )}
-      </div>
-      <div
-        className="mt-2 cursor-pointer"
-        onClick={() => Vista(props.productId)}
-      >
-        <p className="text-xl font-semibold text-gray-900">{name}</p>
-        <p className="font-semibold text-yellow-600">{props.productId}</p>
-        <p className="font-semibold text-gray-700">{description}</p>
 
-        <p className="text-gray-600">${price}</p>
-        <p className="text-gray-600">{props.status} available </p>
+        <div className="overflow-hidden relative mt-4 mb-2 w-full h-2 bg-gray-300 rounded-full">
+          <div
+            className="absolute top-0 left-0 h-full bg-green-500 rounded-full"
+            style={{ width: "50%" }}
+          ></div>
+        </div>
+
+        <div className="flex justify-between items-center w-full">
+          {Status && (
+            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
+              <RiExchangeBoxLine
+                className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
+              />
+            </button>
+          )}
+
+          <div
+            id="opciones"
+            className={`${mostrarOpciones ? "" : "hidden"
+              } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50 `}
+            style={{ overflow: "hidden" }}
+          >
+            <div className="flex items-center px-2">
+              <button
+                className="flex items-center mb-2 w-16 h-5 text-sm text-red-600 rounded hover:text-white hover:bg-red-600"
+                onClick={() => setMostrarOpciones(false)}
+              >
+                <RiCloseLine className="mr-1" /> Cerrar
+              </button>
+            </div>
+            {opciones.map((opcion, index) => (
+              <div
+                key={index}
+                className={`p-2 hover:border-gray-900 ${opcionAbierta === index
+                    ? "hover:bg-[#285e7d] hover:text-white text-black "
+                    : " hover:bg-[#285e7d] hover:text-white text-black "
+                  }`}
+                onClick={() => {
+                  handleAbrirOpcion(index);
+                  handleEliminarOpcion(
+                    index,
+                    props.productId,
+                    opcion.idproducto
+                  );
+                }}
+              >
+                {index} &nbsp;
+                <img
+                  src={opcion.imageUrl}
+                  alt=""
+                  className="inline w-4 h-4"
+                />{" "}
+                {opcion.name}
+              </div>
+            ))}
+          </div>
+
+          {!Status && (
+            <button className="flex p-2 rounded-lg" onClick={handleClick}>
+              <BsCartPlus
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+          )}
+        </div>
+        <div className="flex flex-col items-center ml-auto">
+          <ul className="flex justify-center p-10 mb-4">
+            {images.map((image, index) => (
+              <li
+                key={index}
+                className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+                  }`}
+                onClick={() => handleImageClick(index)}
+              ></li>
+            ))}
+          </ul>
+
+          <button className="py-2 px-4 mt-2 text-white bg-blue-500 rounded-lg">
+            Aplicar
+          </button>
+        </div>
       </div>
     </div>
   );

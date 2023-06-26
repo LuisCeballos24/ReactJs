@@ -56,20 +56,44 @@ const ProductCard = (props) => {
   };
 
   return (
-    <div className="flex overflow-hidden flex-col justify-center rounded-md shadow-lg md:flex-row card">
+    <div className="flex overflow-hidden flex-col justify-center py-5 rounded-md shadow-lg md:flex-row card">
+      <button
+        onClick={() => Vista()}
+        className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4"
+      >
+        <BsFillArrowLeftSquareFill className="ml-2" size={20} />
+      </button>
       <div className="w-full md:w-1/2">
-        <button
-          onClick={() => Vista()}
-          className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4"
-        >
-          <BsFillArrowLeftSquareFill className="ml-2" size={20} />
-        </button>{" "}
+        {" "}
         <div className="relative">
           <div className="card-image">
             <img
               src={images[currentImageIndex]}
               alt="Imagen del Producto"
-              className="w-full h-auto"
+              className="w-full h-auto lg:w-[700px]"
+            />
+            <div className="flex absolute bottom-0 left-0 justify-center py-2 w-full bg-gray-200">
+              {images.map((image, index) => (
+                <button
+                  key={index}
+                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                    }`}
+                  onClick={() => handleChangeImage(index)}
+                >
+                  <img
+                    src={image}
+                    alt={`Vista previa ${index}`}
+                    className="object-cover w-full h-full rounded-full"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="card-image">
+            <img
+              src={images[currentImageIndex]}
+              alt="Imagen del Producto"
+              className="w-full h-auto lg:w-[700px]"
             />
             <div className="flex absolute bottom-0 left-0 justify-center py-2 w-full bg-gray-200">
               {images.map((image, index) => (
@@ -91,7 +115,6 @@ const ProductCard = (props) => {
         </div>
         <div className="mt-4 w-full"></div>
       </div>
-
       <div className="mt-4 w-full md:mt-0 md:w-1/2">
         <div className="p-4">
           <div className="card-description-advanced">
