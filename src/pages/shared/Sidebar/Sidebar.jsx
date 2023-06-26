@@ -19,10 +19,10 @@ const Sidebar = (props) => {
   const navigate = useNavigate();
   const [estadoHijo, setEstadoHijo] = useState(false);
 
-  const handleChange = () => {
+  const handleChange = (Estado) => {
     const nuevoEstado = !estadoHijo;
     setEstadoHijo(nuevoEstado);
-    props.onCambioEstado(nuevoEstado);
+    props.onCambioEstado(Estado);
   };
 
   const toggleStoreHandler = () => {
@@ -88,7 +88,7 @@ const Sidebar = (props) => {
           <li className="p-4 rounded-tl-xl rounded-bl-xl group">
             <a
               href="#"
-              onClick={handleChange}
+              onClick={() => handleChange(2)}
               className="  text-[#EA8337]  group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-white  group-hover:text-white"
             >
               <RiHome6Line className="text-xl" />
@@ -96,7 +96,7 @@ const Sidebar = (props) => {
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
             <a
-              onClick={handleChange}
+              onClick={() => handleChange(1)}
               href="#"
               className="group-hover:bg-[#EA8337]  p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
@@ -105,6 +105,7 @@ const Sidebar = (props) => {
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
             <a
+              onClick={() => handleChange(3)}
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
