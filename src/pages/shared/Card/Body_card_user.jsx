@@ -32,7 +32,9 @@ function ProductCatalog_user(props) {
     console.log(vista_A, vista_B, Producto, text);
     props.VistaPrevia(vista_A, vista_B, Producto, text);
   };
-
+  const [subasta, loading_g, error_s] = useCollectionData(
+    db2.collection("Subastas").where("uid", "==", currentUser?.uid || "")
+  );
   const [products, loading, error] = useCollectionData(
     db2.collection("productos").where("uid", "==", currentUser?.uid || "")
   );
@@ -40,7 +42,13 @@ function ProductCatalog_user(props) {
   if (loading) {
     return <p>Cargando productos...</p>;
   }
+  if (loading_g) {
+    return <p>Cargando productos...</p>;
+  }
 
+  if (error_s) {
+    return <p>Error al cargar productos: {error.message}</p>;
+  }
   if (error) {
     return <p>Error al cargar productos: {error.message}</p>;
   }
@@ -89,18 +97,21 @@ function ProductCatalog_user(props) {
       </div>
 
       <div className="grid grid-cols-1 gap-16 p-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2">
-        {products.map((product) => (
+        {subasta.map((product_sub) => (
           <Card_sub
             className="bg-red-800"
-            key={product.id}
-            name={product.name}
-            img={product.images}
-            description={product.description}
-            price={product.price}
-            productId={product.id}
-            inventory={product.cuanty}
-            Status={product.Status}
-            cursor-pointer
+            key={product_sub.id}
+            name={product_sub.name}
+            descripcion={product_sub.descripcion}
+            price_partida={product_sub.price_partida}
+            auctionTime={product_sub.auctionTime}
+            auctionStartDate={product_sub.auctionStartDate}
+            auctionEndDate={product_sub.auctionEndDate}
+            auctionStartTime={product_sub.auctionStartTime}
+            auctionEndTime={product_sub.auctionEndTime}
+            auctionType={product_sub.auctionType}
+            Dis={product_sub.Dis}
+            img={product_sub.images}
             /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />

@@ -40,7 +40,7 @@ function Home_Page_user() {
     setShowOrder(false);
   };
 
-  const [showStore, setShowStore] = useState(true);
+  const [showStore, setShowStore] = useState(2);
   const manejarCambioEstado = (nuevoEstado) => {
     setShowStore(nuevoEstado);
   };
@@ -60,7 +60,7 @@ function Home_Page_user() {
   };
   const renderContent = () => {
     switch (showStore) {
-      case true:
+      case 1:
         return (
           <>
             <Header_Store />
@@ -89,6 +89,9 @@ function Home_Page_user() {
               ) : vista_A === 5 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
                 <Card_subasta VistaPrevia={Vista} />
+              ) : vista_A === 6 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <Card_subasta VistaPrevia={Vista} />
               ) : (
                 // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
                 {
@@ -103,7 +106,40 @@ function Home_Page_user() {
             )}
           </>
         );
-      case false:
+      case 2:
+        return (
+          <>
+            <Header />
+            <Card_Nov />
+            {/* <Card_subasta /> */}
+            {typeof vista_A === "number" ? (
+              vista_A === 1 ? (
+                <ProductCatalog VistaPrevia={Vista} />
+              ) : vista_A === 2 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 2
+                <CardAddProduct VistaPrevia={Vista} />
+              ) : vista_A === 3 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 3
+
+                <Card_product VistaPrevia={Vista} producto={param1} />
+              ) : vista_A === 4 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <CardADD_subasta VistaPrevia={Vista} />
+              ) : (
+                // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
+                {
+                  /* <DefaultComponent /> */
+                }
+              )
+            ) : (
+              // Otra alternativa si vista_A no es un número
+              {
+                /* <DefaultComponent /> */
+              }
+            )}
+          </>
+        );
+      case 3:
         return (
           <>
             <Header />

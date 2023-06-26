@@ -11,14 +11,17 @@ const Card = (props) => {
   const [showOrder, setShowOrder] = useState(false);
   const {
     key,
-    id,
     name,
+    descripcion,
+    price_partida,
+    auctionTime,
+    auctionStartDate,
+    auctionEndDate,
+    auctionStartTime,
+    auctionEndTime,
+    auctionType,
+    Dis,
     img,
-    description,
-    price,
-    productId,
-    inventory,
-    Status,
   } = props;
   const VistaPrevia = (index) => {
     setCurrentImageIndex(index);
@@ -238,16 +241,19 @@ const Card = (props) => {
         </div>
       </div>
 
-      <div className="flex flex-col flex-grow">
+      <div
+        onClick={() => Vista(props.key)}
+        className="flex flex-col flex-grow cursor-pointer"
+      >
         <div className="mb-4">
           <h2 className="text-2xl font-semibold text-gray-900">{name}</h2>
-          <p className="text-gray-700">ID: {props.productId}</p>
-          <p className="text-gray-700">Fecha de cierre: 2/25/2023</p>
+          <p className="text-gray-700">ID: {props.key}</p>
+          <p className="text-gray-700">Fecha de cierre: {auctionEndDate}</p>
         </div>
 
         <div className="mb-4">
-          <p className="text-gray-800">Precio inicial: ${price}</p>
-          <p className="text-gray-800">{props.status} 8 Propuestas</p>
+          <p className="text-gray-800">Precio inicial: ${price_partida}</p>
+          <p className="text-gray-800">{Dis} 8 Propuestas</p>
         </div>
 
         <div className="mb-4">
@@ -258,8 +264,8 @@ const Card = (props) => {
             onMouseLeave={handleMouseLeave}
           >
             {showFullDescription
-              ? description
-              : `${description.slice(0, 100)}...`}
+              ? descripcion
+              : `${descripcion.slice(0, 100)}...`}
           </p>
         </div>
 
@@ -273,7 +279,7 @@ const Card = (props) => {
         </div>
 
         <div className="flex justify-between items-center mb-4 w-full">
-          {Status && (
+          {Dis && (
             <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
               <RiExchangeBoxLine className="text-xl text-yellow-700 bg-white hover:text-yellow-600 text-primary" />
             </button>
@@ -322,7 +328,7 @@ const Card = (props) => {
             ))}
           </div>
 
-          {!Status && (
+          {!Dis && (
             <button className="flex p-2 rounded-lg" onClick={handleClick}>
               <BsCartPlus className="text-xl bg-white hover:text-green-600 text-primary" />
             </button>

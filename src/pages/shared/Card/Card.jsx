@@ -207,7 +207,7 @@ const Card = (props) => {
 
   return (
     <div
-      id="{key}"
+      id={key}
       className="shadow-xl flex flex-col items-center p-6 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
       style={{ overflow: "hidden" }}
     >
@@ -222,8 +222,9 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-              }`}
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${
+              index === currentImageIndex ? "bg-gray-600" : ""
+            }`}
             onClick={() => handleImageClick(index)}
           ></li>
         ))}
@@ -239,8 +240,9 @@ const Card = (props) => {
 
         <div
           id="opciones"
-          className={`${mostrarOpciones ? "" : "hidden"
-            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50 `}
+          className={`${
+            mostrarOpciones ? "" : "hidden"
+          } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
           style={{ overflow: "hidden" }}
         >
           <div className="flex items-center px-2">
@@ -254,10 +256,11 @@ const Card = (props) => {
           {opciones.map((opcion, index) => (
             <div
               key={index}
-              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
+              className={`p-2 hover:border-gray-900 ${
+                opcionAbierta === index
                   ? "hover:bg-[#285e7d] hover:text-white text-black "
                   : " hover:bg-[#285e7d] hover:text-white text-black "
-                }`}
+              }`}
               onClick={() => {
                 handleAbrirOpcion(index);
                 handleEliminarOpcion(index, props.productId, opcion.idproducto);
@@ -265,11 +268,11 @@ const Card = (props) => {
             >
               {index} &nbsp;
               <img
-                src={opcion.imageUrl} // Asigna la URL de la imagen como src
+                src={opcion.imageUrl}
                 alt=""
                 className="inline w-4 h-4"
               />{" "}
-              {opcion.name} {/* Utiliza opcion.name en lugar de opcion */}
+              {opcion.name}
             </div>
           ))}
         </div>
@@ -285,12 +288,11 @@ const Card = (props) => {
         className="mt-2 cursor-pointer"
         onClick={() => Vista(props.productId)}
       >
-        <p className="text-xl text-gray-900 ont-semibold">{name}</p>
+        <h2 className="text-xl font-semibold text-gray-900">{name}</h2>
         <p className="font-semibold text-yellow-600">{props.productId}</p>
-        <p className="font-semibold text-gray-700">{description}</p>
-
+        <p className="text-gray-700">{description}</p>
         <p className="text-gray-600">${price}</p>
-        <p className="text-gray-600">{props.status} available </p>
+        <p className="text-gray-600">{props.status} available</p>
       </div>
     </div>
   );
