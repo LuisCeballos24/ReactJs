@@ -57,12 +57,14 @@ const ProductCard = (props) => {
 
   return (
     <div className="flex overflow-hidden flex-col justify-center py-5 rounded-md shadow-lg md:flex-row card">
-      <button
-        onClick={() => Vista()}
-        className="py-2 px-4 mt-4 text-white bg-red-500 rounded md:mt-0 md:ml-4"
-      >
-        <BsFillArrowLeftSquareFill className="ml-2" size={20} />
-      </button>
+      <div className="h-full bg-red-500 rounded-full sm:h-96 lg:h-full">
+        <button
+          onClick={() => Vista()}
+          className="py-2 px-4 mt-4 text-white bg-red-500 rounded rounded-full md:mt-0 md:ml-4"
+        >
+          <BsFillArrowLeftSquareFill className="ml-2" size={20} />
+        </button>
+      </div>
       <div className="w-full md:w-1/2">
         {" "}
         <div className="relative">
@@ -89,7 +91,7 @@ const ProductCard = (props) => {
               ))}
             </div>
           </div>
-          <div className="card-image">
+          <div className="py-4 card-image">
             <img
               src={images[currentImageIndex]}
               alt="Imagen del Producto"
@@ -118,7 +120,7 @@ const ProductCard = (props) => {
       <div className="mt-4 w-full md:mt-0 md:w-1/2">
         <div className="p-4">
           <div className="card-description-advanced">
-            <h2 className="mb-4 text-xl font-bold">
+            <h2 className="mb-4 text-xl font-bold text-center">
               Descripciones avanzadas de producto
             </h2>
             <nav className="flex flex-wrap gap-2">

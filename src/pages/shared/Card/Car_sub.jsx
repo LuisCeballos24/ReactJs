@@ -216,59 +216,74 @@ const Card = (props) => {
   };
   return (
     <div
-      className="shadow-xl flex flex-row items-center p-6 py-5 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
+      className="shadow-xl flex flex-col sm:flex-row items-start p-6 py-5 text-left text-gray-900 bg-white rounded-xl border border-gray-300 transition hover:border-[#E89440]"
       style={{ overflow: "hidden" }}
     >
-      <div id="imagenPrincipal" className="overflow-hidden mr-4 w-72 h-72">
+      <div className="mr-6 w-72 h-72 bg-blue-200">
         <img
           src={images[currentImageIndex]}
           alt=""
           className="object-cover w-full h-full rounded-xl"
         />
+        <div className="flex justify-center mt-2">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`w-2 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition ${
+                index === currentImageIndex ? "bg-gray-600" : ""
+              }`}
+              onClick={() => handleImageClick(index)}
+            ></div>
+          ))}
+        </div>
       </div>
 
       <div className="flex flex-col flex-grow">
-        <div
-          className="mt-2 cursor-pointer"
-          onClick={() => Vista(props.productId)}
-        >
-          <p className="text-xl font-semibold text-center text-gray-900">
-            {name}
-          </p>
-          <p className="font-semibold text-yellow-800">{props.productId}</p>
+        <div className="mb-4">
+          <h2 className="text-2xl font-semibold text-gray-900">{name}</h2>
+          <p className="text-gray-700">ID: {props.productId}</p>
+          <p className="text-gray-700">Fecha de cierre: 2/25/2023</p>
+        </div>
+
+        <div className="mb-4">
+          <p className="text-gray-800">Precio inicial: ${price}</p>
+          <p className="text-gray-800">{props.status} 8 Propuestas</p>
+        </div>
+
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">Descripción:</h3>
           <p
-            className="font-semibold text-gray-700"
+            className="text-gray-600"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
             {showFullDescription
               ? description
               : `${description.slice(0, 100)}...`}
-          </p>{" "}
-          <p className="text-gray-600">${price}</p>
-          <p className="text-gray-600">{props.status} available</p>
+          </p>
         </div>
 
-        <div className="overflow-hidden relative mt-4 mb-2 w-full h-2 bg-gray-300 rounded-full">
-          <div
-            className="absolute top-0 left-0 h-full bg-green-500 rounded-full"
-            style={{ width: "50%" }}
-          ></div>
+        <div className="mb-4">
+          <div className="overflow-hidden relative w-full h-2 bg-gray-300 rounded-full">
+            <div
+              className="absolute top-0 left-0 h-full bg-green-500 rounded-full"
+              style={{ width: "50%" }}
+            ></div>
+          </div>
         </div>
 
-        <div className="flex justify-between items-center w-full">
+        <div className="flex justify-between items-center mb-4 w-full">
           {Status && (
             <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-              <RiExchangeBoxLine
-                className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
-              />
+              <RiExchangeBoxLine className="text-xl text-yellow-700 bg-white hover:text-yellow-600 text-primary" />
             </button>
           )}
 
           <div
             id="opciones"
-            className={`${mostrarOpciones ? "" : "hidden"
-              } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50 `}
+            className={`${
+              mostrarOpciones ? "" : "hidden"
+            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
             style={{ overflow: "hidden" }}
           >
             <div className="flex items-center px-2">
@@ -282,10 +297,11 @@ const Card = (props) => {
             {opciones.map((opcion, index) => (
               <div
                 key={index}
-                className={`p-2 hover:border-gray-900 ${opcionAbierta === index
-                    ? "hover:bg-[#285e7d] hover:text-white text-black "
-                    : " hover:bg-[#285e7d] hover:text-white text-black "
-                  }`}
+                className={`p-2 hover:border-gray-900 ${
+                  opcionAbierta === index
+                    ? "hover:bg-[#285e7d] hover:text-white text-black"
+                    : " hover:bg-[#285e7d] hover:text-white text-black"
+                }`}
                 onClick={() => {
                   handleAbrirOpcion(index);
                   handleEliminarOpcion(
@@ -308,25 +324,13 @@ const Card = (props) => {
 
           {!Status && (
             <button className="flex p-2 rounded-lg" onClick={handleClick}>
-              <BsCartPlus
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
-              />
+              <BsCartPlus className="text-xl bg-white hover:text-green-600 text-primary" />
             </button>
           )}
         </div>
-        <div className="flex flex-col items-center ml-auto">
-          <ul className="flex justify-center p-10 mb-4">
-            {images.map((image, index) => (
-              <li
-                key={index}
-                className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-                  }`}
-                onClick={() => handleImageClick(index)}
-              ></li>
-            ))}
-          </ul>
 
-          <button className="py-2 px-4 mt-2 text-white bg-blue-500 rounded-lg">
+        <div className="flex justify-center">
+          <button className="py-2 px-4 text-white bg-blue-500 rounded-lg">
             Aplicar
           </button>
         </div>

@@ -285,7 +285,7 @@ const Card = (props) => {
         className="mt-2 cursor-pointer"
         onClick={() => Vista(props.productId)}
       >
-        <p className="text-xl font-semibold text-gray-900">{name}</p>
+        <p className="text-xl text-gray-900 ont-semibold">{name}</p>
         <p className="font-semibold text-yellow-600">{props.productId}</p>
         <p className="font-semibold text-gray-700">{description}</p>
 
