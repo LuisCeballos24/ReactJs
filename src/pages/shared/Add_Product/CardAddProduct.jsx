@@ -22,6 +22,7 @@ function CardAddProduct(props) {
   const [Dispo, setDispo] = useState(true);
   const [DispoI, setDispoI] = useState(false);
   const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
   const [cuanty, setCuanty] = useState("");
   const [imageUrls, setImageUrls] = useState([]);
   const [url, setUrl] = useState("");
@@ -71,6 +72,7 @@ function CardAddProduct(props) {
         id: id_p,
         name,
         description,
+        category,
         price,
         Status,
         Dispo,
@@ -123,6 +125,7 @@ function CardAddProduct(props) {
               cantidad: 1,
               descripción: description,
               id: productId,
+              categoria: category,
               buyerId: auth.currentUser.uid,
               nombre: name,
               precio: price,
@@ -275,6 +278,19 @@ function CardAddProduct(props) {
                 id="price"
                 name="price"
                 onChange={(e) => setPrice(e.target.value)}
+                className="p-2 text-gray-800 rounded-lg border border-gray-300"
+              />
+              <label
+                htmlFor="name"
+                className="block mb-2 font-bold text-gray-700"
+              >
+                Categoria:
+              </label>
+              <input
+                type="category"
+                id="category"
+                name="category"
+                onChange={(e) => setCategory(e.target.value)}
                 className="p-2 text-gray-800 rounded-lg border border-gray-300"
               />
               <label
