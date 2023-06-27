@@ -268,7 +268,18 @@ const Card = (props) => {
               : `${descripcion.slice(0, 100)}...`}
           </p>
         </div>
-
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-red-900">Requisitos:</h3>
+          <p
+            className="text-gray-600"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {showFullDescription
+              ? descripcion
+              : `${descripcion.slice(0, 100)}...`}
+          </p>
+        </div>
         <div className="mb-4">
           <div className="overflow-hidden relative w-full h-2 bg-gray-300 rounded-full">
             <div
@@ -279,12 +290,6 @@ const Card = (props) => {
         </div>
 
         <div className="flex justify-between items-center mb-4 w-full">
-          {Dis && (
-            <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-              <RiExchangeBoxLine className="text-xl text-yellow-700 bg-white hover:text-yellow-600 text-primary" />
-            </button>
-          )}
-
           <div
             id="opciones"
             className={`${
@@ -300,32 +305,6 @@ const Card = (props) => {
                 <RiCloseLine className="mr-1" /> Cerrar
               </button>
             </div>
-            {opciones.map((opcion, index) => (
-              <div
-                key={index}
-                className={`p-2 hover:border-gray-900 ${
-                  opcionAbierta === index
-                    ? "hover:bg-[#285e7d] hover:text-white text-black"
-                    : " hover:bg-[#285e7d] hover:text-white text-black"
-                }`}
-                onClick={() => {
-                  handleAbrirOpcion(index);
-                  handleEliminarOpcion(
-                    index,
-                    props.productId,
-                    opcion.idproducto
-                  );
-                }}
-              >
-                {index} &nbsp;
-                <img
-                  src={opcion.imageUrl}
-                  alt=""
-                  className="inline w-4 h-4"
-                />{" "}
-                {opcion.name}
-              </div>
-            ))}
           </div>
 
           {!Dis && (

@@ -24,6 +24,7 @@ import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
 import Card_product from "../Card/Card_product";
 import Card_subasta from "../Card/Card_subasta";
+import Card_View from "../Card/Card_View";
 import CardADD_subasta from "../Add_Product/CardADD_subasta";
 
 export const changeShowStore = (toggleStore) => {
@@ -142,8 +143,7 @@ function Home_Page_user() {
       case 3:
         return (
           <>
-            <Header />
-            <Card_Nov />
+            <Card_View />
             {/* <Card_subasta /> */}
             {typeof vista_A === "number" ? (
               vista_A === 1 ? (
