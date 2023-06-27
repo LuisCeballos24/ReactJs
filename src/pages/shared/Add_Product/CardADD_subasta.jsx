@@ -27,6 +27,7 @@ const CardADD_subasta = (props) => {
 */
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
+  const [productRequisitos, setProductrequisitos] = useState("");
   const [startingPrice, setStartingPrice] = useState(0);
   const [auctionType, setAuctionType] = useState("");
   const [auctionTime, setAuctionTime] = useState("");
@@ -40,6 +41,11 @@ const CardADD_subasta = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(1);
   const [Ventana, setVentana] = useState(0);
   const [estadoHijo, setEstadoHijo] = useState(false);
+
+  const [id_persona, setIdpersona] = useState([]);
+  const [oferta, setoferta] = useState([]);
+  const [descrip, setdescrip] = useState([]);
+  const [urlcv, setUrlCV] = useState([]);
   /*
   Esta Estas variables son para la funciones de agregar 
   Parámetros:
@@ -194,6 +200,7 @@ const CardADD_subasta = (props) => {
       const productRef = await db2.collection("Subastas").add({
         id: id_p,
         name,
+        productRequisitos,
         descripcion,
         price_partida,
         auctionTime,
@@ -224,52 +231,27 @@ const CardADD_subasta = (props) => {
           }
         })
       );
-      // const productId = productRef.id;
-      // if (Status) {
-      //   console.log("Entro al carrito");
-      //   try {
-      //     // Verificar si el producto ya está en el carrito
-      //     const querySnapshot = await db2
-      //       .collection("ordenes")
-      //       .where("id", "==", id_proct)
-      //       .where("buyerId", "==", auth.currentUser.uid)
-      //       .get();
-      //
-      //     if (!querySnapshot.empty) {
-      //       // Si el producto ya está en el carrito, actualizar la cantidad
-      //       const docId = querySnapshot.docs[0].id;
-      //       const docRef = db2.collection("ordenes").doc(docId);
-      //       const docSnapshot = await docRef.get();
-      //       await docRef.update({
-      //         cantidad: docSnapshot.data().cantidad + 1,
-      //       });
-      //       console.log(
-      //         `Producto con id ${id_proct} actualizado en el carrito`
-      //       );
-      //     } else {
-      //       // Si el producto no está en el carrito, agregarlo con cantidad 1
-      //       const productData = {
-      //         cantidad: 1,
-      //         descripción: description,
-      //         id: productId,
-      //         buyerId: auth.currentUser.uid,
-      //         nombre: name,
-      //         precio: price,
-      //         images: urls, // Usar las URLs de las imágenes subidas
-      //         time: "",
-      //         compara: "",
-      //         Diponibilidad: DispoI,
-      //       };
-      //       const docRef = await db2.collection("ordenes").add(productData);
-      //       console.log(`Producto con id ${id_proct} agregado al carrito`);
-      //     }
-      //   } catch (error) {
-      //     console.error(
-      //       `Error al agregar el producto al carrito: ${error.message}`
-      //     );
-      //   }
-      // }
 
+      try {
+        const productData = {
+          id_S: productRef.id,
+          images: urls,
+          buyerId: auth.currentUser.uid,
+          nombre: name,
+          id_persona: id_persona,
+          oferta: oferta,
+          descripcion: descrip,
+          url: urlcv,
+          Disponibilidad: "false",
+        };
+        const docRef = await db2.collection("CHANGE_580").add(productData);
+        console.log(`Producto con id agregado al carrito Change`);
+      } catch (error) {
+        console.error(
+          "Error al agregar el producto al carrito: ",
+          error.message
+        );
+      }
       // Actualizar el producto con las URLs de las imágenes
       await productRef.update({ images: urls });
       // Reiniciar el formulario
@@ -310,6 +292,15 @@ const CardADD_subasta = (props) => {
                   className="p-2 w-full rounded border border-gray-300"
                   value={name}
                   onChange={(e) => setname(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2 font-bold">Requisitos</label>
+                <input
+                  type="text"
+                  className="p-2 w-full rounded border border-gray-300"
+                  value={productRequisitos}
+                  onChange={(e) => setProductrequisitos(e.target.value)}
                 />
               </div>
               <div className="mb-4">
@@ -388,7 +379,7 @@ const CardADD_subasta = (props) => {
                           type="time"
                           className="p-2 w-full rounded border border-gray-300"
                           value={auctionStartTime}
-                        // onChange={handleAuctionStartTimeChange}
+                          // onChange={handleAuctionStartTimeChange}
                         />
                       </div>
                       <div className="mb-4">
@@ -491,7 +482,7 @@ const CardADD_subasta = (props) => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600"
+                  className="py-2 px-4 text-white bg-green-500 rounded hover:bg-green-600"
                 >
                   Crear Subasta
                 </button>
@@ -500,7 +491,7 @@ const CardADD_subasta = (props) => {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex items-center justify-center bg-gray-100 p-8">
+      <div className="flex justify-center items-center p-8 w-full bg-gray-100 md:w-1/2">
         <div className="text-center">
           <div className="flex flex-col justify-center items-center p-6 text-left text-gray-300 bg-white rounded-xl border-t border-r border-b transition">
             <div className="relative justify-center border border-gray-600 h-[360px] w-[300px]">
@@ -526,10 +517,11 @@ const CardADD_subasta = (props) => {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${
+                          index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                          }`}
+                        }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}

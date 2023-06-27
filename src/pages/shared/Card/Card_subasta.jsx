@@ -3,19 +3,65 @@ import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import Countdown from "react-countdown";
 import { FaUser, FaEnvelope, FaFile } from "react-icons/fa";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db2, auth } from "../../../utils/firebase.js";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Card_subasta = (props) => {
+  const { producto } = props;
+  const [user] = useAuthState(auth);
+  const [url, seturl] = useState("");
   const [Status, setStatus] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(Date.parse(40) - Date.now());
   const [progress, setProgress] = useState(100);
   const [currentBid, setCurrentBid] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [nombre, setNombre] = useState("");
+
   const [email, setEmail] = useState("");
-  const [oferta, setOferta] = useState("");
-  const [refe, setRefe] = useState("");
   const [cvFile, setCvFile] = useState(null);
+
+  const [idPersona, setIdPersona] = useState([]);
+  const [oferta, setOferta] = useState([]);
+  const [refe, setRefe] = useState("");
+  const [urls, setUrls] = useState([]);
+
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productRequisitos, setProductrequisitos] = useState("");
+  const [startingPrice, setStartingPrice] = useState(0);
+  const [auctionType, setAuctionType] = useState("");
+  const [auctionTime, setAuctionTime] = useState("");
+  const [auctionStartDate, setAuctionStartDate] = useState("");
+  const [auctionStartTime, setAuctionStartTime] = useState("");
+  const [auctionEndDate, setAuctionEndDate] = useState("");
+  const [auctionEndTime, setAuctionEndTime] = useState("");
+  const [previewImages, setPreviewImages] = useState("");
+  const images = [previewImages, "../../../../public/Store.svg"];
+  const [products] = useCollectionData(
+    db2.collection("Subastas").where("id", "==", producto)
+  );
+
+  useEffect(() => {
+    if (products && products.length > 0) {
+      const product = products[0]; // Suponiendo que solo hay un producto con ese ID
+
+      setProductName(product.name);
+      setProductDescription(product.descripcion);
+      setProductrequisitos(product.productRequisitos);
+      setStartingPrice(product.price_partida);
+      setAuctionType(product.Status);
+      setAuctionTime(product.uid);
+
+      setAuctionStartDate(product.price);
+      setAuctionStartTime(product.images);
+      setAuctionEndDate(product.auctionEndDate);
+      setAuctionEndTime(product.auctionEndTime);
+      setPreviewImages(product.images);
+
+      // Asigna l bos demás valores a las variables correspondientes
+    }
+  }, [products]);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -40,24 +86,57 @@ const Card_subasta = (props) => {
       .padStart(2, "0")}`;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Aquí puedes realizar el envío del formulario o realizar las acciones deseadas con los datos recolectados
-    //
-    //     // Reiniciar los campos del formulario
-    //         setNombre("");
-    //             setEmail("");
-    //                 setOferta("");
-    //                     setCvFile(null);
+    // Obtener los datos del formulario
+
+    // Verificar si el id_persona ya existe en el arreglo
+
+    // Agregar los datos al arreglo correspondiente
+
+    // Guardar los datos en Firebase
+    try {
+      const querySnapshot = await db2
+        .collection("CHANGE_580")
+        .where("id", "==", producto)
+        .get();
+      const docId = querySnapshot.docs[0].id;
+      const docRef = await db2.collection("CHANGE_580").doc(docId);
+      const docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        const docData = docSnapshot.data();
+        const idPersonaArray = docData.id_persona || [];
+        const ofertaArray = docData.oferta || [];
+        const descripcionArray = docData.descripcion || [];
+        const urlArray = docData.url || [];
+
+        idPersonaArray.push(user.uid);
+        ofertaArray.push(oferta);
+        descripcionArray.push(refe);
+        urlArray.push(urls);
+
+        await docRef.update({
+          id_persona: idPersonaArray,
+          oferta: ofertaArray,
+          descripcion: descripcionArray,
+          url: urlArray,
+        });
+
+        console.log("Datos actualizados en Firebase");
+      } else {
+        console.log("El documento no existe");
+      }
+    } catch (error) {
+      console.error("Error al actualizar los datos en Firebase:", error);
+    }
+
+    // Reiniciar los campos del formulario
+    setOferta("");
+    setCvFile(null);
   };
-  const images = [
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-    "../../../../public/Store.svg",
-  ];
+
   const users = [
     {
       name: "Usuario 1",
@@ -203,24 +282,18 @@ const Card_subasta = (props) => {
             </nav>
             <div className="p-4 shadow-lg">
               <div className="card-description">
-                <h2 className="mb-2 text-xl font-bold"></h2>
-                <p className="mb-4 text-gray-600"></p>
-                <p className="text-2xl font-bold"></p>
-                <div className="flex gap-3 items-center mt-4">
-                  {!Status ? (
-                    <div className="flex justify-end mb-2">
-                      <button className="p-2 h-14 text-white bg-green-400 rounded-full">
-                        <FaShoppingCart size={20} />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex justify-end mb-2">
-                      <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
-                        <FaExchangeAlt size={20} />
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <h2 className="mb-2 text-xl font-bold">{productName}</h2>
+                <p className="mb-4 text-gray-600">
+                  Precio inicial :{startingPrice}{" "}
+                </p>
+                <p className="mb-4 text-gray-600">
+                  Fecha de cierre {auctionEndDate}
+                </p>
+                <p className="mb-4 text-gray-600">
+                  Hora de cierre: {auctionEndTime}
+                </p>
+
+                <div className="flex gap-3 items-center mt-4"></div>
                 <div className="mt-4">
                   <p className="text-gray-500">Vendedor: John Doe</p>
                   <p className="text-gray-500">Tienda: Mi Tienda</p>
@@ -300,37 +373,12 @@ const Card_subasta = (props) => {
             {selectedCategory === "category2" && (
               <div>
                 <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
+                  <h3 className="mb-2 font-bold">Descripcion</h3>
+                  <p className="text-gray-600">{productDescription} </p>
                 </div>
                 <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
-                </div>
-                <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
+                  <h3 className="mb-2 font-bold">Requisitos</h3>
+                  <p className="text-gray-600">{productRequisitos} </p>
                 </div>
               </div>
             )}

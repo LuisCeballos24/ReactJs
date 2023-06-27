@@ -89,7 +89,7 @@ function Home_Page_user() {
                 <CardADD_subasta VistaPrevia={Vista} />
               ) : vista_A === 5 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
-                <Card_subasta VistaPrevia={Vista} />
+                <Card_subasta VistaPrevia={Vista} producto={param1} />
               ) : vista_A === 6 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
                 <Card_subasta VistaPrevia={Vista} />
@@ -143,11 +143,11 @@ function Home_Page_user() {
       case 3:
         return (
           <>
-            <Card_View />
+            {" "}
             {/* <Card_subasta /> */}
             {typeof vista_A === "number" ? (
               vista_A === 1 ? (
-                <ProductCatalog VistaPrevia={Vista} />
+                <Card_View />
               ) : vista_A === 2 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 2
                 <CardAddProduct VistaPrevia={Vista} />

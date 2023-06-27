@@ -10,9 +10,10 @@ const Card = (props) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
   const {
-    key,
+    key_1,
     name,
     descripcion,
+    requisito,
     price_partida,
     auctionTime,
     auctionStartDate,
@@ -242,12 +243,12 @@ const Card = (props) => {
       </div>
 
       <div
-        onClick={() => Vista(props.key)}
+        onClick={() => Vista(props.key_1)}
         className="flex flex-col flex-grow cursor-pointer"
       >
         <div className="mb-4">
           <h2 className="text-2xl font-semibold text-gray-900">{name}</h2>
-          <p className="text-gray-700">ID: {props.key}</p>
+          <p className="text-gray-700">ID: {props.key_1}</p>
           <p className="text-gray-700">Fecha de cierre: {auctionEndDate}</p>
         </div>
 
@@ -275,9 +276,7 @@ const Card = (props) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {showFullDescription
-              ? descripcion
-              : `${descripcion.slice(0, 100)}...`}
+            {showFullDescription ? requisito : `${requisito.slice(0, 100)}...`}
           </p>
         </div>
         <div className="mb-4">

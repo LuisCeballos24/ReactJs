@@ -42,16 +42,16 @@ const Card_V = () => {
     },
     {
       image: "../../../../public/dish.png",
-      title: "Título de la promoción 2",
-      description: "Descripción de la promoción 2",
-      offer: "Oferta de la promoción 2",
-      cvImage: "ruta-de-la-imagen-cv-2.jpg",
+      title: "Título de la promoción 3",
+      description: "Descripción de la promoción 3",
+      offer: "Oferta de la promoción 3",
+      cvImage: "ruta-de-la-imagen-cv-3.jpg",
     },
     // Agrega más objetos de promoción según sea necesario
   ];
 
   return (
-    <div className="bg-red-300 rounded-lg shadow-lg card">
+    <div className="overflow-y-auto h-96 bg-red-300 rounded-lg shadow-lg card">
       <div className="grid grid-cols-1 md:grid-cols-4">
         {/* Contenedor 1 */}
 
@@ -83,7 +83,6 @@ const Card_V = () => {
             </p>
           </div>{" "}
         </div>
-
         {/* Contenedor 2 */}
         <div className="p-6 md:col-span-3">
           <div className="flex items-center mb-4">
@@ -102,11 +101,14 @@ const Card_V = () => {
                 <div>
                   <h4 className="text-lg font-bold">{item.title}</h4>
                   <p>
+                    <strong>Descripción:</strong>{" "}
                     {isExpanded[index]
                       ? item.description
                       : item.description.slice(0, 50) + "..."}
                   </p>
-                  <p>{item.offer}</p>
+                  <p>
+                    <strong>Oferta:</strong> ${item.offer}
+                  </p>
                 </div>
                 <div className="flex-grow" />
                 <div className="flex items-center space-x-2">
@@ -125,16 +127,28 @@ const Card_V = () => {
                 </div>
               </div>
               {isExpanded[index] && (
-                <div className="justify-center items-center p-4 mt-4 bg-gray-100 rounded-lg shadow-inner">
-                  <img
-                    src={item.cvImage}
-                    alt="Imagen CV"
-                    className="justify-center w-24 h-24"
-                  />
-                  <p className="text-sm text-gray-500">
-                    Detalles adicionales de la promoción sadsakjdaskdaskjdhdfgh
-                    {index + 1}.
-                  </p>
+                <div className="flex flex-col p-4 mt-4 bg-gray-100 rounded-lg shadow-inner">
+                  <div className="flex items-center">
+                    <img
+                      src={item.cvImage}
+                      alt="Imagen CV"
+                      className="w-56 h-56"
+                    />
+                    <div className="ml-4">
+                      <div className="flex items-center">
+                        <p className="mr-1 text-sm font-bold text-gray-500">
+                          Descripción:
+                        </p>
+                        <p className="text-sm">{item.description}</p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className="mr-1 text-sm font-bold text-gray-500">
+                          Oferta:
+                        </p>
+                        <p className="text-sm">${item.offer}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               <div className="flex justify-center mt-4">

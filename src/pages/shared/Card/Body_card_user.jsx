@@ -100,9 +100,11 @@ function ProductCatalog_user(props) {
         {subasta.map((product_sub) => (
           <Card_sub
             className="bg-red-800"
-            key={product_sub.id}
+            key_1={product_sub.id}
+            productId={product_sub.id}
             name={product_sub.name}
             descripcion={product_sub.descripcion}
+            requisito={product_sub.productRequisitos}
             price_partida={product_sub.price_partida}
             auctionTime={product_sub.auctionTime}
             auctionStartDate={product_sub.auctionStartDate}
@@ -115,7 +117,7 @@ function ProductCatalog_user(props) {
             /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />
-        ))}
+        ))}{" "}
       </div>
     </div>
   );
