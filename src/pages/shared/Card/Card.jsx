@@ -5,8 +5,9 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
 import { db2, auth, storage } from "../../../utils/firebase.js";
-
+import { useAuthState } from "react-firebase-hooks/auth";
 const Card = (props) => {
+  const [user] = useAuthState(auth);
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
   const {
@@ -33,7 +34,7 @@ const Card = (props) => {
   const images = [img];
 
   const [products, loading, error] = useCollectionData(
-    db2.collection("productos").where("uid", "==", auth.currentUser.uid)
+    db2.collection("productos").where("uid", "==", user.uid)
   );
   const [opciones, setOpciones] = useState([""]);
 
@@ -104,7 +105,7 @@ const Card = (props) => {
       const querySnapshot = await db2
         .collection("ordenes")
         .where("id", "==", productId)
-        .where("buyerId", "==", auth.currentUser.uid)
+        .where("buyerId", "==", user.uid)
         .get();
 
       if (!querySnapshot.empty) {
@@ -222,9 +223,8 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${
-              index === currentImageIndex ? "bg-gray-600" : ""
-            }`}
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+              }`}
             onClick={() => handleImageClick(index)}
           ></li>
         ))}
@@ -240,9 +240,8 @@ const Card = (props) => {
 
         <div
           id="opciones"
-          className={`${
-            mostrarOpciones ? "" : "hidden"
-          } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
+          className={`${mostrarOpciones ? "" : "hidden"
+            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
           style={{ overflow: "hidden" }}
         >
           <div className="flex items-center px-2">
@@ -256,11 +255,10 @@ const Card = (props) => {
           {opciones.map((opcion, index) => (
             <div
               key={index}
-              className={`p-2 hover:border-gray-900 ${
-                opcionAbierta === index
+              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
                   ? "hover:bg-[#285e7d] hover:text-white text-black "
                   : " hover:bg-[#285e7d] hover:text-white text-black "
-              }`}
+                }`}
               onClick={() => {
                 handleAbrirOpcion(index);
                 handleEliminarOpcion(index, props.productId, opcion.idproducto);

@@ -32,6 +32,12 @@ export const changeShowStore = (toggleStore) => {
   // toggleStore();
 };
 
+// // Obtén la URL actual
+// var currentUrl = window.location.href;
+//
+// // Redirige a la página deseada
+// window.location.href = "https://portafolio-8ee2c.web.app/";
+//
 function Home_Page_user() {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);

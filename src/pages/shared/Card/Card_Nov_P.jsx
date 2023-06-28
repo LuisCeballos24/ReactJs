@@ -11,23 +11,23 @@ const Card_p = () => {
     setRating(starIndex + 1);
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setWindowWidth(window.innerWidth);
+  //
+  //     if (window.innerWidth < 1400) {
+  //       setTriangle2Display("none");
+  //     } else {
+  //       setTriangle2Display("block");
+  //     }
+  //   };
 
-      if (window.innerWidth < 1400) {
-        setTriangle2Display("none");
-      } else {
-        setTriangle2Display("block");
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   window.addEventListener("resize", handleResize);
+  //
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   return (
     <div className="bg-white rounded-lg shadow-lg card">
@@ -65,9 +65,8 @@ const Card_p = () => {
                 <span
                   key={index}
                   onClick={() => handleStarClick(index)}
-                  className={`cursor-pointer ${
-                    index < rating ? "text-yellow-500" : "text-gray-500"
-                  }`}
+                  className={`cursor-pointer ${index < rating ? "text-yellow-500" : "text-gray-500"
+                    }`}
                 >
                   {index < rating ? (
                     <AiFillStar size={24} />
