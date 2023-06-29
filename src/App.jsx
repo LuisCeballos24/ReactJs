@@ -1,16 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/shared/Landing/Home";
-import Home_Page_user from "./pages/shared/Landing/Home_page_user";
+import React, { useState } from "react";
+import Home from "./pages/shared/Landing/Spacing.jsx";
+//import Home_Page_user from "./pages/shared/Landing/Home_page_user";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/user" element={<Home_Page_user />} />
-      </Routes>
-    </Router>
-  );
+  const [route, setRoute] = useState("/");
+
+  const renderComponent = () => {
+    switch (route) {
+      case "/":
+        return <Home />;
+      //case "/user":
+      //return <Home_Page_user />;
+      default:
+        return <Home />;
+    }
+  };
+
+  return <>{renderComponent()}</>;
 }
 
 export default App;
