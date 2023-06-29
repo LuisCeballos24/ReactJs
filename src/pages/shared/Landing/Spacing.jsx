@@ -6,18 +6,29 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Home_page from "./Home_page_user";
+
 import Home from "./Home";
 
 const Home_PRINCI = () => {
   const navigate = useNavigate(); // Importa useNavigate desde react-router-dom
-
-  const [showPage, setPage] = useState(1);
+  const Login = (vista_A) => {
+    // setVista_A(vista_A);
+    console.log("Chil_2");
+    setPage(vista_A);
+  };
+  const [showPage, setPage] = useState(true);
 
   switch (showPage) {
-    case 1:
+    case true:
       return (
         <>
-          <Home_page />
+          <Home princi={Login} />
+        </>
+      );
+    case false:
+      return (
+        <>
+          <Home_page princi={Login} />
         </>
       );
 

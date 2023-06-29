@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { auth, db, db2 } from "../../../utils/firebase";
 import { Link, useNavigate } from "react-router-dom";
 
-const Modal = () => {
+const Modal = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenRe, setIsOpenRe] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -13,28 +13,29 @@ const Modal = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  /*   useEffect(() => { */
-  const checkUserSession = async () => {
-    try {
-      setLoading(true);
-      await auth.onAuthStateChanged((user) => {
-        if (user) {
-          navigate("/user"); // Redirigir al usuario si ya ha iniciado sesión
-        } else {
-          setLoading(false);
-        }
-      });
-    } catch (error) {
-      console.log("Error al verificar la sesión:", error);
-      setLoading(false);
-    }
-  };
-  //
-  //   checkUserSession();
-  // }, [navigate]);
+  useEffect(() => {
+    const checkUserSession = async () => {
+      try {
+        setLoading(true);
+        await auth.onAuthStateChanged((user) => {
+          if (user) {
+            console.log("El usuario ha iniciado sesión");
+            props.Child_3(false);
+          } else {
+            setLoading(false);
+          }
+        });
+      } catch (error) {
+        console.log("Error al verificar la sesión:", error);
+        setLoading(false);
+      }
+    };
+
+    checkUserSession();
+  }, [navigate]);
 
   const toggleModal = () => {
-    checkUserSession();
+    // checkUserSession();
     setIsOpenRe(false);
     setIsOpen(!isOpen);
   };
@@ -42,8 +43,6 @@ const Modal = () => {
   const registro = () => {
     setIsOpenRe(!isOpenRe);
     setIsOpen(!isOpen);
-
-    console.log("Paso");
   };
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -77,7 +76,8 @@ const Modal = () => {
       });
 
       setLoading(false);
-      navigate("/user"); // Redirigir a la página deseada después del registro
+      props.Child_3(false);
+      //  navigate("/user"); // Redirigir a la página deseada después del registro
     } catch (error) {
       console.log("Error al registrar el usuario:", error);
       setError(error.message);
@@ -97,7 +97,8 @@ const Modal = () => {
       console.log("Ingresaste");
 
       // Redirigir a la página deseada
-      navigate("/user"); // Reemplaza "/ruta" con la ruta a la que deseas redirigir
+      props.Child_3(false);
+      //     navigate("/user"); // Reemplaza "/ruta" con la ruta a la que deseas redirigir
     } catch (error) {
       console.log("ERROR");
       setError(error.message);

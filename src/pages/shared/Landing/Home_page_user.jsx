@@ -38,7 +38,7 @@ export const changeShowStore = (toggleStore) => {
 // // Redirige a la página deseada
 // window.location.href = "https://portafolio-8ee2c.web.app/";
 //
-function Home_Page_user() {
+function Home_Page_user(props) {
   const [showMenu, setShowMenu] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
 
@@ -62,6 +62,11 @@ function Home_Page_user() {
     setParam1(Producto);
     setParam2(text);
   };
+
+  const Login = (text) => {
+    props.princi(text);
+  };
+
   const toggleOrders = () => {
     setShowOrder(!showStore);
   };
@@ -185,7 +190,11 @@ function Home_Page_user() {
 
   return (
     <div id="HomePage_user" className="w-full min-h-screen bg-white">
-      <Sidebar showMenu={showMenu} onCambioEstado={manejarCambioEstado} />
+      <Sidebar
+        showMenu={showMenu}
+        login={Login}
+        onCambioEstado={manejarCambioEstado}
+      />
       <Car_up showOrder={showOrder} setShowOrder={setShowOrder} />
       {/**/}
       <Car showOrder={showOrder} setShowOrder={setShowOrder} />

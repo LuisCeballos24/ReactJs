@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // import data
 import { products } from "../../../data";
@@ -6,7 +6,14 @@ import { products } from "../../../data";
 // import components
 import ProductSlider from "./ProductSlider";
 
-const Products = () => {
+const Products = (props) => {
+  const [vista, setVista_A] = useState(false);
+  const Login = (vista_A) => {
+    setVista_A(vista_A);
+    console.log("Vista" + vista_A);
+    props.Child_1(vista_A);
+  };
+
   const { title, subtitle } = products;
   return (
     <section className="text-center section">
@@ -17,7 +24,7 @@ const Products = () => {
             {subtitle}
           </p>
         </div>
-        <ProductSlider />
+        <ProductSlider Child_2={Login} />
       </div>
     </section>
   );

@@ -9,12 +9,19 @@ import { products } from "../../../data";
 import { HiPlus } from "react-icons/hi";
 import Modal_12 from "../ModalWindow/Modal";
 
-const ProductSlider = () => {
+const ProductSlider = (props) => {
   const [isModalOpen, setIsOpen] = useState(true);
+  const [Seccion, setSeccion] = useState(false);
 
   const handleToggleModal = () => {
     console.log("Paso por aqui");
     setIsOpen(!isModalOpen);
+  };
+
+  const Login = (vista_A) => {
+    // setVista_A(vista_A);
+    console.log("Chil_2");
+    props.Child_2(vista_A);
   };
 
   const { pages } = products;
@@ -44,7 +51,10 @@ const ProductSlider = () => {
                         <img src={image.type} alt="" />
                         <div className="flex absolute bottom-4 justify-center items-center w-8 h-8 bg-gray-200 rounded-full transition cursor-pointer hover:bg-gray-300 right-[22px]">
                           {isModalOpen && (
-                            <Modal_12 onClick={handleToggleModal} />
+                            <Modal_12
+                              Child_3={Login}
+                              onClick={handleToggleModal}
+                            />
                           )}
                         </div>
                       </div>
