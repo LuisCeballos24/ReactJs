@@ -90,6 +90,7 @@ function ProductCatalog_user(props) {
             inventory={product.cuanty}
             Status={product.Status}
             cursor-pointer
+            USER_TATUS={true}
             /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />

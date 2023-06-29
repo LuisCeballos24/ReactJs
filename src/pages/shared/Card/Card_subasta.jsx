@@ -96,43 +96,47 @@ const Card_subasta = (props) => {
     // Agregar los datos al arreglo correspondiente
 
     // Guardar los datos en Firebase
+    console.log(producto);
+
     try {
-      const querySnapshot = await db2
-        .collection("CHANGE_580")
-        .where("id", "==", producto)
-        .get();
-      const docId = querySnapshot.docs[0].id;
-      const docRef = await db2.collection("CHANGE_580").doc(docId);
-      const docSnapshot = await docRef.get();
+      const user = auth.currentUser; // Obtiene el usuario actualmente autenticado
 
-      if (docSnapshot.exists) {
-        const docData = docSnapshot.data();
-        const idPersonaArray = docData.id_persona || [];
-        const ofertaArray = docData.oferta || [];
-        const descripcionArray = docData.descripcion || [];
-        const urlArray = docData.url || [];
+      if (user) {
+        const querySnapshot = await db2
+          .collection("CHANGE_580")
+          .where("id_S", "==", "cqrVzya1CzTOywWpSNjy")
+          .get();
 
-        idPersonaArray.push(user.uid);
-        ofertaArray.push(oferta);
-        descripcionArray.push(refe);
-        urlArray.push(urls);
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          const docData = querySnapshot.docs[0].data();
 
-        await docRef.update({
-          id_persona: idPersonaArray,
-          oferta: ofertaArray,
-          descripcion: descripcionArray,
-          url: urlArray,
-        });
+          const existingIds = new Set(docData.id_persona); // Crea un conjunto para almacenar los IDs existentes
 
-        console.log("Datos actualizados en Firebase");
+          if (!existingIds.has(user.uid)) {
+            // Verifica si el ID del usuario autenticado ya existe en el arreglo
+            const updatedData = {
+              id_persona: [...docData.id_persona, user.uid], // Agrega el nuevo ID al arreglo existente
+              oferta: [...docData.oferta, oferta], // Agrega la nueva oferta al arreglo existente
+              descripcion: [...docData.descripcion, refe], // Agrega la nueva descripción al arreglo existente
+              url: [...docData.url, url], // Agrega la nueva URL al arreglo existente
+            };
+
+            await docRef.update(updatedData);
+
+            console.log("Datos actualizados en Firebase");
+          } else {
+            console.log("El ID de usuario ya existe en el arreglo id_persona");
+          }
+        } else {
+          console.log("El documento no existe");
+        }
       } else {
-        console.log("El documento no existe");
+        console.log("No hay usuario autenticado");
       }
     } catch (error) {
       console.error("Error al actualizar los datos en Firebase:", error);
-    }
-
-    // Reiniciar los campos del formulario
+    } // Reiniciar los campos del formulario
     setOferta("");
     setCvFile(null);
   };
@@ -284,22 +288,25 @@ const Card_subasta = (props) => {
               <div className="card-description">
                 <h2 className="mb-2 text-xl font-bold">{productName}</h2>
                 <p className="mb-4 text-gray-600">
-                  Precio inicial :{startingPrice}{" "}
+                  Precio inicial: {startingPrice}
                 </p>
                 <p className="mb-4 text-gray-600">
-                  Fecha de cierre {auctionEndDate}
+                  Fecha de cierre: {auctionEndDate}
                 </p>
                 <p className="mb-4 text-gray-600">
                   Hora de cierre: {auctionEndTime}
                 </p>
 
-                <div className="flex gap-3 items-center mt-4"></div>
+                <div className="flex gap-3 items-center mt-4">
+                  {/* Aquí puedes agregar elementos adicionales */}
+                </div>
+
                 <div className="mt-4">
                   <p className="text-gray-500">Vendedor: John Doe</p>
                   <p className="text-gray-500">Tienda: Mi Tienda</p>
                 </div>
               </div>
-            </div>
+            </div>{" "}
             {selectedCategory === "category1" && (
               <div className="p-4 shadow-lg">
                 <div className="mt-4">

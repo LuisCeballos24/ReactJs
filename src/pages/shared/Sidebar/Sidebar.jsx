@@ -47,21 +47,6 @@ const Sidebar = (props) => {
     }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 100) {
-        // setIsVertical(true);
-      } else {
-        setIsVertical(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <div
       className={`bg-[#285e7d] ${showMenu ? "left-0" : "-left-full"} ${isVertical
