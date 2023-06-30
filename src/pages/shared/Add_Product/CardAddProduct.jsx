@@ -69,7 +69,6 @@ function CardAddProduct(props) {
     try {
       // Agregar el producto a Firestore
       const productRef = await db2.collection("productos").add({
-        id: id_p,
         name,
         description,
         category,
@@ -79,6 +78,7 @@ function CardAddProduct(props) {
         uid: user.uid,
         url, // Agregar la URL al objeto
       });
+      await productRef.update({ id: productRef.id });
 
       // Subir las imágenes al Storage
       const urls = await Promise.all(
@@ -98,12 +98,13 @@ function CardAddProduct(props) {
         })
       );
       const productId = productRef.id;
+
       if (Status) {
         console.log("Entro al carrito");
         try {
           // Verificar si el producto ya está en el carrito
           const querySnapshot = await db2
-            .collection("ordenes")
+            .collection("Carritos_match")
             .where("id", "==", id_proct)
             .where("buyerId", "==", auth.currentUser.uid)
             .get();
@@ -132,9 +133,12 @@ function CardAddProduct(props) {
               images: urls, // Usar las URLs de las imágenes subidas
               time: "",
               compara: "",
+              compara_obj: "",
               Diponibilidad: DispoI,
             };
-            const docRef = await db2.collection("ordenes").add(productData);
+            const docRef = await db2
+              .collection("Carritos_match")
+              .add(productData);
             console.log(`Producto con id ${id_proct} agregado al carrito`);
           }
         } catch (error) {
@@ -317,8 +321,9 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("-")}
-                    className={` ${!Status ? "bg-green-400 text-white " : " "
-                      } p-2 h-14 rounded-full bg-white  text-white  hover:text-white hover:bg-green-400 `}
+                    className={` ${
+                      !Status ? "bg-green-400 text-white " : " "
+                    } p-2 h-14 rounded-full bg-white  text-white  hover:text-white hover:bg-green-400 `}
                   >
                     <FaShoppingCart size={20} />
                   </button>
@@ -326,8 +331,9 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("+")}
-                    className={` ${Status ? "bg-yellow-400 text-white " : " "
-                      } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
+                    className={` ${
+                      Status ? "bg-yellow-400 text-white " : " "
+                    } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
                   >
                     <FaExchangeAlt size={20} />
                   </button>
@@ -359,10 +365,11 @@ function CardAddProduct(props) {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${
+                          index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                          }`}
+                        }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}

@@ -168,17 +168,18 @@ const Card = (props) => {
     setOpciones(nuevasOpciones);
     setMostrarOpciones(!mostrarOpciones);
     console.log(idProduct);
+    console.log(idPro);
 
     try {
       const querySnapshot = await db2
-        .collection("ordenes")
+        .collection("Carritos_match")
         .where("id", "==", idProduct)
 
         .get();
 
       if (!querySnapshot.empty) {
         const docId = querySnapshot.docs[0].id;
-        const docRef = db2.collection("ordenes").doc(docId);
+        const docRef = db2.collection("Carritos_match").doc(docId);
         const docSnapshot = await docRef.get();
 
         if (docSnapshot.exists) {
@@ -188,10 +189,18 @@ const Card = (props) => {
 
           const ordenData = docSnapshot.data();
           const compareArray = ordenData.compara || [];
-          compareArray.push(idPro);
+          compareArray.push(auth.currentUser.uid);
 
           await docRef.update({
             Compara: compareArray,
+          });
+
+          const ordenData2 = docSnapshot.data();
+          const compareArray2 = ordenData2.compara_obj || [];
+          compareArray2.push(idPro);
+
+          await docRef.update({
+            Compara_obj: compareArray2,
           });
 
           console.log("Orden actualizada con éxito");
@@ -223,8 +232,9 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-              }`}
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${
+              index === currentImageIndex ? "bg-gray-600" : ""
+            }`}
             onClick={() => handleImageClick(index)}
           ></li>
         ))}
@@ -240,8 +250,9 @@ const Card = (props) => {
 
         <div
           id="opciones"
-          className={`${mostrarOpciones ? "" : "hidden"
-            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
+          className={`${
+            mostrarOpciones ? "" : "hidden"
+          } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
           style={{ overflow: "hidden" }}
         >
           <div className="flex items-center px-2">
@@ -255,10 +266,11 @@ const Card = (props) => {
           {opciones.map((opcion, index) => (
             <div
               key={index}
-              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
+              className={`p-2 hover:border-gray-900 ${
+                opcionAbierta === index
                   ? "hover:bg-[#285e7d] hover:text-white text-black "
                   : " hover:bg-[#285e7d] hover:text-white text-black "
-                }`}
+              }`}
               onClick={() => {
                 handleAbrirOpcion(index);
                 handleEliminarOpcion(index, props.productId, opcion.idproducto);
