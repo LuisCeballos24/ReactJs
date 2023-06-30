@@ -19,7 +19,6 @@ const Modal = (props) => {
         setLoading(true);
         await auth.onAuthStateChanged((user) => {
           if (user) {
-            console.log("El usuario ha iniciado sesión");
             props.Child_3(false);
           } else {
             setLoading(false);

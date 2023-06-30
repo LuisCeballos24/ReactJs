@@ -104,7 +104,7 @@ const Card_subasta = (props) => {
       if (user) {
         const querySnapshot = await db2
           .collection("CHANGE_580")
-          .where("id_S", "==", "cqrVzya1CzTOywWpSNjy")
+          .where("id_S", "==", producto)
           .get();
 
         if (!querySnapshot.empty) {

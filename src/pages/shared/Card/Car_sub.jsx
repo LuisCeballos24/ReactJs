@@ -30,7 +30,7 @@ const Card = (props) => {
   };
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [propuestas, setPropuestas] = useState("");
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
   const [opcionAbierta, setOpcionAbierta] = useState(null);
   const [opcionAbiertaProducto, setOpcionAbiertaProducto] = useState(null);
@@ -41,7 +41,29 @@ const Card = (props) => {
   );
   const [opciones, setOpciones] = useState([""]);
 
+  const countIdPersona = async () => {
+    const querySnapshot = await db2
+      .collection("CHANGE_580")
+      .where("id_S", "==", props.key_1)
+      .get();
+
+    try {
+      if (!querySnapshot.empty) {
+        const documentData = querySnapshot.docs[0].data();
+        const id_persona = documentData.id_persona;
+        const cantidadElementos = id_persona.length;
+        console.log("Cantidad de elementos en id_persona:", cantidadElementos);
+        setPropuestas(cantidadElementos);
+      } else {
+        console.log("El documento no existe");
+      }
+    } catch (error) {
+      console.error("Error al obtener los datos del documento:", error);
+    }
+  };
+
   useEffect(() => {
+    countIdPersona();
     if (products) {
       const opciones = products.map((producto) => ({
         name: producto.name,
@@ -102,47 +124,6 @@ const Card = (props) => {
     fetchImageUrls();
   }, []);
 
-  const handleClick = async () => {
-    try {
-      // Verificar si el producto ya está en el carrito
-      const querySnapshot = await db2
-        .collection("ordenes")
-        .where("id", "==", productId)
-        .where("buyerId", "==", auth.currentUser.uid)
-        .get();
-
-      if (!querySnapshot.empty) {
-        // Si el producto ya está en el carrito, actualizar la cantidad
-        const docId = querySnapshot.docs[0].id;
-        const docRef = db2.collection("ordenes").doc(docId);
-        const docSnapshot = await docRef.get();
-        await docRef.update({
-          cantidad: docSnapshot.data().cantidad + 1,
-        });
-        console.log(`Producto con id ${productId} actualizado en el carrito`);
-      } else {
-        // Si el producto no está en el carrito, agregarlo con cantidad 1
-        const productData = {
-          cantidad: 1,
-          descripción: description,
-          id: productId,
-          buyerId: auth.currentUser.uid,
-          nombre: name,
-          precio: price,
-          images: img,
-          time: "",
-        };
-        const docRef = await db2.collection("ordenes").add(productData);
-        console.log(`Producto con id ${productId} agregado al carrito`);
-      }
-    } catch (error) {
-      console.error(
-        `Error al agregar el producto al carrito: ${error.message}`
-      );
-    }
-    console.log(price);
-  };
-
   const handleImageClick = (index) => {
     setCurrentImageIndex(index);
     console.log(index);
@@ -151,62 +132,6 @@ const Card = (props) => {
   const Vista = (index) => {
     console.log(index);
     props.Vistap(true, 5, index);
-  };
-
-  const handleClickChange = () => {
-    console.log(mostrarOpciones);
-    setMostrarOpciones(!mostrarOpciones);
-  };
-
-  const handleAbrirOpcion = (index) => {
-    if (opcionAbierta === index) {
-      setOpcionAbierta(null); // Si la opción ya está abierta, se cierra
-    } else {
-      setOpcionAbierta(index); // Si es una nueva opción, se abre
-    }
-  };
-
-  const handleEliminarOpcion = async (index, idProduct, idPro) => {
-    const nuevasOpciones = opciones.filter((_, i) => i !== index);
-    setOpciones(nuevasOpciones);
-    setMostrarOpciones(!mostrarOpciones);
-    console.log(idProduct);
-
-    try {
-      const querySnapshot = await db2
-        .collection("ordenes")
-        .where("id", "==", idProduct)
-
-        .get();
-
-      if (!querySnapshot.empty) {
-        const docId = querySnapshot.docs[0].id;
-        const docRef = db2.collection("ordenes").doc(docId);
-        const docSnapshot = await docRef.get();
-
-        if (docSnapshot.exists) {
-          await docRef.update({
-            Diponibilidad: true,
-          });
-
-          const ordenData = docSnapshot.data();
-          const compareArray = ordenData.compara || [];
-          compareArray.push(idPro);
-
-          await docRef.update({
-            Compara: compareArray,
-          });
-
-          console.log("Orden actualizada con éxito");
-        } else {
-          console.log("La orden no existe");
-        }
-      } else {
-        console.log("La orden no existe");
-      }
-    } catch (error) {
-      console.log("Error al actualizar la orden:", error);
-    }
   };
 
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -254,7 +179,7 @@ const Card = (props) => {
 
         <div className="mb-4">
           <p className="text-gray-800">Precio inicial: ${price_partida}</p>
-          <p className="text-gray-800">{Dis} 8 Propuestas</p>
+          <p className="text-gray-800">{propuestas} Propuestas</p>
         </div>
 
         <div className="mb-4">

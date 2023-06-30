@@ -24,7 +24,7 @@ import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
 import Card_product from "../Card/Card_product";
 import Card_subasta from "../Card/Card_subasta";
-import Card_View from "../Card/Card_View";
+import Card_ViewM from "../Card/Body_cardView";
 import CardADD_subasta from "../Add_Product/CardADD_subasta";
 
 export const changeShowStore = (toggleStore) => {
@@ -154,11 +154,10 @@ function Home_Page_user(props) {
       case 3:
         return (
           <>
-            {" "}
             {/* <Card_subasta /> */}
             {typeof vista_A === "number" ? (
               vista_A === 1 ? (
-                <Card_View />
+                <Card_ViewM VistaPrevia={Vista} />
               ) : vista_A === 2 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 2
                 <CardAddProduct VistaPrevia={Vista} />

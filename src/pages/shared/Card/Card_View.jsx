@@ -8,7 +8,8 @@ import {
 } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
 
-const Card_V = () => {
+const Card_V = (props) => {
+  const { price, productId, description, url } = props;
   const [isExpanded, setIsExpanded] = useState([]);
 
   const handleToggle = (index) => {
@@ -25,31 +26,14 @@ const Card_V = () => {
     // Implementa la lógica para seleccionar/deseleccionar el objeto de la lista en el índice dado
   };
 
-  const features = [
-    {
-      image: "../../../../public/dish.png",
-      title: "Título de la promoción 1",
-      description: "Descripción de la promoción 1",
-      offer: "Oferta de la promoción 1",
-      cvImage: "../../../../public/cv.webp",
-    },
-    {
-      image: "../../../../public/dish.png",
-      title: "Título de la promoción 2",
-      description: "Descripción de la promoción 2",
-      offer: "Oferta de la promoción 2",
-      cvImage: "ruta-de-la-imagen-cv-2.jpg",
-    },
-    {
-      image: "../../../../public/dish.png",
-      title: "Título de la promoción 3",
-      description: "Descripción de la promoción 3",
-      offer: "Oferta de la promoción 3",
-      cvImage: "ruta-de-la-imagen-cv-3.jpg",
-    },
-    // Agrega más objetos de promoción según sea necesario
-  ];
-
+  const features = price.map((value, index) => {
+    return {
+      image: url[index],
+      title: productId[index],
+      description: description[index],
+      offer: value,
+    };
+  });
   return (
     <div className="overflow-y-auto h-96 rounded-lg shadow-lg card">
       <div className="grid grid-cols-1 md:grid-cols-4">
@@ -70,7 +54,7 @@ const Card_V = () => {
                 Título de la promoción
               </h3>
               <img
-                src="../../../../public/Store.svg"
+                src={props.img}
                 alt="Imagen de perfil"
                 className="mx-auto mb-4 w-full h-44 bg-red-300"
               />
@@ -100,15 +84,6 @@ const Card_V = () => {
                 />
                 <div>
                   <h4 className="text-lg font-bold">{item.title}</h4>
-                  <p>
-                    <strong>Descripción:</strong>{" "}
-                    {isExpanded[index]
-                      ? item.description
-                      : item.description.slice(0, 50) + "..."}
-                  </p>
-                  <p>
-                    <strong>Oferta:</strong> ${item.offer}
-                  </p>
                 </div>
                 <div className="flex-grow" />
                 <div className="flex items-center space-x-2">

@@ -198,7 +198,6 @@ const CardADD_subasta = (props) => {
     try {
       // Agregar el producto a Firestore
       const productRef = await db2.collection("Subastas").add({
-        id: id_p,
         name,
         productRequisitos,
         descripcion,
@@ -213,7 +212,7 @@ const CardADD_subasta = (props) => {
         uid: user.uid,
         url, // Agregar la URL al objeto
       });
-
+      await productRef.update({ id: productRef.id });
       // Subir las imágenes al Storage
       const urls = await Promise.all(
         previewImages.map(async (imageUrl) => {
