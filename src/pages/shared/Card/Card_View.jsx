@@ -51,7 +51,7 @@ const Card_V = (props) => {
                 </div>
               </div>
               <h3 className="mb-5 text-2xl font-bold text-center">
-                Título de la promoción
+                {props.name}
               </h3>
               <img
                 src={props.img}

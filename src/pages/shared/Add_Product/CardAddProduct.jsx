@@ -139,7 +139,7 @@ function CardAddProduct(props) {
             const docRef = await db2
               .collection("Carritos_match")
               .add(productData);
-            console.log(`Producto con id ${id_proct} agregado al carrito`);
+            //console.log(`Producto con id ${id_proct} agregado al carrito`);
           }
         } catch (error) {
           console.error(

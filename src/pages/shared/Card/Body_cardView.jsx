@@ -54,7 +54,7 @@ function Card_view(props) {
           Vistap={Vista}
           key={index}
           id={product.id}
-          name={product.name}
+          name={product.nombre}
           img={product.images}
           Status={product.id_S}
           description={product.descripcion}
