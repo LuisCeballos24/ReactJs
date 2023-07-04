@@ -34,6 +34,7 @@ const Card_V = (props) => {
       offer: value,
     };
   });
+
   return (
     <div className="overflow-y-auto h-96 rounded-lg shadow-lg card">
       <div className="grid grid-cols-1 md:grid-cols-4">

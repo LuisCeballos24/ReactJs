@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "./Card_View";
+import CardCH from "./card_ch";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
@@ -39,6 +40,12 @@ function Card_view(props) {
     .collection("CHANGE_580")
     .where("buyerId", "==", user?.uid || "");
   const [products, loading, error] = useCollectionData(query);
+
+  const query_CH = db2
+    .collection("Carritos_match")
+    .where("buyerId", "==", user?.uid || "");
+  const [change, loading_1, error_1] = useCollectionData(query_CH);
+
   if (loading) {
     return <p>Cargando productos...</p>;
   }
@@ -49,21 +56,43 @@ function Card_view(props) {
 
   return (
     <div>
-      {products.map((product, index) => (
-        <Card
-          Vistap={Vista}
-          key={index}
-          id={product.id}
-          name={product.nombre}
-          img={product.images}
-          Status={product.id_S}
-          description={product.descripcion}
-          price={product.oferta}
-          productId={product.id_persona}
-          url={product.url}
-          cursor-pointer
-        />
-      ))}
+      <div>
+        {products.map((product, index) => (
+          <Card
+            Vistap={Vista}
+            key={index}
+            id={product.id}
+            name={product.nombre}
+            img={product.images}
+            Status={product.id_S}
+            description={product.descripcion}
+            price={product.oferta}
+            productId={product.id_persona}
+            url={product.url}
+            cursor-pointer
+          />
+        ))}
+      </div>
+      <div>
+        {change.map((product, index) => (
+          <CardCH
+            Vistap={Vista}
+            key={index}
+            id={product.id}
+            id_2={product.Compara_obj[0]}
+            name={product.nombre}
+            img={product.images}
+            Status={product.id_S}
+            Prie_ID={product.buyerId}
+            ADY_ID={product.Compara}
+            description={product.descripcion}
+            price={product.price}
+            productId={product.id_persona}
+            url={product.url}
+            cursor-pointer
+          />
+        ))}
+      </div>
     </div>
   );
 }

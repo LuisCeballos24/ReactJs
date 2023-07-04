@@ -8,8 +8,9 @@ const ProductCard = (props) => {
   const { producto } = props;
   const { id } = "JeBAAug6eZrEd5cATvHd";
   // const { param1, setparam1 } = props.producto;
-  const [url, seturl] = useState("");
+
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [url, seturl] = useState("");
   const images = [url, "../../../../public/Store.svg"]; // Agrega aquí las rutas de las imágenes
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -41,6 +42,7 @@ const ProductCard = (props) => {
       // Asigna los demás valores a las variables correspondientes
     }
   }, [products]);
+
   const Vista = () => {
     const nuevoEstado = !estadoHijo;
     const ven = 1;

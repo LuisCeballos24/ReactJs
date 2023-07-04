@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { RiCloseLine, RiExchangeBoxLine } from "react-icons/ri";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { BsPlusSquareFill, BsCartPlus } from "react-icons/bs";
+import { BsTrash, BsPencil, BsCartPlus } from "react-icons/bs";
 import { db2, auth, storage } from "../../../utils/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
+
 const Card = (props) => {
   const [user] = useAuthState(auth);
   const [showMenu, setShowMenu] = useState(false);
@@ -34,7 +35,10 @@ const Card = (props) => {
   const images = [img];
 
   const [products, loading, error] = useCollectionData(
-    db2.collection("productos").where("uid", "==", user.uid)
+    db2
+      .collection("productos")
+      .where("uid", "==", user.uid)
+      .where("Status", "==", false)
   );
   const [opciones, setOpciones] = useState([""]);
 
@@ -247,7 +251,58 @@ const Card = (props) => {
             />
           </button>
         )}
-
+        {!Status && (
+          <div>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={handleClickChange}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                visibility: "hidden",
+              }}
+            >
+              <RiExchangeBoxLine
+                className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
+              />
+            </button>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={() => {
+                Vista(props.productId);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <BsPencil
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={() => {
+                handleEliminarOpcion(
+                  props.productId,
+                  props.productId,
+                  props.productId
+                );
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <BsTrash
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+          </div>
+        )}
         <div
           id="opciones"
           className={`${
@@ -287,23 +342,63 @@ const Card = (props) => {
           ))}
         </div>
         {!Status && (
-          <button className="flex p-2 rounded-lg" onClick={handleClick}>
-            <BsCartPlus
-              className={`text-xl bg-white hover:text-green-600 text-primary`}
-            />
-          </button>
+          <div>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={() => {
+                handleClick();
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                visibility: "hidden",
+              }}
+            >
+              <BsCartPlus
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={() => {
+                Vista(props.productId);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <BsPencil
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+            <button
+              className="flex p-2 rounded-lg"
+              onClick={() => {
+                handleEliminarOpcion(
+                  props.productId,
+                  props.productId,
+                  props.productId
+                );
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <BsTrash
+                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              />
+            </button>
+          </div>
         )}
       </div>
-      <div
-        className="mt-2 cursor-pointer"
-        onClick={() => Vista(props.productId)}
-      >
-        <h2 className="text-xl font-semibold text-gray-900">{name}</h2>
-        <p className="font-semibold text-yellow-600">{props.productId}</p>
-        <p className="text-gray-700">{description}</p>
-        <p className="text-gray-600">${price}</p>
-        <p className="text-gray-600">{props.status} available</p>
-      </div>
+      <h3 className="mb-2 text-lg font-bold">{name}</h3>
+      <p className="text-gray-600">{description}</p>
+      <p className="mt-2 font-bold text-primary">{`$ ${price}`}</p>
     </div>
   );
 };

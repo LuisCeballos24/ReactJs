@@ -378,7 +378,7 @@ const CardADD_subasta = (props) => {
                           type="time"
                           className="p-2 w-full rounded border border-gray-300"
                           value={auctionStartTime}
-                          // onChange={handleAuctionStartTimeChange}
+                        // onChange={handleAuctionStartTimeChange}
                         />
                       </div>
                       <div className="mb-4">
@@ -516,11 +516,10 @@ const CardADD_subasta = (props) => {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${
-                          index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                        }`}
+                          }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}
