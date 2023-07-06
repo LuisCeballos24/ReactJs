@@ -5,7 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../../../slider.css";
 import { Navigation, Pagination } from "swiper";
-import { db2, storage } from "../../../utils/firebase.js";
+import { db2 } from "../../../utils/firebase.js";
 import { HiPlus } from "react-icons/hi";
 import Modal_12 from "../ModalWindow/Modal";
 
@@ -38,6 +38,9 @@ const ProductSlider = (props) => {
     fetchProducts();
   }, []);
 
+  const imagesPerSlide = 10; // Número de imágenes por cada SwiperSlide
+  const totalSlides = Math.ceil(products.length / imagesPerSlide); // Número total de SwiperSlides
+
   return (
     <>
       <Swiper
@@ -48,25 +51,39 @@ const ProductSlider = (props) => {
         modules={[Pagination, Navigation]}
         className="productSlider min-h-[1300px]"
       >
-        {products.map((producto, index) => {
-          const { images, name, price } = producto;
+        {[...Array(totalSlides)].map((_, slideIndex) => {
+          const startIdx = slideIndex * imagesPerSlide;
+          const endIdx = startIdx + imagesPerSlide;
+          const slideProducts = products.slice(startIdx, endIdx);
+
           return (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={slideIndex}>
               <div className="grid grid-cols-2 gap-x-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-[30px]">
-                <div className="w-full text-left max-w-[290px] h-[380px]" key={index}>
-                  <div className="flex relative justify-center items-center w-full h-full border transition rounded-[18px] max-w-[285px] max-h-[292px] mb-[15px] hover:border-accent">
-                    {images && <img src={images} alt="" />}
-                    <div className="flex absolute bottom-4 justify-center items-center w-8 h-8 bg-gray-200 rounded-full transition cursor-pointer hover:bg-gray-300 right-[22px]">
-                      {isModalOpen && (
-                        <Modal_12 Child_3={Login} onClick={handleToggleModal} />
-                      )}
+                {slideProducts.map((producto, index) => {
+                  const { images, name, price } = producto;
+                  return (
+                    <div
+                      className="w-full text-left max-w-[290px] h-[380px]"
+                      key={startIdx + index}
+                    >
+                      <div className="flex relative justify-center items-center w-full h-full border transition rounded-[18px] max-w-[285px] max-h-[292px] mb-[15px] hover:border-accent">
+                        {images && <img src={images} alt="" />}
+                        <div className="flex absolute bottom-4 justify-center items-center w-8 h-8 bg-gray-200 rounded-full transition cursor-pointer hover:bg-gray-300 right-[22px]">
+                          {isModalOpen && (
+                            <Modal_12
+                              Child_3={Login}
+                              onClick={handleToggleModal}
+                            />
+                          )}
+                        </div>
+                      </div>
+                      <div className="font-semibold lg:text-xl">{name}</div>
+                      <div className="flex gap-x-3 items-center">
+                        <div>$ {price}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="font-semibold lg:text-xl">{name}</div>
-                  <div className="flex gap-x-3 items-center">
-                    <div>$ {price}</div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </SwiperSlide>
           );
@@ -75,6 +92,5 @@ const ProductSlider = (props) => {
     </>
   );
 };
-
 
 export default ProductSlider;
