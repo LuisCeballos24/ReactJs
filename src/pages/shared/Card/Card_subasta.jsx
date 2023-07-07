@@ -6,6 +6,7 @@ import { FaUser, FaEnvelope, FaFile } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const Card_subasta = (props) => {
   const { producto } = props;
@@ -96,49 +97,97 @@ const Card_subasta = (props) => {
     // Agregar los datos al arreglo correspondiente
 
     // Guardar los datos en Firebase
-    console.log(producto);
-
     try {
-      const user = auth.currentUser; // Obtiene el usuario actualmente autenticado
+      const querySnapshot = await db2
+        .collection("CHANGE_580")
+        .where("id", "==", producto)
+        .get();
+      const docId = querySnapshot.docs[0].id;
+      const docRef = await db2.collection("CHANGE_580").doc(docId);
+      const docSnapshot = await docRef.get();
 
-      if (user) {
-        const querySnapshot = await db2
-          .collection("CHANGE_580")
-          .where("id_S", "==", producto)
-          .get();
+      if (docSnapshot.exists) {
+        const docData = docSnapshot.data();
+        const idPersonaArray = docData.id_persona || [];
+        const ofertaArray = docData.oferta || [];
+        const descripcionArray = docData.descripcion || [];
+        const urlArray = docData.url || [];
 
-        if (!querySnapshot.empty) {
-          const docRef = querySnapshot.docs[0].ref;
-          const docData = querySnapshot.docs[0].data();
+        idPersonaArray.push(user.uid);
+        ofertaArray.push(oferta);
+        descripcionArray.push(refe);
+        urlArray.push(urls);
 
-          const existingIds = new Set(docData.id_persona); // Crea un conjunto para almacenar los IDs existentes
+        await docRef.update({
+          id_persona: idPersonaArray,
+          oferta: ofertaArray,
+          descripcion: descripcionArray,
+          url: urlArray,
+        });
 
-          if (!existingIds.has(user.uid)) {
-            // Verifica si el ID del usuario autenticado ya existe en el arreglo
-            const updatedData = {
-              id_persona: [...docData.id_persona, user.uid], // Agrega el nuevo ID al arreglo existente
-              oferta: [...docData.oferta, oferta], // Agrega la nueva oferta al arreglo existente
-              descripcion: [...docData.descripcion, refe], // Agrega la nueva descripción al arreglo existente
-              url: [...docData.url, url], // Agrega la nueva URL al arreglo existente
-            };
-
-            await docRef.update(updatedData);
-
-            console.log("Datos actualizados en Firebase");
-          } else {
-            console.log("El ID de usuario ya existe en el arreglo id_persona");
-          }
-        } else {
-          console.log("El documento no existe");
-        }
+        console.log("Datos actualizados en Firebase");
       } else {
-        console.log("No hay usuario autenticado");
+        console.log("El documento no existe");
       }
     } catch (error) {
       console.error("Error al actualizar los datos en Firebase:", error);
-    } // Reiniciar los campos del formulario
+    }
+
+    // Reiniciar los campos del formulario
     setOferta("");
     setCvFile(null);
+  };
+
+  //funcion de retencion y captura de pago
+  const capturePayment = async (orderID) => {
+    const paypal = require("@paypal/checkout-server-sdk");
+  
+    // Configura las credenciales de autenticación de PayPal
+    const environment = new paypal.core.SandboxEnvironment({
+      clientId: "AcmF1Hwfvtf6HocDkapGRxa02x0IgKFN53JPqvyWDLkNyKWwwO4F9OaF6oA6QUPPutjPORe1qb7CRvWb",
+      clientSecret: "ECZu6-QuVRcdayBskZvBJUn3rkkLPVHih3mCflGeIPHtIg1iuuc30zpD-NAgmxZMpxfY6vmLsqLp4fDg",
+    });
+    const client = new paypal.core.PayPalHttpClient(environment);
+  
+  };
+
+  const handleApprove = async (data, actions) => {
+    if (timeLeft > 0) {
+      // El tiempo ha terminado, capturar el pago
+      const orderID = data.orderID;
+      await capturePayment(orderID);
+    } else {
+      // Aún queda tiempo, autorizar el pago
+      return actions.order.authorize();
+    }
+  
+    try {
+      // Realiza la captura del pago utilizando el ID del pedido (order ID)
+      const request = new paypal.orders.OrdersCaptureRequest(orderID);
+      request.requestBody({      
+        note_to_payer: "Descripción del pedido",
+        purchase_units: [
+          {
+            amount: {
+              currency_code: "USD",
+              value: parseFloat(currentBid), // Monto total del pedido
+            },
+          },
+        ],
+      });
+
+  
+      const response = await client.execute(request);
+  
+      // Verifica el estado de la captura de pago
+      if (response.statusCode === 201) {
+        console.log("Pago capturado exitosamente");
+      } else {
+        console.log("Error al capturar el pago");
+      }
+    } catch (error) {
+      console.error("Error al capturar el pago:", error);
+    }
   };
 
   const users = [
@@ -288,25 +337,22 @@ const Card_subasta = (props) => {
               <div className="card-description">
                 <h2 className="mb-2 text-xl font-bold">{productName}</h2>
                 <p className="mb-4 text-gray-600">
-                  Precio inicial: {startingPrice}
+                  Precio inicial :{startingPrice}{" "}
                 </p>
                 <p className="mb-4 text-gray-600">
-                  Fecha de cierre: {auctionEndDate}
+                  Fecha de cierre {auctionEndDate}
                 </p>
                 <p className="mb-4 text-gray-600">
                   Hora de cierre: {auctionEndTime}
                 </p>
 
-                <div className="flex gap-3 items-center mt-4">
-                  {/* Aquí puedes agregar elementos adicionales */}
-                </div>
-
+                <div className="flex gap-3 items-center mt-4"></div>
                 <div className="mt-4">
                   <p className="text-gray-500">Vendedor: John Doe</p>
                   <p className="text-gray-500">Tienda: Mi Tienda</p>
                 </div>
               </div>
-            </div>{" "}
+            </div>
             {selectedCategory === "category1" && (
               <div className="p-4 shadow-lg">
                 <div className="mt-4">
@@ -350,9 +396,32 @@ const Card_subasta = (props) => {
                     >
                       +
                     </button>
-                    <button className="p-2 text-white bg-green-500 rounded">
-                      Pujar
-                    </button>
+
+{/*inicio boton de paypal*/}
+
+  <PayPalScriptProvider
+    options={{ 
+      "client-id": "AcmF1Hwfvtf6HocDkapGRxa02x0IgKFN53JPqvyWDLkNyKWwwO4F9OaF6oA6QUPPutjPORe1qb7CRvWb"
+    }}
+  >
+    <PayPalButtons
+      createOrder={(data, actions) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              description: "total a pagar",
+              amount: {
+                value: parseFloat(currentBid), // Precio del producto
+              },
+            },
+          ],
+        });
+      }}
+      onApprove={handleApprove}
+    />
+  </PayPalScriptProvider>
+  {/*fin boton de paypal*/}
+
                   </div>
                 </div>
                 <div className="mt-4">
