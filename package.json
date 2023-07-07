@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@paypal/react-paypal-js": "^8.1.0",
+=======
+>>>>>>> origin/master
     "@react-icons/all-files": "^4.1.0",
     "react": "^18.2.0",
     "react-countdown": "^2.3.5",

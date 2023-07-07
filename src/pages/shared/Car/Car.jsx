@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 import React, {useState} from "react";
+=======
+import React from "react";
+>>>>>>> origin/master
 import { RiCloseLine, RiDeleteBin6Line } from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
+<<<<<<< HEAD
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+=======
+>>>>>>> origin/master
 
 function isUserOwner(ownerId) {
   return auth.currentUser && ownerId === auth.currentUser.uid;
@@ -109,6 +116,7 @@ const Card_car = (props) => {
   {
     /*  lg:col-span-2 fixed top-0 bg-[#1F1D2B] w-full lg:w-96 lg:right-0 h-full transition-all z-50 */
   }
+<<<<<<< HEAD
   
   {/*
   
@@ -121,6 +129,8 @@ const Card_car = (props) => {
   };
 
 */}
+=======
+>>>>>>> origin/master
 
   return (
     <div
@@ -299,6 +309,7 @@ const Card_car = (props) => {
               $ {sum.toFixed(2)}
             </span>
           </div>
+<<<<<<< HEAD
 
 {/* inicio del script y boton paypal*/}
           <PayPalScriptProvider
@@ -339,10 +350,19 @@ const Card_car = (props) => {
           {/*<button className="bg-[#E89440] text-white w-full py-2 px-4 rounded-lg">
             Continue to payment
         </button>*/}
+=======
+          <button className="bg-[#E89440] text-white w-full py-2 px-4 rounded-lg">
+            Continue to payment
+          </button>
+>>>>>>> origin/master
         </div>
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default Card_car;
+=======
+export default Card_car;
+>>>>>>> origin/master
