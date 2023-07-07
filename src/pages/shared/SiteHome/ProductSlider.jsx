@@ -12,7 +12,10 @@ import Modal_12 from "../ModalWindow/Modal";
 const ProductSlider = (props) => {
   const [isModalOpen, setIsOpen] = useState(true);
   const [products, setProducts] = useState([]);
-  const [Seccion, setSeccion] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const handleToggleModal = () => {
     console.log("Paso por aqui");
@@ -35,14 +38,61 @@ const ProductSlider = (props) => {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const categoriesSnapshot = await db2.collection("productos").get();
+        const uniqueCategories = Array.from(
+          new Set(categoriesSnapshot.docs.map((doc) => doc.data().category))
+        );
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.log("Error fetching categories from Firebase:", error);
+      }
+    };
+
     fetchProducts();
+    fetchCategories();
   }, []);
 
+  useEffect(() => {
+    // Filtrar productos por nombre y categoría
+    const filtered = products.filter((product) => {
+      // Filtrar por nombre
+      const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Filtrar por categoría
+      const categoryMatch = selectedCategory ? product.category === selectedCategory : true;
+
+      return nameMatch && categoryMatch;
+    });
+
+    setFilteredProducts(filtered);
+  }, [products, searchQuery, selectedCategory]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
   const imagesPerSlide = 10; // Número de imágenes por cada SwiperSlide
-  const totalSlides = Math.ceil(products.length / imagesPerSlide); // Número total de SwiperSlides
+  const totalSlides = Math.ceil(filteredProducts.length / imagesPerSlide); // Número total de SwiperSlides
 
   return (
     <>
+      <div>
+        <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Buscar por nombre" />
+        <select value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="">Todas las categorías</option>
+          {categories.map((category) => (
+            <option value={category} key={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       <Swiper
         pagination={{
           clickable: true,
@@ -54,7 +104,7 @@ const ProductSlider = (props) => {
         {[...Array(totalSlides)].map((_, slideIndex) => {
           const startIdx = slideIndex * imagesPerSlide;
           const endIdx = startIdx + imagesPerSlide;
-          const slideProducts = products.slice(startIdx, endIdx);
+          const slideProducts = filteredProducts.slice(startIdx, endIdx);
 
           return (
             <SwiperSlide key={slideIndex}>
