@@ -54,6 +54,7 @@ function ProductCatalog(props) {
           id={product.id}
           name={product.name}
           img={product.images}
+          productUID={product.uid}
           description={product.description}
           price={product.price}
           productId={product.id}

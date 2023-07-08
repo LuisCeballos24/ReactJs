@@ -19,8 +19,8 @@ const Card = (props) => {
     description,
     price,
     productId,
-    inventory,
     Status,
+    inventory,
   } = props;
   const VistaPrevia = (index) => {
     setCurrentImageIndex(index);
@@ -28,7 +28,7 @@ const Card = (props) => {
   };
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [Status_504, setStatus_504] = useState(true);
   const [mostrarOpciones, setMostrarOpciones] = useState(false);
   const [opcionAbierta, setOpcionAbierta] = useState(null);
   const [opcionAbiertaProducto, setOpcionAbiertaProducto] = useState(null);
@@ -43,6 +43,7 @@ const Card = (props) => {
   const [opciones, setOpciones] = useState([""]);
 
   useEffect(() => {
+    compareUID();
     if (products) {
       const opciones = products.map((producto) => ({
         name: producto.name,
@@ -69,7 +70,7 @@ const Card = (props) => {
 
         setImageUrls(urls);
       } catch (error) {
-        console.error("Error al obtener las imágenes:", error);
+        console.error("Error al obtener las imágenes:");
         // Maneja el error de alguna manera apropiada
       }
     };
@@ -96,7 +97,7 @@ const Card = (props) => {
         // Establecer las URLs de las imágenes en el estado
         setImageUrls(urls);
       } catch (error) {
-        console.error("Error al obtener las URLs de las imágenes:", error);
+        console.error("Error al obtener las URLs de las imágenes:");
       }
     };
 
@@ -142,6 +143,14 @@ const Card = (props) => {
       );
     }
     console.log(price);
+  };
+  const compareUID = () => {
+    if (props.productUID === user.uid) {
+      setStatus_504(false);
+    } else {
+      setStatus_504(true);
+      console.log("La condición es falsa");
+    }
   };
 
   const handleImageClick = (index) => {
@@ -227,6 +236,10 @@ const Card = (props) => {
     >
       <div className="overflow-hidden relative mb-4 w-72 h-72">
         <img
+          onClick={() => {
+            Vista(props.productId);
+          }}
+          cursor-pointer
           src={images[currentImageIndex]}
           alt=""
           className="object-cover w-full h-full rounded-xl"
@@ -236,78 +249,53 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${
-              index === currentImageIndex ? "bg-gray-600" : ""
-            }`}
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
+              }`}
             onClick={() => handleImageClick(index)}
           ></li>
         ))}
       </ul>
       <div className="flex justify-between items-center w-full">
-        {Status && (
-          <button className="flex p-2 rounded-lg" onClick={handleClickChange}>
-            <RiExchangeBoxLine
-              className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
+        {!Status && Status_504 && (
+          <button
+            className="flex p-2 rounded-lg"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <BsCartPlus
+              className={`text-xl bg-white hover:text-green-600 text-primary`}
             />
           </button>
         )}
-        {!Status && (
-          <div>
-            <button
-              className="flex p-2 rounded-lg"
-              onClick={handleClickChange}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                visibility: "hidden",
-              }}
-            >
-              <RiExchangeBoxLine
-                className={`text-xl bg-white hover:text-yellow-600 text-primary text-yellow-700`}
-              />
-            </button>
-            <button
-              className="flex p-2 rounded-lg"
-              onClick={() => {
-                Vista(props.productId);
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <BsPencil
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
-              />
-            </button>
-            <button
-              className="flex p-2 rounded-lg"
-              onClick={() => {
-                handleEliminarOpcion(
-                  props.productId,
-                  props.productId,
-                  props.productId
-                );
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <BsTrash
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
-              />
-            </button>
-          </div>
+        {!Status_504 && (
+          <button
+            className="flex p-2 rounded-lg"
+            onClick={() => {
+              handleEliminarOpcion(
+                props.productId,
+                props.productId,
+                props.productId
+              );
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <BsTrash
+              className={`text-xl bg-white hover:text-green-600 text-primary`}
+            />
+          </button>
         )}
+
         <div
           id="opciones"
-          className={`${
-            mostrarOpciones ? "" : "hidden"
-          } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
+          className={`${mostrarOpciones ? "" : "hidden"
+            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
           style={{ overflow: "hidden" }}
         >
           <div className="flex items-center px-2">
@@ -321,11 +309,10 @@ const Card = (props) => {
           {opciones.map((opcion, index) => (
             <div
               key={index}
-              className={`p-2 hover:border-gray-900 ${
-                opcionAbierta === index
+              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
                   ? "hover:bg-[#285e7d] hover:text-white text-black "
                   : " hover:bg-[#285e7d] hover:text-white text-black "
-              }`}
+                }`}
               onClick={() => {
                 handleAbrirOpcion(index);
                 handleEliminarOpcion(index, props.productId, opcion.idproducto);
@@ -341,59 +328,43 @@ const Card = (props) => {
             </div>
           ))}
         </div>
-        {!Status && (
+        {Status && Status_504 && (
           <div>
             <button
               className="flex p-2 rounded-lg"
-              onClick={() => {
-                handleClick();
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                visibility: "hidden",
-              }}
-            >
-              <BsCartPlus
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
-              />
-            </button>
-            <button
-              className="flex p-2 rounded-lg"
-              onClick={() => {
-                Vista(props.productId);
-              }}
+              onClick={handleClickChange}
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <BsPencil
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
-              />
-            </button>
-            <button
-              className="flex p-2 rounded-lg"
-              onClick={() => {
-                handleEliminarOpcion(
-                  props.productId,
-                  props.productId,
-                  props.productId
-                );
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <BsTrash
-                className={`text-xl bg-white hover:text-green-600 text-primary`}
+              <RiExchangeBoxLine
+                className={`text-xl bg-white hover:text-yellow-600 text-primary`}
               />
             </button>
           </div>
+        )}
+        {!Status_504 && (
+          <button
+            className="flex p-2 rounded-lg"
+            onClick={() => {
+              handleEliminarOpcion(
+                props.productId,
+                props.productId,
+                props.productId
+              );
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <BsPencil
+              className={`text-xl bg-white hover:text-green-600 text-primary`}
+            />
+          </button>
         )}
       </div>
       <h3 className="mb-2 text-lg font-bold">{name}</h3>

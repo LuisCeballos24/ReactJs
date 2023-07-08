@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiCloseLine, RiDeleteBin6Line } from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
 import { FaMinus } from "react-icons/fa";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 function isUserOwner(ownerId) {
   return auth.currentUser && ownerId === auth.currentUser.uid;
@@ -107,6 +108,20 @@ const Card_car = (props) => {
   }
   {
     /*  lg:col-span-2 fixed top-0 bg-[#1F1D2B] w-full lg:w-96 lg:right-0 h-full transition-all z-50 */
+  }
+
+  {
+    /*
+  
+  const [isPaymentSuccessful, setIsPaymentSuccessful] = useState(false);
+
+  const handlePaymentCapture = async (data, actions) => {
+    const order = await actions.order.capture();
+    console.log("Order", order);
+    setIsPaymentSuccessful(true);
+  };
+
+*/
   }
 
   return (
@@ -286,9 +301,46 @@ const Card_car = (props) => {
               $ {sum.toFixed(2)}
             </span>
           </div>
-          <button className="bg-[#E89440] text-white w-full py-2 px-4 rounded-lg">
+
+          {/* inicio del script y boton paypal*/}
+          <PayPalScriptProvider
+            options={{
+              "client-id":
+                "AcmF1Hwfvtf6HocDkapGRxa02x0IgKFN53JPqvyWDLkNyKWwwO4F9OaF6oA6QUPPutjPORe1qb7CRvWb",
+            }}
+          >
+            <PayPalButtons
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      description: "total a pagar",
+                      amount: {
+                        value: sum.toFixed(2), // Precio del producto
+                      },
+                    },
+                  ],
+                });
+              }}
+              onApprove={async (data, actions) => {
+                const order = await actions.order.capture();
+                console.log("Order", order);
+                setIsPaymentSuccessful(true);
+              }}
+            />
+
+            {/*
+        {isPaymentSuccessful && (
+        <div className="mt-4 font-bold text-center text-green-500">
+          ¡Facturación exitosa!
+        </div>)} 
+*/}
+          </PayPalScriptProvider>
+          {/* fin del script y boton paypal*/}
+
+          {/*<button className="bg-[#E89440] text-white w-full py-2 px-4 rounded-lg">
             Continue to payment
-          </button>
+        </button>*/}
         </div>
       </div>
     </div>

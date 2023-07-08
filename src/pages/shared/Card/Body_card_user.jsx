@@ -87,6 +87,7 @@ function ProductCatalog_user(props) {
             description={product.description}
             price={product.price}
             productId={product.id}
+            productUID={product.uid}
             inventory={product.cuanty}
             Status={product.Status}
             cursor-pointer
