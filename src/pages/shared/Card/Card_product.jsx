@@ -78,37 +78,13 @@ const ProductCard = (props) => {
               alt="Imagen del Producto"
               className="w-full h-auto lg:w-[700px]"
             />
+
             <div className="flex absolute bottom-0 left-0 justify-center py-2 w-full bg-gray-200">
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${
-                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                  }`}
-                  onClick={() => handleChangeImage(index)}
-                >
-                  <img
-                    src={image}
-                    alt={`Vista previa ${index}`}
-                    className="object-cover w-full h-full rounded-full"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="py-4 card-image">
-            <img
-              src={images[currentImageIndex]}
-              alt="Imagen del Producto"
-              className="w-full h-auto lg:w-[700px]"
-            />
-            <div className="flex absolute bottom-0 left-0 justify-center py-2 w-full bg-gray-200">
-              {images.map((image, index) => (
-                <button
-                  key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${
-                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                  }`}
+                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                    }`}
                   onClick={() => handleChangeImage(index)}
                 >
                   <img
@@ -131,31 +107,28 @@ const ProductCard = (props) => {
             </h2>
             <nav className="flex flex-wrap gap-2">
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
-                  selectedCategory === "category1"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category1"
                     ? "bg-blue-500 text-white"
                     : ""
-                }`}
+                  }`}
                 onClick={() => handleCategoryClick("category1")}
               >
                 Categoría 1
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
-                  selectedCategory === "category2"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category2"
                     ? "bg-blue-500 text-white"
                     : ""
-                }`}
+                  }`}
                 onClick={() => handleCategoryClick("category2")}
               >
                 Categoría 2
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
-                  selectedCategory === "category3"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category3"
                     ? "bg-blue-500 text-white"
                     : ""
-                }`}
+                  }`}
                 onClick={() => handleCategoryClick("category3")}
               >
                 Categoría 3

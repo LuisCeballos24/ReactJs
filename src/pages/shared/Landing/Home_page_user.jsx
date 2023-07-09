@@ -137,6 +137,12 @@ function Home_Page_user(props) {
               ) : vista_A === 4 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 4
                 <CardADD_subasta VistaPrevia={Vista} />
+              ) : vista_A === 5 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <Card_subasta VistaPrevia={Vista} producto={param1} />
+              ) : vista_A === 6 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <Card_subasta VistaPrevia={Vista} producto={param1} />
               ) : (
                 // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
                 {
