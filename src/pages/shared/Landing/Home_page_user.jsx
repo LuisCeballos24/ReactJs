@@ -201,7 +201,6 @@ function Home_Page_user(props) {
         onCambioEstado={manejarCambioEstado}
       />
       <Car_up showOrder={showOrder} setShowOrder={setShowOrder} />
-      {/**/}
       <Car showOrder={showOrder} setShowOrder={setShowOrder} />
       {/* Menu movil */}
       <nav className="bg-[#285e7d]  lg:hidden z-50 fixed w-full bottom-0 left-0 text-3xl text-bg-[#EA8337]  py-2 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">

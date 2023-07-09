@@ -5,29 +5,11 @@ import { db2, auth, storage2 } from "../../../utils/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const CardADD_subasta = (props) => {
-  /*
-  Esta función suma dos números enteros y devuelve el resultado.
-  Parámetros:
-    - num1: primer número entero
-    - num2: segundo número entero
-  Retorna:
-    El resultado de la suma de num1 y num2.
-*/
   const [user] = useAuthState(auth);
 
-  /*
-
-    
-  Esta función suma dos números enteros y devuelve el resultado.
-  Parámetros:
-    - num1: primer número entero
-    - num2: segundo número entero
-  Retorna:
-    El resultado de la suma de num1 y num2.
-*/
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
-  const [productRequisitos, setProductrequisitos] = useState("");
+  const [productRequisitos, setProductRequisitos] = useState("");
   const [startingPrice, setStartingPrice] = useState(0);
   const [auctionType, setAuctionType] = useState("");
   const [auctionTime, setAuctionTime] = useState("");
@@ -43,20 +25,13 @@ const CardADD_subasta = (props) => {
   const [estadoHijo, setEstadoHijo] = useState(false);
 
   const [id_persona, setIdpersona] = useState([]);
-  const [oferta, setoferta] = useState([]);
-  const [descrip, setdescrip] = useState([]);
+  const [oferta, setOferta] = useState([]);
+  const [descrip, setDescrip] = useState([]);
   const [urlcv, setUrlCV] = useState([]);
-  /*
-  Esta Estas variables son para la funciones de agregar 
-  Parámetros:
-    - num1: texto 
-    - num2: boolenos
-  Retorna:
-    El resultado de la suma de num1 y num2.
-*/
-  const [name, setname] = useState("");
-  const [descripcion, setdescripcion] = useState("");
-  const [price_partida, setprice] = useState("");
+
+  const [name, setName] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [price_partida, setPricePartida] = useState("");
   const [Dura_hD, setDH] = useState("");
   const [Fecha_I, setInc] = useState("");
   const [Fecha_C, setCierre] = useState("");
@@ -91,7 +66,7 @@ const CardADD_subasta = (props) => {
     Promise.all(readerPromises).then((imageUrls) => {
       setPreviewImages(imageUrls);
       setCurrentImageIndex(0);
-      setUrl(imageUrls[0]); // Establecer la URL de la primera imagen como el valor inicial de "url"
+      setUrl(imageUrls[0]);
     });
   };
 
@@ -100,20 +75,12 @@ const CardADD_subasta = (props) => {
     setUrl(previewImages[index]);
   };
 
-  // Función para manejar la carga de imágenes
-
-  // Asegurarse de liberar los recursos de las URLs de las imágenes al desmontar el componente
   useEffect(() => {
     return () => {
       previewImages.forEach((preview) => URL.revokeObjectURL(preview));
     };
   }, [previewImages]);
 
-  useEffect(() => {
-    return () => {
-      previewImages.forEach((preview) => URL.revokeObjectURL(preview));
-    };
-  }, [previewImages]);
   const handleAuctionTypeChange = (e) => {
     setAuctionType(e.target.value);
 
@@ -131,7 +98,6 @@ const CardADD_subasta = (props) => {
   };
 
   const handleAuctionStartDateChange = (e) => {
-    // handleAuctionStartTimeChange();
     setAuctionStartDate(e.target.value);
     setAuctionEndDate(
       calculateAuctionEndDate(auctionTime, e.target.value, auctionStartTime)
@@ -146,6 +112,14 @@ const CardADD_subasta = (props) => {
     setAuctionEndTime(
       calculateAuctionEndTime(auctionStartTime, auctionTime, auctionStartDate)
     );
+
+    // Verificar si la hora seleccionada excede las 12:00 (mediodía)
+    const selectedTime = new Date(`2000-01-01T${e.target.value}`);
+    if (selectedTime.getHours() >= 12) {
+      const nextDay = new Date(auctionStartDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      setAuctionEndDate(nextDay.toISOString().split("T")[0]);
+    }
   };
 
   const calculateAuctionEndDate = (time, startDate, startTime) => {
@@ -164,6 +138,11 @@ const CardADD_subasta = (props) => {
       endDate.setMinutes(endDate.getMinutes() + duration);
     } else if (unit === "días") {
       endDate.setDate(endDate.getDate() + duration);
+    }
+
+    // Verificar si la hora de inicio excede las 12:00 (mediodía) y ajustar la fecha de cierre al día siguiente
+    if (endTime.getHours() >= 12) {
+      endDate.setDate(endDate.getDate() + 1);
     }
 
     return endDate.toISOString().split("T")[0];
@@ -196,7 +175,6 @@ const CardADD_subasta = (props) => {
     e.preventDefault();
     let id_p = Date.now();
     try {
-      // Agregar el producto a Firestore
       const productRef = await db2.collection("Subastas").add({
         name,
         productRequisitos,
@@ -210,26 +188,9 @@ const CardADD_subasta = (props) => {
         auctionType,
         Dis,
         uid: user.uid,
-        url, // Agregar la URL al objeto
+        url,
       });
       await productRef.update({ id: productRef.id });
-      // Subir las imágenes al Storage
-      const urls = await Promise.all(
-        previewImages.map(async (imageUrl) => {
-          try {
-            const imageFile = await fetch(imageUrl).then((res) => res.blob());
-            const uploadTask = storage2
-              .ref(`images/${productRef.id}/${productRef.name}`)
-              .put(imageFile);
-            const snapshot = await uploadTask;
-            const url = await snapshot.ref.getDownloadURL();
-            return url;
-          } catch (error) {
-            console.error("Error al subir una imagen:", error);
-            throw error;
-          }
-        })
-      );
 
       try {
         const productData = {
@@ -254,21 +215,19 @@ const CardADD_subasta = (props) => {
       // Actualizar el producto con las URLs de las imágenes
       await productRef.update({ images: urls });
       // Reiniciar el formulario
-      setname("");
-      setdescripcion("");
-      setprice("");
+      setName("");
+      setDescripcion("");
+      setPricePartida("");
       setPreviewImages([]);
-      alert(" Producto de subasta agregado");
+      alert("Producto de subasta agregado");
     } catch (error) {
       console.error("Error al agregar el producto:");
       alert(
         "Ocurrió un error al agregar el producto. Por favor, inténtalo de nuevo."
       );
     }
-
-    console.log("Fomualario enviado");
   };
-
+  console.log("Formulario enviado");
   return (
     <div className="flex overflow-hidden flex-col justify-center rounded-md shadow-lg md:flex-row card">
       <div className="w-full md:w-1/2">
@@ -378,7 +337,7 @@ const CardADD_subasta = (props) => {
                           type="time"
                           className="p-2 w-full rounded border border-gray-300"
                           value={auctionStartTime}
-                        // onChange={handleAuctionStartTimeChange}
+                          onChange={handleAuctionStartTimeChange}
                         />
                       </div>
                       <div className="mb-4">

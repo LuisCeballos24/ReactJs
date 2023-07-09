@@ -132,8 +132,8 @@ function CardAddProduct(props) {
               precio: price,
               images: urls, // Usar las URLs de las imágenes subidas
               time: "",
-              compara: "",
-              compara_obj: "",
+              Compara: "",
+              Compara_obj: "",
               Diponibilidad: DispoI,
             };
             const docRef = await db2
@@ -321,9 +321,8 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("-")}
-                    className={` ${
-                      !Status ? "bg-green-400 text-white " : " "
-                    } p-2 h-14 rounded-full bg-white  text-white  hover:text-white hover:bg-green-400 `}
+                    className={` ${!Status ? "bg-green-400 text-white " : " "
+                      } p-2 h-14 rounded-full bg-white  text-white  hover:text-white hover:bg-green-400 `}
                   >
                     <FaShoppingCart size={20} />
                   </button>
@@ -331,9 +330,8 @@ function CardAddProduct(props) {
                 <div className="flex justify-end mb-2">
                   <button
                     onClick={() => handleBid("+")}
-                    className={` ${
-                      Status ? "bg-yellow-400 text-white " : " "
-                    } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
+                    className={` ${Status ? "bg-yellow-400 text-white " : " "
+                      } p-2 h-14  bg-white rounded-full hover:text-white hover:bg-yellow-400 `}
                   >
                     <FaExchangeAlt size={20} />
                   </button>
@@ -365,11 +363,10 @@ function CardAddProduct(props) {
                     {previewImages.map((image, index) => (
                       <button
                         key={index}
-                        className={`h-12 w-12 rounded-full ${
-                          index === currentImageIndex
+                        className={`h-12 w-12 rounded-full ${index === currentImageIndex
                             ? "bg-blue-500"
                             : "bg-gray-300"
-                        }`}
+                          }`}
                         onClick={() => handleImageChange(index)}
                       >
                         {index + 1}

@@ -158,9 +158,8 @@ const Card = (props) => {
           {images.map((image, index) => (
             <div
               key={index}
-              className={`w-2 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition ${
-                index === currentImageIndex ? "bg-gray-600" : ""
-              }`}
+              className={`w-2 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition ${index === currentImageIndex ? "bg-gray-600" : ""
+                }`}
               onClick={() => handleImageClick(index)}
             ></div>
           ))}
@@ -216,9 +215,8 @@ const Card = (props) => {
         <div className="flex justify-between items-center mb-4 w-full">
           <div
             id="opciones"
-            className={`${
-              mostrarOpciones ? "" : "hidden"
-            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
+            className={`${mostrarOpciones ? "" : "hidden"
+              } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
             style={{ overflow: "hidden" }}
           >
             <div className="flex items-center px-2">

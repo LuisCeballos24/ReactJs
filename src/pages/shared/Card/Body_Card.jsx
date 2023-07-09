@@ -89,7 +89,7 @@ function ProductCatalog(props) {
             /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />
-        ))}{" "}
+        ))}
       </div>
     </div>
   );

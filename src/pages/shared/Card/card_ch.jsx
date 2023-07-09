@@ -122,7 +122,7 @@ const Card = (props) => {
         </div>{" "}
       </div>
 
-      <div className="flex flex-col flex-grow justify-center mx-4">
+      <div className="flex flex-col flex-grow gap-5 justify-center mx-4">
         <div className="mb-4">
           <div className="flex justify-center items-center">
             <BsArrowRepeat className="text-4xl text-gray-500" />
