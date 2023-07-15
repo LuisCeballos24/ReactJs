@@ -104,20 +104,29 @@ const Card_V = (props) => {
                         alt="Imagen CV"
                         className="w-56 h-56"
                       />
-                      <div className="ml-4">
-                        <div className="flex items-center">
-                          <p className="mr-1 text-sm font-bold text-gray-500">
-                            Descripción:
+                      <div className="flex p-6 ml-6 bg-white rounded-lg shadow-lg">
+                        <div>
+                          <p className="mb-4 text-gray-600">
+                            User since <span className="font-bold">2019</span>
                           </p>
-                          <p className="text-sm">{item.description}</p>
-                        </div>
-                        <div className="flex items-center">
-                          <p className="mr-1 text-sm font-bold text-gray-500">
-                            Oferta:
+                          <p className="text-gray-600">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Duis mauris lorem, efficitur eget cursus a,
+                            semper ac mi.
                           </p>
-                          <p className="text-sm">${item.offer}</p>
+                          <div className="mt-4">
+                            <p className="text-sm text-gray-500">
+                              Email: johndoe@example.com
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Location: New York, USA
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Website: www.johndoe.com
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      </div>{" "}
                     </div>
                   </div>
                 )}

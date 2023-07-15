@@ -16,7 +16,8 @@ const Card_subasta = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(Date.parse(40) - Date.now());
   const [progress, setProgress] = useState(100);
-  const [currentBid, setCurrentBid] = useState(0);
+  const [currentBid, setCurrentBid] = useState(0.1);
+  const [currentBid2, setCurrentBid2] = useState(0.1);
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [email, setEmail] = useState("");
@@ -46,6 +47,7 @@ const Card_subasta = (props) => {
   );
 
   useEffect(() => {
+    console.log(currentBid);
     if (products && products.length > 0) {
       const product = products[0]; // Suponiendo que solo hay un producto con ese ID
 
@@ -114,7 +116,7 @@ const Card_subasta = (props) => {
           {
             amount: {
               currency_code: "USD",
-              value: parseFloat(currentBid), // Monto total del pedido
+              value: parseFloat(currentBid2), // Monto total del pedido
             },
           },
         ],
@@ -225,12 +227,9 @@ const Card_subasta = (props) => {
       setCurrentBid((prevBid) => prevBid + 5);
     }
   };
-  const categoria_va = (action) => {
-    if (action === "-") {
-      setCurrentBid((prevBid) => Math.max(prevBid - 5, 0));
-    } else if (action === "+") {
-      setCurrentBid((prevBid) => prevBid + 5);
-    }
+
+  const handleInputChange = (e) => {
+    setCurrentBid2(currentBid);
   };
 
   const [estadoHijo, setEstadoHijo] = useState(false);
@@ -268,8 +267,9 @@ const Card_subasta = (props) => {
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                  className={`w-8 h-8 rounded-full mx-1 ${
+                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                  }`}
                   onClick={() => handleChangeImage(index)}
                 >
                   <img
@@ -291,8 +291,9 @@ const Card_subasta = (props) => {
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                  className={`w-8 h-8 rounded-full mx-1 ${
+                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                  }`}
                   onClick={() => handleChangeImage(index)}
                 >
                   <img
@@ -315,28 +316,31 @@ const Card_subasta = (props) => {
             </h2>
             <nav className="flex flex-wrap gap-2">
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category1"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category1"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category1")}
               >
                 Categoría 1
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category2"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category2"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category2")}
               >
                 Categoría 2
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category3"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category3"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category3")}
               >
                 Categoría 3
@@ -448,8 +452,9 @@ const Card_subasta = (props) => {
                     </button>
                     <input
                       type="text"
-                      className="py-2 px-4 rounded border border-gray-300"
+                      className="py-2 px-4 bg-red-200 rounded border border-gray-300"
                       value={currentBid}
+                      onChange={handleInputChange}
                     />
                     <button
                       className="p-2 text-white bg-blue-500 rounded"
@@ -473,7 +478,7 @@ const Card_subasta = (props) => {
                               {
                                 description: "total a pagar",
                                 amount: {
-                                  value: parseFloat(currentBid), // Precio del producto
+                                  value: parseFloat(currentBid2), // Precio del producto
                                 },
                               },
                             ],
@@ -542,7 +547,7 @@ const Card_subasta = (props) => {
                       </button>
                       <input
                         type="text"
-                        className="py-2 px-4 rounded border border-gray-300"
+                        className="py-2 px-4 bg-red-800 rounded border border-gray-300"
                         value={currentBid}
                       />
                       <button
@@ -590,7 +595,7 @@ const Card_subasta = (props) => {
                 </div>
               </div>
             )}
-            {selectedCategory === "category3" && {}}
+            {selectedCategory === "category3" && <div></div>}
           </div>
         </div>
       </div>

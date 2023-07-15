@@ -132,8 +132,8 @@ function CardAddProduct(props) {
               precio: price,
               images: urls, // Usar las URLs de las imágenes subidas
               time: "",
-              Compara: "",
-              Compara_obj: "",
+              Compara: [" "],
+              Compara_obj: [" "],
               Diponibilidad: DispoI,
             };
             const docRef = await db2

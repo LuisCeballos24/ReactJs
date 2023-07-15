@@ -13,8 +13,12 @@ const CardADD_subasta = (props) => {
   const [startingPrice, setStartingPrice] = useState(0);
   const [auctionType, setAuctionType] = useState("");
   const [auctionTime, setAuctionTime] = useState("");
-  const [auctionStartDate, setAuctionStartDate] = useState("");
-  const [auctionStartTime, setAuctionStartTime] = useState("");
+  const [auctionStartDate, setAuctionStartDate] = useState(
+    new Date().toLocaleDateString("en-CA") // Asignar fecha actual como valor predeterminado
+  );
+  const [auctionStartTime, setAuctionStartTime] = useState(
+    new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) // Asignar hora actual como valor predeterminado
+  );
   const [auctionEndDate, setAuctionEndDate] = useState("");
   const [auctionEndTime, setAuctionEndTime] = useState("");
   const [previewImages, setPreviewImages] = useState([]);
