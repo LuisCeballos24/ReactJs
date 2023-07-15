@@ -22,7 +22,6 @@ const Card_subasta = (props) => {
 
   const [email, setEmail] = useState("");
   const [cvFile, setCvFile] = useState(null);
-  const [showPayPalButton, setShowPayPalButton] = useState(true);
 
   const [idPersona, setIdPersona] = useState([]);
   const [oferta, setOferta] = useState([]);
@@ -48,6 +47,7 @@ const Card_subasta = (props) => {
   );
 
   useEffect(() => {
+    console.log(currentBid);
     if (products && products.length > 0) {
       const product = products[0]; // Suponiendo que solo hay un producto con ese ID
 
@@ -63,8 +63,7 @@ const Card_subasta = (props) => {
       setAuctionEndDate(product.auctionEndDate);
       setAuctionEndTime(product.auctionEndTime);
       setPreviewImages(product.images);
-      //console.log(currentBid);
-      setCurrentBid(startingPrice);
+
       // Asigna l bos demás valores a las variables correspondientes
     }
   }, [products]);
@@ -225,26 +224,8 @@ const Card_subasta = (props) => {
     if (action === "-") {
       setCurrentBid((prevBid) => Math.max(prevBid - 5, 0));
     } else if (action === "+") {
-      //setShowPayPalButton(!showPayPalButton);
       setCurrentBid((prevBid) => prevBid + 5);
     }
-
-    const hideButtonTimer = setTimeout(() => {
-      setShowPayPalButton(false);
-      const showButtonTimer = setTimeout(() => {
-        setShowPayPalButton(true);
-      }, 0.00001);
-
-      return () => {
-        clearTimeout(showButtonTimer);
-      };
-    }, 0.00001);
-
-    return () => {
-      clearTimeout(hideButtonTimer);
-    };
-
-    setCurrentBid2(currentBid);
   };
 
   const handleInputChange = (e) => {
@@ -286,8 +267,9 @@ const Card_subasta = (props) => {
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                  className={`w-8 h-8 rounded-full mx-1 ${
+                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                  }`}
                   onClick={() => handleChangeImage(index)}
                 >
                   <img
@@ -309,8 +291,9 @@ const Card_subasta = (props) => {
               {images.map((image, index) => (
                 <button
                   key={index}
-                  className={`w-8 h-8 rounded-full mx-1 ${index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
-                    }`}
+                  className={`w-8 h-8 rounded-full mx-1 ${
+                    index === currentImageIndex ? "bg-blue-500" : "bg-gray-300"
+                  }`}
                   onClick={() => handleChangeImage(index)}
                 >
                   <img
@@ -333,28 +316,31 @@ const Card_subasta = (props) => {
             </h2>
             <nav className="flex flex-wrap gap-2">
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category1"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category1"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category1")}
               >
                 Categoría 1
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category2"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category2"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category2")}
               >
                 Categoría 2
               </button>
               <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category3"
+                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${
+                  selectedCategory === "category3"
                     ? "bg-blue-500 text-white"
                     : ""
-                  }`}
+                }`}
                 onClick={() => handleCategoryClick("category3")}
               >
                 Categoría 3
@@ -466,7 +452,7 @@ const Card_subasta = (props) => {
                     </button>
                     <input
                       type="text"
-                      className="py-2 px-4 rounded border border-gray-300"
+                      className="py-2 px-4 bg-red-200 rounded border border-gray-300"
                       value={currentBid}
                       onChange={handleInputChange}
                     />
@@ -476,31 +462,31 @@ const Card_subasta = (props) => {
                     >
                       +
                     </button>
+
                     {/*inicio boton de paypal*/}
-                    {showPayPalButton && (
-                      <PayPalScriptProvider
-                        options={{
-                          "client-id":
-                            "AcmF1Hwfvtf6HocDkapGRxa02x0IgKFN53JPqvyWDLkNyKWwwO4F9OaF6oA6QUPPutjPORe1qb7CRvWb",
-                        }}
-                      >
-                        <PayPalButtons
-                          createOrder={(data, actions) => {
-                            return actions.order.create({
-                              purchase_units: [
-                                {
-                                  description: "total a pagar",
-                                  amount: {
-                                    value: parseFloat(currentBid), // Precio del producto
-                                  },
+
+                    <PayPalScriptProvider
+                      options={{
+                        "client-id":
+                          "AcmF1Hwfvtf6HocDkapGRxa02x0IgKFN53JPqvyWDLkNyKWwwO4F9OaF6oA6QUPPutjPORe1qb7CRvWb",
+                      }}
+                    >
+                      <PayPalButtons
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                description: "total a pagar",
+                                amount: {
+                                  value: parseFloat(currentBid2), // Precio del producto
                                 },
-                              ],
-                            });
-                          }}
-                          onApprove={handleApprove}
-                        />
-                      </PayPalScriptProvider>
-                    )}
+                              },
+                            ],
+                          });
+                        }}
+                        onApprove={handleApprove}
+                      />
+                    </PayPalScriptProvider>
                     {/*fin boton de paypal*/}
                   </div>
                 </div>
@@ -618,6 +604,3 @@ const Card_subasta = (props) => {
 };
 
 export default Card_subasta;
-
-{
-}
