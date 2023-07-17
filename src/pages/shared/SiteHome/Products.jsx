@@ -10,7 +10,6 @@ const Products = (props) => {
   const [vista, setVista_A] = useState(false);
   const Login = (vista_A) => {
     setVista_A(vista_A);
-    console.log("Vista" + vista_A);
     props.Child_1(vista_A);
   };
 

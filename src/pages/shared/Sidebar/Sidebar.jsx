@@ -8,7 +8,11 @@ import {
   RiSettings4Line,
   RiLogoutCircleRLine,
   RiStore3Line,
+  RiExchangeBoxFill,
+  RiNotificationFill,
 } from "react-icons/ri";
+
+import { AiFillTags } from "react-icons/ai";
 import { auth } from "../../../utils/firebase";
 import { useNavigate } from "react-router-dom";
 import { changeShowStore } from "../Landing/Home_page_user";
@@ -97,7 +101,7 @@ const Sidebar = (props) => {
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
-              <RiPieChartLine className="text-xl" />
+              <AiFillTags className="text-xl" />
             </a>
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
@@ -105,7 +109,7 @@ const Sidebar = (props) => {
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
-              <RiMailLine className="text-2xl" />
+              <RiExchangeBoxFill className="text-2xl" />
             </a>
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
@@ -113,11 +117,12 @@ const Sidebar = (props) => {
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
-              <RiNotification3Line className="text-2xl" />
+              <RiNotificationFill className="text-2xl" />
             </a>
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
             <a
+              onClick={() => handleChange(6)}
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >

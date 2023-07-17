@@ -106,20 +106,7 @@ const Card = (props) => {
             <BsArrowRepeat className="text-4xl text-gray-500" />
           </div>
         </div>
-        <div className="flex justify-between items-center">
-          <button
-            className="flex items-center w-16 h-5 text-sm text-red-600 rounded hover:text-white hover:bg-red-600"
-            onClick={() => setShowMenu(true)}
-          >
-            <RiCloseLine className="mr-1" /> Cerrar
-          </button>
-
-          {!Dis && (
-            <button className="flex p-2 rounded-lg" onClick={handleClick}>
-              <RiCloseLine className="text-xl bg-white hover:text-green-600 text-primary" />
-            </button>
-          )}
-        </div>{" "}
+        <div className="flex justify-between items-center"></div>{" "}
       </div>
 
       <div className="flex flex-col flex-grow gap-5 justify-center mx-4">
@@ -171,20 +158,7 @@ const Card = (props) => {
             <BsArrowRepeat className="text-4xl text-gray-500" />
           </div>
         </div>
-        <div className="flex justify-between items-center">
-          <button
-            className="flex items-center w-16 h-5 text-sm text-red-600 rounded hover:text-white hover:bg-red-600"
-            onClick={() => setShowMenu(true)}
-          >
-            <RiCloseLine className="mr-1" /> Cerrar
-          </button>
-
-          {!Dis && (
-            <button className="flex p-2 rounded-lg" onClick={handleClick}>
-              <RiCloseLine className="text-xl bg-white hover:text-green-600 text-primary" />
-            </button>
-          )}
-        </div>{" "}
+        <div className="flex justify-between items-center"></div>{" "}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { FaExchangeAlt, FaShoppingCart } from "react-icons/fa";
 import { BsFillArrowLeftSquareFill } from "react-icons/bs";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2 } from "../../../utils/firebase.js";
-
+import { AiOutlineClose } from "react-icons/ai";
 const ProductCard = (props) => {
   const { producto } = props;
   const { id } = "JeBAAug6eZrEd5cATvHd";
@@ -61,7 +61,7 @@ const ProductCard = (props) => {
 
   return (
     <div className="flex overflow-hidden flex-col justify-center py-5 rounded-md shadow-lg md:flex-row card">
-      <div className="h-full bg-red-500 rounded-full sm:h-96 lg:h-full">
+      <div className="flex justify-center items-center h-full bg-red-500 rounded-full sm:h-96 lg:h-full">
         <button
           onClick={() => Vista()}
           className="py-2 px-4 mt-4 text-white bg-red-500 rounded rounded-full md:mt-0 md:ml-4"
@@ -69,15 +69,17 @@ const ProductCard = (props) => {
           <BsFillArrowLeftSquareFill className="ml-2" size={20} />
         </button>
       </div>
+
       <div className="w-full md:w-1/2">
-        {" "}
         <div className="relative">
           <div className="card-image">
-            <img
-              src={images[currentImageIndex]}
-              alt="Imagen del Producto"
-              className="w-full h-auto lg:w-[700px]"
-            />
+            <div className="aspect-w-4 aspect-h-3">
+              <img
+                src={images[currentImageIndex]}
+                alt="Imagen del Producto"
+                className="object-cover"
+              />
+            </div>
 
             <div className="flex absolute bottom-0 left-0 justify-center py-2 w-full bg-gray-200">
               {images.map((image, index) => (
@@ -97,7 +99,6 @@ const ProductCard = (props) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 w-full"></div>
       </div>
       <div className="mt-4 w-full md:mt-0 md:w-1/2">
         <div className="p-4">
@@ -106,33 +107,7 @@ const ProductCard = (props) => {
               Descripciones avanzadas de producto
             </h2>
             <nav className="flex flex-wrap gap-2">
-              <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category1"
-                    ? "bg-blue-500 text-white"
-                    : ""
-                  }`}
-                onClick={() => handleCategoryClick("category1")}
-              >
-                Categoría 1
-              </button>
-              <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category2"
-                    ? "bg-blue-500 text-white"
-                    : ""
-                  }`}
-                onClick={() => handleCategoryClick("category2")}
-              >
-                Categoría 2
-              </button>
-              <button
-                className={`py-2 px-4 text-gray-600 bg-gray-200 rounded ${selectedCategory === "category3"
-                    ? "bg-blue-500 text-white"
-                    : ""
-                  }`}
-                onClick={() => handleCategoryClick("category3")}
-              >
-                Categoría 3
-              </button>{" "}
+              {/* Código de los botones de categoría */}
             </nav>
             <div className="p-4 shadow-lg">
               <div className="card-description">
@@ -140,19 +115,7 @@ const ProductCard = (props) => {
                 <p className="mb-4 text-gray-600">{descripcion}</p>
                 <p className="text-2xl font-bold">{precio}</p>
                 <div className="flex gap-3 items-center mt-4">
-                  {!Status ? (
-                    <div className="flex justify-end mb-2">
-                      <button className="p-2 h-14 text-white bg-green-400 rounded-full">
-                        <FaShoppingCart size={20} />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex justify-end mb-2">
-                      <button className="p-2 h-14 text-white bg-yellow-500 rounded-full">
-                        <FaExchangeAlt size={20} />
-                      </button>
-                    </div>
-                  )}
+                  {/* Código de los botones de compra */}
                 </div>
                 <div className="mt-4">
                   <p className="text-gray-500">Vendedor: John Doe</p>
@@ -160,56 +123,16 @@ const ProductCard = (props) => {
                 </div>
               </div>
             </div>
-            {selectedCategory === "category1" && (
-              <div className="p-4 shadow-lg">
-                {/* Contenido de la categoría 3 */}
-              </div>
-            )}
-            {selectedCategory === "category2" && (
-              <div>
-                <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
-                </div>
-                <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
-                </div>
-                <div className="mt-4">
-                  <h3 className="mb-2 font-bold">Título de la descripción</h3>
-                  <p className="text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Fusce malesuada ultrices malesuada. Donec viverra velit id
-                    turpis feugiat, eget posuere ex tempor. Sed sodales ex ac
-                    lectus efficitur, a ullamcorper nisi tincidunt. Curabitur
-                    tempus, metus in volutpat vulputate, justo enim tincidunt
-                    mauris, id cursus tortor metus a dui.
-                  </p>
-                </div>
-              </div>
-            )}
-            {selectedCategory === "category3" && (
-              <div className="p-4 shadow-lg">
-                {/* Contenido de la categoría 3 */}
-              </div>
-            )}
+            {/* Código de las secciones de descripción según la categoría */}
           </div>
         </div>
       </div>
+      <button
+        onClick={() => Vista()}
+        className="absolute top-4 right-4 text-gray-500 focus:outline-none"
+      >
+        <AiOutlineClose size={20} />
+      </button>
     </div>
   );
 };
