@@ -1,15 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Card from "./Card";
 import Card_sub from "./Car_sub";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db2, auth } from "../../../utils/firebase.js";
 
 function ProductCatalog_user(props) {
-  //Error al dejar que el catagolo envie al usuario
-
   const currentUser = auth.currentUser;
   const [estadoHijo, setEstadoHijo] = useState(false);
   const [Ventana, setVentana] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const Vista_Previa = (productId) => {
     console.log("Paso por aqui");
     const nuevoEstado = !estadoHijo;
@@ -19,11 +20,12 @@ function ProductCatalog_user(props) {
     setEstadoHijo(nuevoEstado);
     props.VistaPrevia(nuevoEstado, ven, nuevoParam2);
   };
-  // PARAMETROS PARA LA VISTA PREVIA
+
   const [vista, setVista_A] = useState(false);
   const [vista_A, setVista_B] = useState(2);
   const [param1, setParam1] = useState("default1");
   const [param2, setParam2] = useState("default2");
+
   const Vista = (vista_A, vista_B, Producto, text) => {
     setVista_A(vista_A);
     setVista_B(vista_B);
@@ -32,29 +34,56 @@ function ProductCatalog_user(props) {
     console.log(vista_A, vista_B, Producto, text);
     props.VistaPrevia(vista_A, vista_B, Producto, text);
   };
+
   const [subasta, loading_g, error_s] = useCollectionData(
-    db2.collection("Subastas").where("uid", "==", currentUser?.uid || "")
+    db2
+      .collection("Subastas")
+      .where("uid", "==", currentUser?.uid || "")
   );
   const [products, loading, error] = useCollectionData(
-    db2.collection("productos").where("uid", "==", currentUser?.uid || "")
+    db2
+      .collection("productos")
+      .where("uid", "==", currentUser?.uid || "")
   );
 
-  if (loading) {
-    return <p>Cargando productos...</p>;
-  }
-  if (loading_g) {
+  if (loading || loading_g) {
     return <p>Cargando productos...</p>;
   }
 
-  if (error_s) {
+  if (error || error_s) {
     return <p>Error al cargar productos: {error.message}</p>;
   }
-  if (error) {
-    return <p>Error al cargar productos: {error.message}</p>;
-  }
+
+  const filteredProducts = products.filter((product) => {
+    const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory ? product.category === selectedCategory : true;
+    return nameMatch && categoryMatch;
+  });
+
+  const filteredSubasta = subasta.filter((product_sub) => {
+    const nameMatch = product_sub.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory ? product_sub.category === selectedCategory : true;
+    return nameMatch && categoryMatch;
+  });
 
   return (
     <div>
+      <div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Buscar por nombre"
+        />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {/* Opciones de categorías */}
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 gap-16 p-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
         <div className="p-8 bg-gray-100 rounded-xl">
           <div className="flex flex-col gap-8 items-center my-20 justify-center p-6 text-left text-center text-gray-600 bg-white rounded-xl border border-grey-300 transition hover:border-[#E89440]">
@@ -78,7 +107,7 @@ function ProductCatalog_user(props) {
             </div>
           </div>
         </div>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <Card
             className="bg-red-800"
             key={product.id}
@@ -92,14 +121,13 @@ function ProductCatalog_user(props) {
             Status={product.Status}
             cursor-pointer
             USER_TATUS={true}
-            /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-16 p-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2">
-        {subasta.map((product_sub) => (
+        {filteredSubasta.map((product_sub) => (
           <Card_sub
             className="bg-red-800"
             key_1={product_sub.id}
@@ -116,10 +144,9 @@ function ProductCatalog_user(props) {
             auctionType={product_sub.auctionType}
             Dis={product_sub.Dis}
             img={product_sub.images}
-            /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />
-        ))}{" "}
+        ))}
       </div>
     </div>
   );

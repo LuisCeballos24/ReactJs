@@ -7,6 +7,8 @@ import { db2 } from "../../../utils/firebase.js";
 function ProductCatalog(props) {
   const [estadoHijo, setEstadoHijo] = useState(false);
   const [Ventana, setVentana] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const Vista_Previa = (productId) => {
     const nuevoEstado = !estadoHijo;
@@ -31,27 +33,54 @@ function ProductCatalog(props) {
     console.log(vista_A, vista_B, Producto, text);
     props.VistaPrevia(vista_A, vista_B, Producto, text);
   };
+
   const [subasta, loading_g, error_s] = useCollectionData(
     db2.collection("Subastas")
   );
-  /*  const currentUser = auth.currentUser; */
   const [products, loading, error] = useCollectionData(
     db2.collection("productos")
-    // .where(" uid", "==", auth.currentUser.uid)
   );
 
-  if (loading) {
+  if (loading || loading_g) {
     return <p>Cargando productos...</p>;
   }
 
-  if (error) {
+  if (error || error_s) {
     return <p>Error al cargar productos: {error.message}</p>;
   }
 
+  const filteredProducts = products.filter((product) => {
+    const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory ? product.category === selectedCategory : true;
+    return nameMatch && categoryMatch;
+  });
+
+  const filteredSubasta = subasta.filter((product_sub) => {
+    const nameMatch = product_sub.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory ? product_sub.category === selectedCategory : true;
+    return nameMatch && categoryMatch;
+  });
+
   return (
     <div>
+      <div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Buscar por nombre"
+        />
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {/* Opciones de categorías */}
+        </select>
+      </div>
+
       <div className="grid z-10 grid-cols-1 gap-x-2 gap-y-16 p-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
-        {products.map((product, index) => (
+        {filteredProducts.map((product, index) => (
           <Card
             Vistap={Vista}
             key={index}
@@ -68,8 +97,9 @@ function ProductCatalog(props) {
           />
         ))}
       </div>
+
       <div className="grid grid-cols-1 gap-16 p-8 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2">
-        {subasta.map((product_sub) => (
+        {filteredSubasta.map((product_sub) => (
           <Card_sub
             className="bg-red-800"
             key_1={product_sub.id}
@@ -86,7 +116,6 @@ function ProductCatalog(props) {
             auctionType={product_sub.auctionType}
             Dis={product_sub.Dis}
             img={product_sub.images}
-            /* onClick={() => Vista_Previa(product.id)} */
             Vistap={Vista}
           />
         ))}
