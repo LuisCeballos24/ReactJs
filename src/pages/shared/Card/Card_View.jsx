@@ -78,7 +78,7 @@ const Card_V = (props) => {
                     className="w-24 h-24 rounded-full"
                   />
                   <div>
-                    <h4 className="text-lg font-bold">{item.title}</h4>
+                    <h4 className="text-lg font-bold bg-grey">{item.title}</h4>
                   </div>
                   <div className="flex-grow" />
                   <div className="flex items-center space-x-2">

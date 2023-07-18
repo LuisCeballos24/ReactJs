@@ -361,7 +361,7 @@ const Card = (props) => {
               justifyContent: "center",
             }}
           >
-            <BsPencil
+            <BsTrash
               className={`text-xl bg-white hover:text-green-600 text-primary`}
             />
           </button>

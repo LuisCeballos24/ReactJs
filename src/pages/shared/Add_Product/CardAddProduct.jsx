@@ -271,6 +271,17 @@ function CardAddProduct(props) {
                   {description.length} / 200 caracteres
                 </div>
               </div>
+              <div className="relative">
+                <textarea
+                  id="description"
+                  name="description"
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="p-2 h-40 text-gray-800 rounded-lg border border-gray-300 resize-none"
+                ></textarea>
+                <div className="absolute right-0 bottom-0 p-2 text-gray-400 pointer-events-none">
+                  {description.length} / 200 caracteres
+                </div>
+              </div>
               <label
                 htmlFor="name"
                 className="block mb-2 font-bold text-gray-700"
@@ -340,7 +351,7 @@ function CardAddProduct(props) {
             </div>
           </div>
           <div className="flex flex-col justify-center items-center p-6 text-left text-gray-300 bg-white rounded-xl border-t border-r border-b transition">
-            <div className="relative justify-center border border-gray-600 h-[360px] w-[300px]">
+            <div className="relative justify-center border border-gray-200 h-[360px] w-[300px]">
               {/* ... Código de la imagen principal ... */}
               <div className="relative left-0 z-20 justify-center border h-[360px] w-[300px]">
                 {previewImages.length > 0 && (

@@ -99,40 +99,95 @@ const Card_subasta = (props) => {
   };
 
   const handleApprove = async (data, actions) => {
-    if (timeLeft > 0) {
-      // El tiempo ha terminado, capturar el pago
-      const orderID = data.orderID;
-      await capturePayment(orderID);
-    } else {
-      // Aún queda tiempo, autorizar el pago
-      return actions.order.authorize();
-    }
-
     try {
-      // Realiza la captura del pago utilizando el ID del pedido (order ID)
-      const request = new paypal.orders.OrdersCaptureRequest(orderID);
-      request.requestBody({
-        note_to_payer: "Descripción del pedido",
-        purchase_units: [
-          {
-            amount: {
-              currency_code: "USD",
-              value: parseFloat(currentBid2), // Monto total del pedido
-            },
-          },
-        ],
-      });
-
+      const orderID = data.orderID;
+      const request = new paypal.orders.OrdersGetRequest(orderID);
       const response = await client.execute(request);
 
-      // Verifica el estado de la captura de pago
-      if (response.statusCode === 201) {
-        console.log("Pago capturado exitosamente");
+      // Verificar si el estado del pedido es "APPROVED" (aprobado)
+      if (response.result.status === "APPROVED") {
+        // Verificar si el usuario tiene fondos suficientes
+        const purchaseUnit = response.result.purchase_units[0];
+        const purchaseAmount = parseFloat(purchaseUnit.amount.value);
+        const userFunds = parseFloat(userAccountFunds); // Debes obtener los fondos del usuario desde tu servidor
+        handleSub();
+        if (userFunds >= purchaseAmount) {
+          // El usuario tiene fondos suficientes, procede a capturar el pago
+          const captureRequest = new paypal.orders.OrdersCaptureRequest(
+            orderID
+
+            //registrat el usuario en el fondo
+          );
+          captureRequest.requestBody({
+            note_to_payer: "Descripción del pedido",
+          });
+
+          const captureResponse = await client.execute(captureRequest);
+
+          // Verifica el estado de la captura de pago
+          if (captureResponse.statusCode === 201) {
+            console.log("Pago capturado exitosamente");
+          } else {
+            console.log("Error al capturar el pago");
+          }
+        } else {
+          console.log(
+            "El usuario no tiene fondos suficientes para completar la transacción"
+          );
+        }
       } else {
-        console.log("Error al capturar el pago");
+        console.log("El pedido no ha sido aprobado por el usuario");
       }
     } catch (error) {
-      console.error("Error al capturar el pago:", error);
+      console.error("Error al procesar el pago:", error);
+    }
+  };
+
+  const handleSub = async () => {
+    console.log("prosesando..");
+
+    try {
+      const querySnapshot = await db2
+        .collection("CHANGE_580")
+        .where("id_S", "==", producto)
+
+        .get();
+
+      if (!querySnapshot.empty) {
+        const docId = querySnapshot.docs[0].id;
+        const docRef = db2.collection("CHANGE_580").doc(docId);
+        const docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          await docRef.update({
+            Diponibilidad: true,
+          });
+
+          const ordenData = docSnapshot.data();
+          const compareArray = ordenData.id_persona || [];
+          compareArray.push(auth.currentUser.uid);
+
+          await docRef.update({
+            id_persona: compareArray,
+          });
+
+          const ordenData2 = docSnapshot.data();
+          const compareArray2 = ordenData2.oferta || [];
+          compareArray2.push(currentBid);
+
+          await docRef.update({
+            oferta: compareArray2,
+          });
+
+          console.log("Oferta actualizada");
+        } else {
+          console.log("La orden no exis");
+        }
+      } else {
+        console.log("La orden no existe");
+      }
+    } catch (error) {
+      console.log("Error al actualizar al actualizar la oferta:", error);
     }
   };
 
@@ -486,6 +541,8 @@ const Card_subasta = (props) => {
                       >
                         <PayPalButtons
                           createOrder={(data, actions) => {
+                            handleSub();
+
                             return actions.order.create({
                               purchase_units: [
                                 {
@@ -530,7 +587,7 @@ const Card_subasta = (props) => {
               props.auctionType === "estandar" && (
                 <div className="p-4 shadow-lg">
                   <div className="mt-4">
-                    <h3 className="mb-2 text-xl font-bold">Tiempo restante</h3>
+                    <h3 className="mb-2 text-xl font-bold">Tiempo restante </h3>
                     <div className="flex gap-2 items-center">
                       <div className="countdown-card">
                         <h2>Countdown</h2>
@@ -551,7 +608,9 @@ const Card_subasta = (props) => {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <h3 className="mb-2 text-xl font-bold">Puja actual</h3>
+                    <h3 className="mb-2 text-xl font-bold">
+                      Puja actual {producto}{" "}
+                    </h3>
                     <div className="flex gap-2 items-center">
                       <button
                         className="p-2 text-white bg-blue-500 rounded"

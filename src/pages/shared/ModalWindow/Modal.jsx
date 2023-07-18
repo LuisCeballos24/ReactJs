@@ -68,6 +68,7 @@ const Modal = (props) => {
 
       // Guardar datos adicionales en la base de datos
       await db.collection("users").doc(user.uid).set({
+        email,
         firstName,
         lastName,
         birthdate,
