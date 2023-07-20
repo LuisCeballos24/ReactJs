@@ -78,7 +78,7 @@ const Card = (props) => {
   };
 
   return (
-    <div className="flex items-center p-6 py-5 text-gray-900 bg-white rounded-xl border border-gray-300 hover:border-[#E89440]">
+    <div className="flex items-center p-6 py-10 gap-11 text-gray-900 bg-white rounded-xl border border-gray-300 hover:border-[#E89440]">
       <div className="w-1/3">
         <img
           src={images[currentImageIndex]}

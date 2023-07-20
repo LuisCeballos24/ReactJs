@@ -24,6 +24,7 @@ import Card_Nov from "../Card/Card_Nov";
 import CardAddProduct from "../Add_Product/CardAddProduct";
 import Card_product from "../Card/Card_product";
 import Card_subasta from "../Card/Card_subasta";
+import Card_ViewCH from "../Card/body_cardViewCH";
 import Card_ViewM from "../Card/Body_cardView";
 import CardADD_subasta from "../Add_Product/CardADD_subasta";
 import Perfil from "../Card/Card_perfil";
@@ -165,6 +166,37 @@ function Home_Page_user(props) {
             {typeof vista_A === "number" ? (
               vista_A === 1 ? (
                 <Card_ViewM VistaPrevia={Vista} />
+              ) : vista_A === 2 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 2
+                <CardAddProduct VistaPrevia={Vista} />
+              ) : vista_A === 3 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 3
+
+                <Card_product VistaPrevia={Vista} producto={param1} />
+              ) : vista_A === 4 ? (
+                // Otra alternativa basada en la condición para vista_A igual a 4
+                <CardADD_subasta VistaPrevia={Vista} />
+              ) : (
+                // Otra alternativa si vista_A no coincide con ninguno de los valores anteriores
+                {
+                  /* <DefaultComponent /> */
+                }
+              )
+            ) : (
+              // Otra alternativa si vista_A no es un número
+              {
+                /* <DefaultComponent /> */
+              }
+            )}
+          </>
+        );
+      case 4:
+        return (
+          <>
+            {/* <Card_subasta /> */}
+            {typeof vista_A === "number" ? (
+              vista_A === 1 ? (
+                <Card_ViewCH VistaPrevia={Vista} />
               ) : vista_A === 2 ? (
                 // Otra alternativa basada en la condición para vista_A igual a 2
                 <CardAddProduct VistaPrevia={Vista} />

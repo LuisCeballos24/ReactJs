@@ -12,7 +12,7 @@ import {
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-blue-400 via-yellow-300 to-orange-200 rounded-xl">
+    <header className="bg-gradient-to-r from-blue-400 rounded-xl">
       <div className="container flex justify-between items-center py-6 px-4 mx-auto">
         <div className="flex items-center">
           <img

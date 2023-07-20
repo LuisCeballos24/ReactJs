@@ -67,7 +67,7 @@ const Modal = (props) => {
       );
 
       // Guardar datos adicionales en la base de datos
-      await db.collection("users").doc(user.uid).set({
+      await db2.collection("usuarios").doc(user.uid).set({
         email,
         firstName,
         lastName,
@@ -76,7 +76,6 @@ const Modal = (props) => {
       });
 
       setLoading(false);
-      props.Child_3(false);
       //  navigate("/user"); // Redirigir a la página deseada después del registro
     } catch (error) {
       console.log("Error al registrar el usuario:", error);

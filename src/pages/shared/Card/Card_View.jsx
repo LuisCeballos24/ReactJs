@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaAngleDown,
   FaAngleUp,
@@ -7,7 +7,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
-
+import { db2 } from "../../../utils/firebase";
 const Card_V = (props) => {
   const { price, productId, description, url } = props;
   const [isExpanded, setIsExpanded] = useState([]);
@@ -25,16 +25,67 @@ const Card_V = (props) => {
   const handleSelectItem = (index) => {
     // Implementa la lógica para seleccionar/deseleccionar el objeto de la lista en el índice dado
   };
+  const [features, setFeatures] = useState([]);
+  // const features = price.map((value, index) => {
+  //   return {
+  //     image: url[index],
+  //     title: productId[index],
+  //     description: description[index],
+  //     offer: value,
+  //   };
+  // });
+  //
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      const featuresWithCredentials = await Promise.all(
+        price.map(async (value, index) => {
+          // Realiza la búsqueda en la base de datos de Firebase utilizando el id de cada elemento en productId
 
-  const features = price.map((value, index) => {
-    return {
-      image: url[index],
-      title: productId[index],
-      description: description[index],
-      offer: value,
+          try {
+            const docRef = db2.collection("usuarios").doc(productId[index]);
+            const docSnap = await docRef.get();
+
+            if (docSnap.exists) {
+              const userData = docSnap.data();
+              console.log("Email:", userData.email);
+              console.log("First Name:", userData.firstName);
+              console.log("Last Name:", userData.lastName);
+              console.log("phoneNumber:", userData.phoneNumber);
+              const newFeature = {
+                image: url[index],
+                title: productId[index],
+                description: description[index],
+                offer: price[index],
+                credentials: {
+                  email: userData.email,
+                  firstName: userData.firstName,
+                  lastName: userData.lastName,
+                  phoneNumber: userData.phoneNumber,
+                },
+              };
+              return newFeature; // Devuelve el objeto newFeature
+            } else {
+              console.log(
+                "No se encontró el usuario con el ID de documento proporcionado."
+              );
+              return {}; // Devuelve un objeto vacío para filtrar después
+            }
+          } catch (error) {
+            console.error("Error al obtener los datos del usuario:", error);
+            return {}; // Devuelve un objeto vacío para filtrar después
+          }
+        })
+      );
+      // Filtra los objetos vacíos antes de establecer el estado
+      const validFeaturesWithCredentials = featuresWithCredentials.filter(
+        (feature) => Object.keys(feature).length > 0
+      );
+      console.log(validFeaturesWithCredentials);
+      setFeatures(validFeaturesWithCredentials);
     };
-  });
 
+    fetchFeatures();
+  }, [price, url, productId, description]);
   return (
     <div className="grid grid-cols-1 gap-x-2 gap-y-16 p-8 md:grid-cols-4">
       {/* Contenedor de Perfil */}
@@ -78,7 +129,10 @@ const Card_V = (props) => {
                     className="w-24 h-24 rounded-full"
                   />
                   <div>
-                    <h4 className="text-lg font-bold bg-grey">{item.title}</h4>
+                    <h4 className="text-lg font-bold bg-grey"> </h4>
+                    <h4 className="text-lg font-bold bg-grey">
+                      {item.credentials.firstName} {item.credentials.lastName}
+                    </h4>
                   </div>
                   <div className="flex-grow" />
                   <div className="flex items-center space-x-2">
@@ -109,20 +163,13 @@ const Card_V = (props) => {
                           <p className="mb-4 text-gray-600">
                             User since <span className="font-bold">2019</span>
                           </p>
-                          <p className="text-gray-600">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Duis mauris lorem, efficitur eget cursus a,
-                            semper ac mi.
-                          </p>
+                          <p className="text-gray-600">{item.description}</p>
                           <div className="mt-4">
                             <p className="text-sm text-gray-500">
-                              Email: johndoe@example.com
+                              {item.credentials.email}{" "}
                             </p>
                             <p className="text-sm text-gray-500">
                               Location: New York, USA
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              Website: www.johndoe.com
                             </p>
                           </div>
                         </div>

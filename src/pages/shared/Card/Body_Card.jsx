@@ -50,14 +50,22 @@ function ProductCatalog(props) {
   }
 
   const filteredProducts = products.filter((product) => {
-    const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const categoryMatch = selectedCategory ? product.category === selectedCategory : true;
+    const nameMatch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory
+      ? product.category === selectedCategory
+      : true;
     return nameMatch && categoryMatch;
   });
 
   const filteredSubasta = subasta.filter((product_sub) => {
-    const nameMatch = product_sub.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const categoryMatch = selectedCategory ? product_sub.category === selectedCategory : true;
+    const nameMatch = product_sub.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const categoryMatch = selectedCategory
+      ? product_sub.category === selectedCategory
+      : true;
     return nameMatch && categoryMatch;
   });
 
@@ -94,6 +102,7 @@ function ProductCatalog(props) {
             inventory={product.cuanty}
             Status={product.Status}
             cursor-pointer
+            className="mb-5"
           />
         ))}
       </div>

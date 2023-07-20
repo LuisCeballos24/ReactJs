@@ -53,10 +53,11 @@ const Sidebar = (props) => {
 
   return (
     <div
-      className={`bg-[#285e7d] ${showMenu ? "left-0" : "-left-full"} ${isVertical
+      className={`bg-[#285e7d] ${showMenu ? "left-0" : "-left-full"} ${
+        isVertical
           ? "bg-[#285e7d] fixed mt-8 z-50 top-0 h-[98px]  translate-x-[400px] lg:left-16  w-[820px] flex  flex-col justify-between py-4 rounded-lg rounded-br-xl transition-opacity "
           : "  fixed lg:left-0 top-0 w-22 h-full flex flex-col justify-between py-6 rounded-tr-xl rounded-br-xl z-50 transition-opacity"
-        } `}
+      } `}
     >
       <div className={` ${isVertical ? "flex" : " "}  `}>
         <ul
@@ -64,10 +65,11 @@ const Sidebar = (props) => {
         >
           <li className="flex justify-between items-center my-4">
             <h1
-              className={` ${isVertical
+              className={` ${
+                isVertical
                   ? "mx-10 text-2xl font-bold text-center text-gray-300 uppercase"
                   : "p-4 my-6 text-2xl font-bold text-center text-gray-300 uppercase"
-                }  `}
+              }  `}
             >
               <img
                 href="/"
@@ -106,6 +108,7 @@ const Sidebar = (props) => {
           </li>
           <li className="p-4 pl-4 rounded-tl-xl rounded-bl-xl transition-colors group">
             <a
+              onClick={() => handleChange(4)}
               href="#"
               className="group-hover:bg-[#EA8337] p-4 flex justify-center rounded-xl text-[#EA8337] group-hover:text-white transition-colors"
             >
@@ -130,10 +133,11 @@ const Sidebar = (props) => {
             </a>
           </li>
           <li
-            className={` ${isVertical
+            className={` ${
+              isVertical
                 ? "  p-4 rounded-tl-xl rounded-bl-xl group transition-colors"
                 : "hidden"
-              }  `}
+            }  `}
           >
             <a
               href="#"

@@ -42,11 +42,22 @@ const Card_subasta = (props) => {
   const [auctionEndTime, setAuctionEndTime] = useState("");
   const [previewImages, setPreviewImages] = useState("");
   const images = [previewImages, "../../../../public/Store.svg"];
+  const [patroUsuarios, setpatroUsuario] = useState([]);
+  const [patroOfertas, setpatroOfertas] = useState([]);
+  const [partiUsuarios] = useCollectionData(
+    db2.collection("CHANGE_580").where("id_S", "==", producto)
+  );
 
   const [products] = useCollectionData(
     db2.collection("Subastas").where("id", "==", producto)
   );
-
+  useEffect(() => {
+    if (partiUsuarios && partiUsuarios.length > 0) {
+      const product = partiUsuarios[0];
+      setpatroUsuario(product.id_persona);
+      setpatroOfertas(product.oferta);
+    }
+  }, [partiUsuarios]);
   useEffect(() => {
     if (products && products.length > 0) {
       const product = products[0]; // Suponiendo que solo hay un producto con ese ID
@@ -199,6 +210,63 @@ const Card_subasta = (props) => {
       .padStart(2, "0")}`;
   };
 
+  useEffect(() => {
+    const fetchFeatures = async () => {
+      const featuresWithCredentials = await Promise.all(
+        patroUsuarios.map(async (value, index) => {
+          // Realiza la búsqueda en la base de datos de Firebase utilizando el id de cada elemento en productId
+          // console.log(patroUsuarios);
+          try {
+            const docRef = db2.collection("usuarios").doc(value);
+            const docSnap = await docRef.get();
+
+            console.log("<---->");
+            console.log(value);
+
+            if (docSnap.exists) {
+              console.log("<--USUARIO ENCONTRADO-->");
+              console.log(value);
+              const userData = docSnap.data();
+              console.log("Email:", userData.email);
+              console.log("First Name:", userData.firstName);
+              console.log("Last Name:", userData.lastName);
+              console.log("phoneNumber:", userData.phoneNumber);
+              const newFeature = {
+                image: url[index],
+                description: description[index],
+                offer: price[index],
+                credentials: {
+                  email: userData.email,
+                  firstName: userData.firstName,
+                  lastName: userData.lastName,
+                  phoneNumber: userData.phoneNumber,
+                },
+              };
+              return newFeature; // Devuelve el objeto newFeature
+            } else {
+              console.log(
+                "No se encontró el usuario con el ID de documento proporcionado."
+              );
+              return {}; // Devuelve un objeto vacío para filtrar después
+            }
+          } catch (error) {
+            console.error("Error al obtener los datos del usuario:", error);
+            return {}; // Devuelve un objeto vacío para filtrar después
+          }
+        })
+      );
+      // Filtra los objetos vacíos antes de establecer el estado
+      const validFeaturesWithCredentials = featuresWithCredentials.filter(
+        (feature) => Object.keys(feature).length > 0
+      );
+      console.log(validFeaturesWithCredentials);
+      setusers(validFeaturesWithCredentials);
+    };
+
+    fetchFeatures();
+  }, [patroUsuarios]);
+  const [users, setusers] = useState([]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -253,24 +321,6 @@ const Card_subasta = (props) => {
     setOferta("");
     setCvFile(null);
   };
-
-  const users = [
-    {
-      name: "Usuario 1",
-      profilePicture: "../../../../public/chair.png",
-      bidAmount: 50,
-    },
-    {
-      name: "Usuario 2",
-      profilePicture: "../../../../public/chair.png",
-      bidAmount: 75,
-    },
-    {
-      name: "Usuario 3",
-      profilePicture: "../../../../public/chair.png",
-      bidAmount: 100,
-    },
-  ];
 
   const handleChangeImage = (index) => {
     setCurrentImageIndex(index);
