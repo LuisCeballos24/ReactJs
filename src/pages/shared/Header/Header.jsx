@@ -24,16 +24,13 @@ const Header = () => {
           href="#"
           className="relative py-2 pr-4 before:w-1/2 before:h-[2px] before:absolute before:bg-[#E89440] before:left-0 before:rounded-full before:-bottom-[1px] text-[#E89440]"
         >
-          Hot dishes
+          Productos de compras
         </a>
         <a href="#" className="py-2 pr-4">
-          Cold dishes
+          Intercambio
         </a>
         <a href="#" className="py-2 pr-4">
-          Soup
-        </a>
-        <a href="#" className="py-2">
-          Grill
+          Subasta y Convocatoria{" "}
         </a>
       </nav>
     </header>

@@ -72,9 +72,8 @@ const Sidebar = (props) => {
               }  `}
             >
               <img
-                href="/"
                 className="mt-0 mb-4 w-12 h-12"
-                src="../../../public/imagen-445-removebg-preview.png"
+                src="https://drive.google.com/uc?id=1b3jKGKvQs_cPjrOA2pfMZXZ8mAr4UDfl"
                 alt="Logo"
               />
             </h1>

@@ -12,19 +12,23 @@ import {
 
 const Header = () => {
   return (
-    <header className="bg-gradient-to-r from-blue-400 rounded-xl">
+    <header className="bg-gradient-to-r from-[#285e7d] rounded-xl">
       <div className="container flex justify-between items-center py-6 px-4 mx-auto">
-        <div className="flex items-center">
-          <img
-            className="object-cover w-10 h-10 rounded-full border-2 border-white"
-            src="user-profile-image.jpg"
-            alt="User Profile"
-          />
-          <div className="ml-4">
-            <h1 className="text-3xl font-bold text-white">User</h1>
-            <p className="text-sm text-gray-200">UI/UX Designer</p>
-          </div>
+        {/* Botones en la parte izquierda */}
+        <div className="flex items-center space-x-4">
+          <button className="py-2 px-4 text-sm font-medium text-blue-500 bg-white rounded-lg hover:text-white hover:bg-blue-500 focus:outline-none">
+            Botón 1
+          </button>
+          <button className="py-2 px-4 text-sm font-medium text-blue-500 bg-white rounded-lg hover:text-white hover:bg-blue-500 focus:outline-none">
+            Botón 2
+          </button>
+          <button className="py-2 px-4 text-sm font-medium text-blue-500 bg-white rounded-lg hover:text-white hover:bg-blue-500 focus:outline-none">
+            Botón 3
+          </button>
         </div>
+        {/* Espacio reservado para contenido adicional */}
+        <div className="flex items-center"></div>
+        {/* Botones en la parte derecha */}
         <div className="flex items-center space-x-4">
           <button className="py-2 px-4 text-sm font-medium text-blue-500 bg-white rounded-full hover:text-white hover:bg-blue-500 focus:outline-none">
             Edit Profile

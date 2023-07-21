@@ -13,13 +13,13 @@ function isUserOwner(ownerId) {
 const handleDelete = async (id) => {
   const querySnapshot = await db2
     .collection("ordenes")
-    .where("productId", "==", id)
+    .where("id", "==", id)
     .where("buyerId", "==", auth.currentUser.uid)
     .get();
-
+  console.log(id);
   if (!querySnapshot.empty) {
-    const docId = querySnapshot.docs[0].productId;
-    await dbw.collection("ordenes").doc(docId).delete();
+    const docId = querySnapshot.docs[0].id;
+    await db2.collection("ordenes").doc(docId).delete();
     console.log(`Producto con uid ${id} eliminado correctamente`);
   } else {
     console.log(`Producto con id ${id} NO eliminado de forma correcta`);
@@ -35,7 +35,7 @@ const handleMinus = async (id) => {
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
-    const docId = querySnapshot.docs[0].productId;
+    const docId = querySnapshot.docs[0].id;
     const docRef = db2.collection("ordenes").doc(docId);
     const docSnapshot = await docRef.get();
     await docRef.update({
@@ -52,12 +52,12 @@ const handlePlus = async (id) => {
     .collection("ordenes")
     .where("id", "==", id)
     .where("buyerId", "==", auth.currentUser.uid)
-    .where("Diponibilidad", "==", true)
+    //.where("Diponibilidad", "==", true)
     .get();
 
   if (!querySnapshot.empty) {
     // Si el producto ya está en el carrito, actualizar la cantidad
-    const docId = querySnapshot.docs[0].productId;
+    const docId = querySnapshot.docs[0].id;
     const docRef = db2.collection("ordenes").doc(docId);
     const docSnapshot = await docRef.get();
     await docRef.update({
@@ -126,8 +126,9 @@ const Card_car = (props) => {
 
   return (
     <div
-      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${showOrder ? "right-0" : "-right-full"
-        }`}
+      className={`lg:col-span-2 fixed top-0 bg-white w-full lg:w-96 lg:right-0 lg:h-[700px] h-full transition-all z-50 my-56  rounded-lg border border-gray-300 ${
+        showOrder ? "right-0" : "-right-full"
+      }`}
     >
       {/* Orders */}
       <div className="relative p-8 h-full text-gray-300 lg:pt-8 pt-17">
@@ -137,17 +138,7 @@ const Card_car = (props) => {
         />
         {/*   <h1 className="my-4 text-2xl text-gray-900">Orders</h1> */}
         {/* Pills */}
-        <div className="flex flex-wrap gap-4 items-center mb-8">
-          <button className="bg-[#E89440] text-white py-2 px-4 rounded-xl">
-            Compras
-          </button>
-          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
-            Intercambio
-          </button>
-          <button className="text-[#E89440] py-2 px-4 rounded-xl border border-[#285e7d]">
-            Subasta
-          </button>
-        </div>
+
         {/* Car */}
         <div>
           <div className="grid grid-cols-6 p-4 mb-4">
@@ -325,6 +316,7 @@ const Card_car = (props) => {
               onApprove={async (data, actions) => {
                 const order = await actions.order.capture();
                 console.log("Order", order);
+
                 setIsPaymentSuccessful(true);
               }}
             />

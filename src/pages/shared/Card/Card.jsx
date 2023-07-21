@@ -197,23 +197,30 @@ const Card = (props) => {
 
         if (docSnapshot.exists) {
           await docRef.update({
-            Diponibilidad: true,
+            Diponibilidad: false,
           });
 
-          const ordenData = docSnapshot.data();
-          const compareArray = ordenData.compara || [];
-          compareArray.push(auth.currentUser.uid);
-
+          // const ordenData = docSnapshot.data();
+          // const compareArray = ordenData.compara || [];
+          // compareArray.push(auth.currentUser.uid);
+          //
+          // await docRef.update({
+          //   Compara: compareArray,
+          // });
           await docRef.update({
-            Compara: compareArray,
+            Compara: auth.currentUser.uid,
           });
 
-          const ordenData2 = docSnapshot.data();
-          const compareArray2 = ordenData2.compara_obj || [];
-          compareArray2.push(idPro);
+          // const ordenData2 = docSnapshot.data();
+          // const compareArray2 = ordenData2.compara_obj || [];
+          // compareArray2.push(idPro);
+          //
+          // await docRef.update({
+          //   Compara_obj: compareArray2,
+          // });
 
           await docRef.update({
-            Compara_obj: compareArray2,
+            Compara_obj: idPro,
           });
 
           console.log("Orden actualizada con éxito");
@@ -249,8 +256,9 @@ const Card = (props) => {
         {images.map((image, index) => (
           <li
             key={index}
-            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${index === currentImageIndex ? "bg-gray-600" : ""
-              }`}
+            className={`w-3 h-2 rounded-full bg-gray-300 cursor-pointer mx-1 transition hover:bg-gray-600 ${
+              index === currentImageIndex ? "bg-gray-600" : ""
+            }`}
             onClick={() => handleImageClick(index)}
           ></li>
         ))}
@@ -266,6 +274,7 @@ const Card = (props) => {
             }}
           >
             <BsCartPlus
+              onClick={handleClick}
               className={`text-xl bg-white hover:text-green-600 text-primary`}
             />
           </button>
@@ -294,8 +303,9 @@ const Card = (props) => {
 
         <div
           id="opciones"
-          className={`${mostrarOpciones ? "" : "hidden"
-            } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
+          className={`${
+            mostrarOpciones ? "" : "hidden"
+          } inset-0 fixed py-5 mt-4 border shadow-black w-52 cursor-pointer text-gray-800 bg-white rounded shadow-lg z-50`}
           style={{ overflow: "hidden" }}
         >
           <div className="flex items-center px-2">
@@ -309,10 +319,11 @@ const Card = (props) => {
           {opciones.map((opcion, index) => (
             <div
               key={index}
-              className={`p-2 hover:border-gray-900 ${opcionAbierta === index
+              className={`p-2 hover:border-gray-900 ${
+                opcionAbierta === index
                   ? "hover:bg-[#285e7d] hover:text-white text-black "
                   : " hover:bg-[#285e7d] hover:text-white text-black "
-                }`}
+              }`}
               onClick={() => {
                 handleAbrirOpcion(index);
                 handleEliminarOpcion(index, props.productId, opcion.idproducto);
